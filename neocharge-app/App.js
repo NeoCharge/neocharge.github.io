@@ -1,10 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import Amplify from 'aws-amplify';
+import aws_exports from './aws-exports';
+import TestAPI from './TestAPI';
+
+Amplify.configure(aws_exports);
 
 export default function App() {
   return (
+
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {/* <Text>Welcome!</Text>
+      <Button
+        title='Add User'
+        onPress={() => Alert.alert('Simple Button pressed')}
+      /> */}
+      <TestAPI />
     </View>
   );
 }
