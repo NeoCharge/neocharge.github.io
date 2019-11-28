@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/items",
+            "lambdaFunction": "dbPostTest",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "LambdaProxy2",
+    "apiName": "LambdaProxy2",
+    "functionArns": [
+        {
+            "lambdaFunction": "dbPostTest"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-neocharge-app-test-163256-authRole",
+        "unAuthRoleName": "amplify-neocharge-app-test-163256-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "dbPostTest",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
