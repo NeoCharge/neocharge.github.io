@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryLine, VictoryLabel } from "victory-native";
 
 const data = [
@@ -11,9 +11,10 @@ const data = [
 
 export default class GraphComponent extends React.Component {
   render() {
+    const screenWidth = Dimensions.get('window').width;
     return (
       
-        <VictoryChart width={275} height={250}>
+        <VictoryChart width={screenWidth} height={300}>
           <VictoryLabel text="Charge Length By Day" x={150} y={10} textAnchor="middle"/>
           <VictoryLine data={data} x="ChargeDate" y="Length" />
         </VictoryChart>

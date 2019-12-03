@@ -11,26 +11,12 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    async getData(deviceId) {
-        console.log(deviceId)
-        //const deviceId = "testId1"; 
-        const apiName = "LambdaProxy"
-        const path = "/dbgetusers"; // you can specify the path
-        const myMessage = {
-            "deviceId": deviceId
-          }
-        const apiResponse = await API.get(apiName, path, myMessage); //replace the API name
-        console.log('response:' + apiResponse[0]);
-    }
-
     buttonClickListener = () => {
         const { TextInputValue } = this.state;
-        //this.getData(TextInputValue); 
         API.get("LambdaProxy", "/dbgetusers", 
         { "queryStringParameters": {
             "deviceId": TextInputValue }})
         .then(response => {
-                console.log("succccess!");
                 console.log(response); 
             }).catch(error => {
                 console.log(error.response) 
