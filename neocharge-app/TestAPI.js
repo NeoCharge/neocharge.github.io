@@ -16,6 +16,7 @@ export default class TestAPI extends Component {
         return (
             <View>
                 <Button title="Add Users" onPress={this.getSample.bind(this)} />
+                <Text>{"\n"}</Text>
                 {/* <Text>Response: {this.state.apiResponse && JSON.stringify(this.state.apiResponse)}</Text> */}
             </View>
         )
