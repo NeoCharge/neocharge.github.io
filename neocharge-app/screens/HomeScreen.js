@@ -1,4 +1,5 @@
 import React from 'react';
+import GraphComponent from "../GraphComponent";
 import { View, StyleSheet, Text, TextInput, Button, Alert } from 'react-native';
 import { API } from 'aws-amplify';
 
@@ -39,6 +40,8 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+
+                <GraphComponent />
                 <TextInput
                     style={{ height: 40, width: '50%', borderColor: 'gray', borderWidth: 1 }}
                     placeholder='Enter UUID'

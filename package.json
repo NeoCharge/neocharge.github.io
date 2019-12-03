@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@aws-amplify/api": "^1.2.4",
+    "@aws-amplify/pubsub": "^1.2.4"
+  }
+}
