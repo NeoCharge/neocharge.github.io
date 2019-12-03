@@ -19,7 +19,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-      <GraphComponent />
+                <GraphComponent />
                 <TextInput
                     style={{ height: 40, width: '50%', borderColor: 'gray', borderWidth: 1 }}
                     placeholder='Enter UUID'
