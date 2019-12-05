@@ -1,5 +1,8 @@
 language: python 
 python:
  - "stable"
-
+branches:
+  only:
+    - master
 script: bash ./test.sh
+
