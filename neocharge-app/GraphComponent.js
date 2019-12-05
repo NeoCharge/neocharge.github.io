@@ -1,44 +1,79 @@
 import React from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryLine, VictoryLabel } from "victory-native";
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme, VictoryLine, VictoryLabel } from "victory-native";
 
-const data = [
-  { ChargeDate: "11/22/19", Length: 4 },
-  { ChargeDate: "11/23/19", Length: 7 },
-  { ChargeDate: "11/24/19", Length: 5 },
-  { ChargeDate: "11/25/19", Length: 6 }
-];
 
 export default class GraphComponent extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            rawDeviceLogs: props.data, 
-            formattedDeviceLogs: [] 
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      rawDeviceLogs: this.props.data,
+      formattedDeviceLogs: []
     }
+  }
 
-   transformJson () {
-    const rawList = this.state.rawDeviceLogs
-    const formattedJson = [] 
-    for(i = 0; i< rawList.Length; i++) {
-        formatttedJson.push(
-            {"ChargeDate" : rawList[i].ChargeDate,
-             "Length" : rawList[i].duration }) 
-    }
-    this.state.formattedDeviceLogs = formattedJson
-    console.log("state:")
-    console.log(this.state)
-   }
+  transformJson() {
+    const rawList = this.props.data
+    const formattedJson = []
+
+    rawList.forEach(obj => formattedJson.push({
+      "ChargeDate": obj.startTime.slice(5, 10),
+      "Length": obj.duration / 100000,
+
+    }))
+
+    return formattedJson;
+  }
 
   render() {
-    this.transformJson() 
-    const screenWidth = Dimensions.get('window').width;
+    const screenWidth = Dimensions.get('window').width
     return (
-        <VictoryChart width={screenWidth} height={300}>
-          <VictoryLabel text="Charge Length By Day" x={150} y={10} textAnchor="middle"/>
-          <VictoryLine data={data} x="ChargeDate" y="Length" />
+      <View>
+        {/* <VictoryChart width={screenWidth - 50} height={300} domainPadding={{ x: 20 }}>
+          <VictoryLabel text="Charge Length By Day" x={175} y={10} textAnchor="middle" />
+          <VictoryLine data={this.transformJson()} x="ChargeDate" y="Length"
+          />
+
+          <VictoryAxis
+            label="Charge Date"
+            style={{
+              axisLabel: { padding: 30 }
+            }}
+          />
+          <VictoryAxis dependentAxis
+            label="kWh"
+            style={{
+              axisLabel: { padding: 40 }
+            }}
+          />
+        </VictoryChart> */}
+
+        <VictoryChart width={screenWidth - 50} height={300} domainPadding={{ x: 40 }}>
+          <VictoryLabel text="Charge Length By Day" x={175} y={10} textAnchor="middle" />
+          <VictoryBar
+            style={{ data: { fill: "#c43a31" } }}
+            data={this.transformJson()}
+            x="ChargeDate"
+            y="Length"
+            sortKey="ChargeDate"
+          />
+          <VictoryAxis
+            label="ChargeDate"
+            style={{
+              axisLabel: { padding: 30 }
+            }}
+          />
+          <VictoryAxis dependentAxis
+            label="kWh"
+            style={{
+              axisLabel: { padding: 40 }
+            }}
+          />
         </VictoryChart>
+      </View>
+
+
+
     );
   }
 }
