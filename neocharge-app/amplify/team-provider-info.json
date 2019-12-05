@@ -8,7 +8,8 @@
             "DeploymentBucketName": "amplify-neocharge-app-test-163256-deployment",
             "UnauthRoleName": "amplify-neocharge-app-test-163256-unauthRole",
             "StackName": "amplify-neocharge-app-test-163256",
-            "StackId": "arn:aws:cloudformation:us-west-2:526018637973:stack/amplify-neocharge-app-test-163256/770fb580-0bf6-11ea-897b-0abdf39f8170"
+            "StackId": "arn:aws:cloudformation:us-west-2:526018637973:stack/amplify-neocharge-app-test-163256/770fb580-0bf6-11ea-897b-0abdf39f8170",
+            "AmplifyAppId": "d27azrs707joz2"
         }
     }
 }
