@@ -7,7 +7,8 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            TextInputValue: ''
+            TextInputValue: '', 
+            jsonDeviceLogs: []
         }
     }
 
@@ -17,7 +18,8 @@ export default class HomeScreen extends React.Component {
         { "queryStringParameters": {
             "deviceId": TextInputValue }})
         .then(response => {
-                console.log(response); 
+                this.state.jsonDeviceLogs = response
+                console.log("finished callback")
             }).catch(error => {
                 console.log(error.response) 
             });
@@ -27,7 +29,9 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <GraphComponent />
+                <GraphComponent 
+                   data = {this.state.jsonDeviceLogs}
+                />
                 <TextInput
                     style={{ height: 40, width: '50%', borderColor: 'gray', borderWidth: 1 }}
                     placeholder='Enter UUID'

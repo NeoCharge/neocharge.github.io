@@ -10,10 +10,31 @@ const data = [
 ];
 
 export default class GraphComponent extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            rawDeviceLogs: props.data, 
+            formattedDeviceLogs: [] 
+        }
+    }
+
+   transformJson () {
+    const rawList = this.state.rawDeviceLogs
+    const formattedJson = [] 
+    for(i = 0; i< rawList.Length; i++) {
+        formatttedJson.push(
+            {"ChargeDate" : rawList[i].ChargeDate,
+             "Length" : rawList[i].duration }) 
+    }
+    this.state.formattedDeviceLogs = formattedJson
+    console.log("state:")
+    console.log(this.state)
+   }
+
   render() {
+    this.transformJson() 
     const screenWidth = Dimensions.get('window').width;
     return (
-      
         <VictoryChart width={screenWidth} height={300}>
           <VictoryLabel text="Charge Length By Day" x={150} y={10} textAnchor="middle"/>
           <VictoryLine data={data} x="ChargeDate" y="Length" />
