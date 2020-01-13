@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Button, Modal } from 'react-native';
+import OnboardingLogo from '../components/OnboardingLogo';
+import OnboardingInput from '../components/OnboardingInput';
 
 const SetupScreen = props => {
 
-  //first value is the variable, second is the function that is allowed to modify/set it
-  const [enteredGoal, setEnteredGoal] = useState('');
-
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoal(enteredText);
-  };
-
-  const addGoalHandler = () => {
-    props.onAddGoal(enteredGoal);
-    setEnteredGoal('');
-  };
-
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        placeholder="Course Goal"
-        style={styles.input}
-        onChangeText={goalInputHandler}
-        value={enteredGoal}
-      />
-      <View style={styles.addGoalButtons}>
-        <Button title="Cancel" color="red" onPress={props.onCancel} />
-        <Button title="ADD" onPress={addGoalHandler} />
+    <View>
+      <View style={styles.logoContainer}>
+        <OnboardingLogo />
+      </View>
+      <View style={styles.infoContainer}>
+        <OnboardingInput />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Continue" />
       </View>
     </View>
   );
