@@ -35,8 +35,10 @@ const SetupScreen = props => {
     console.log("secondaryDevice: " + secondaryDevice);
     console.log("deviceID: " + deviceID);
 
-    let jsonObj = {"timeZone":timZone, "primaryDevice":primaryDevice, "secondaryDevice":secondaryDevice, "deviceID":deviceID};
-
+    let requestBody = {"timeZone":timeZone, "primaryDevice":primaryDevice, "secondaryDevice":secondaryDevice, "deviceID":deviceID};
+    let jsonObj = {
+      body:requestBody
+    }
     const path = "/user"; // you can specify the path
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
     console.log(apiResponse);
