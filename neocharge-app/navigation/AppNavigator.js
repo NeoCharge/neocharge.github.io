@@ -22,6 +22,7 @@ export default createAppContainer(
             Auth: AuthStack,
         },
         {
+            // Change 'AuthLoading' to 'App' if you don't want to log-in everytime when testing
             initialRouteName: 'AuthLoading',
         }
     )
