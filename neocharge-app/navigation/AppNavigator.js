@@ -1,17 +1,29 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import TabNavigator from './TabNavigator';
+import SignInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
-// const AuthStack = createStackNavigator({ SignIn: SignInScreen });
+const AuthStack = createSwitchNavigator(
+    { 
+        SignIn: SignInScreen, 
+        SignUp: SignUpScreen 
+    },
+    {
+        initialRouteName: 'SignUp',
+    }
+    );
 
 export default createAppContainer(
     createSwitchNavigator(
         {
-            // AuthLoading: AuthLoadingScreen,
+            AuthLoading: AuthLoadingScreen,
             App: TabNavigator,
-            // Auth: AuthStack,
+            Auth: AuthStack,
         },
         {
-            initialRouteName: 'App',
+            // Change 'AuthLoading' to 'App' if you don't want to log-in everytime when testing
+            initialRouteName: 'AuthLoading',
         }
     )
 );
