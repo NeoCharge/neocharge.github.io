@@ -1,0 +1,17 @@
+{
+    "providers": [
+        "awscloudformation"
+    ],
+    "projectName": "neocharge-app",
+    "version": "3.0",
+    "frontend": "javascript",
+    "javascript": {
+        "framework": "react-native",
+        "config": {
+            "SourceDir": "~/NeoCharge/TheJuicerz",
+            "DistributionDir": "/",
+            "BuildCommand": "npm run-script build",
+            "StartCommand": "npm run-script start"
+        }
+    }
+}
