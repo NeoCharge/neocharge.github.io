@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@aws-amplify/api": "^1.2.4",
-    "@aws-amplify/pubsub": "^1.2.4"
+    "@aws-amplify/pubsub": "^1.2.4",
+    "recursive-install": "^1.4.0"
   },
   "scripts": {
     "test": "jest"
