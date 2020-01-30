@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`HomeScreen Rendering should match to snapshot 1`] = `ShallowWrapper {}`;
+
 exports[`RateDisplay Rendering should match to snapshot 1`] = `ShallowWrapper {}`;
