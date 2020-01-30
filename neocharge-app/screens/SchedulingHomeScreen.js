@@ -3,6 +3,7 @@ import { Platform, StyleSheet, Text, View, Image, Switch, Button } from "react-n
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import DatePicker from 'react-native-datepicker';
+import Colors from '../assets/colors.js';
 
 
 class SchedulingHomeScreen extends React.Component {
@@ -24,7 +25,7 @@ class SchedulingHomeScreen extends React.Component {
   static navigationOptions = {
     title: "Schedule",
     headerStyle: {
-      backgroundColor: "#03A9F4"
+      backgroundColor: Colors.accent2
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
@@ -81,7 +82,8 @@ class SchedulingHomeScreen extends React.Component {
                     marginRight: 5
                   },
                   dateText: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color: 'white'
                   }
               }}
                 date={this.state.timeOne} //initial date from state
@@ -109,7 +111,8 @@ class SchedulingHomeScreen extends React.Component {
                     marginRight: 5
                   },
                   dateText: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color: 'white'
                   }
               }}
                 date={this.state.timeTwo} //initial date from state
@@ -140,7 +143,8 @@ class SchedulingHomeScreen extends React.Component {
                     marginRight: 5
                   },
                   dateText: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color: 'white'
                   }
               }}
                 date={this.state.timeThree} //initial date from state
@@ -168,7 +172,8 @@ class SchedulingHomeScreen extends React.Component {
                     marginRight: 5
                   },
                   dateText: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color: 'white'
                   }
               }}
                 date={this.state.timeFour} //initial date from state
@@ -205,7 +210,7 @@ const Apps = createAppContainer(AppStackNavigator);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e5e5e5"
+    backgroundColor: Colors.primary
   },
   textContainer: {
     textAlign: "left",
@@ -217,6 +222,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 10,
     fontWeight: "bold"
+    
   },
   switch: {
     marginRight: 10,
@@ -226,18 +232,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 20,
     marginBottom: 10,
-    marginTop: 15
+    marginTop: 15,
+    color: Colors.secondary
   },
   scheduleWarning: {
     fontSize: 14,
     marginLeft: 20,
     marginBottom: 10,
     marginTop: 5,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
+    color: Colors.secondary
   },
   optionText: {
     fontSize: 20,
-    marginLeft: 20
+    marginLeft: 20,
+    color: Colors.secondary
     
   }, 
   resetText: {
@@ -246,19 +255,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 20,
     marginBottom: 40,
-    marginTop: 45
+    marginTop: 45,
+    color: '#51a0d5'
+    
   },
 
   weekdaysText: {
     fontSize: 14,
     marginLeft: 20,
     marginBottom: 5,
-    marginTop: 15
+    marginTop: 15,
+    color: Colors.secondary
   },
 
   startsText1: {
     fontSize: 20,
-    marginLeft: 20
+    marginLeft: 20,
+    color: 'white'
+
   },
 
   endsText1: {
@@ -278,16 +292,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     maxHeight: 60,
-    backgroundColor: 'white',
+    backgroundColor: '#363636',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    
   },
   backgroundBox: {
     flex: 1,
     flexDirection: 'row',
     width: '100%',
     maxHeight: 100,
-    backgroundColor: 'white',
+    backgroundColor: '#363636',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -303,7 +318,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent:'center',
     maxHeight: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#363636',
     alignItems: 'center',
     justifyContent: 'space-between'
  }
