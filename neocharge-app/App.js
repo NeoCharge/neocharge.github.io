@@ -9,21 +9,24 @@ import SetupScreen from './screens/SetupScreen';
 
 Amplify.configure(aws_exports);
 
-/*export default function App() {
+// This line disables the redbox with stacktrace for all console.error messages.
+console.reportErrorsAsExceptions = false;
+
+export default function App() {
   return (
     <View style={styles.container}>
       <AppNavigator/>
     </View>
   );
-}*/
+}
 
-export default function App() {
+/*export default function App() {
   return (
     <View style={styles.container}>
       <SetupScreen/>
     </View>
   );
-}
+}*/
 
 const styles = StyleSheet.create({
   container: {

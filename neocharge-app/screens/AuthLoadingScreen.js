@@ -30,10 +30,12 @@ class AuthLoadingScreen extends React.Component {
     const userToken = await AsyncStorage.getItem('userToken');
 
     //TODO only sleeping to demonstrate that this screen is navigated to
-    sleep(10000);
+    sleep(1000);
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
+    // TODO Get saved userTokens (email and password? [secure?]) and use them to authenticate user automatically.
+    //      Send user to App if successful and Auth if not or if no tokens exist.
     this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   };
 

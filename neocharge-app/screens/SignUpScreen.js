@@ -8,7 +8,7 @@ class SignUpScreen extends React.Component {
         this.state = {
             EmailInputValue: '',
             PasswordInputValue: '',
-            VerificationInputValue: '',
+            ErrorMessage: '',
             jsonDeviceLogs: []
         }
     }
@@ -16,11 +16,13 @@ class SignUpScreen extends React.Component {
     static navigationOptions = {
       title: 'Please sign up',
     };
+
   
     render() {
       return (
         <View style={styles.container} >
             <Text>SIGN-UP SCREEN</Text>
+            <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
             <TextInput
                 style={{ height: 40, width: '80%', borderColor: 'gray', borderWidth: 1 }}
                 placeholder='Email'
@@ -34,28 +36,58 @@ class SignUpScreen extends React.Component {
                 secureTextEntry={true}
                 autoCapitalize='none'
             />
-            <Button title="Sign up!" 
-                onPress={() => SignUp(this.state.EmailInputValue, this.state.PasswordInputValue)} />
+            <Button title="Sign up!" onPress={() => this.SignUp()} />
             <Text 
                 style={styles.TextStyle} 
-                onPress={ ()=>  this.props.navigation.navigate('SignIn')} >
+                onPress={ () =>  this.props.navigation.navigate('SignIn')} >
             Already have an account? Click here to Sign-In.
             </Text>
-            <TextInput
-                style={{ height: 40, width: '40%', borderColor: 'gray', borderWidth: 1 }}
-                placeholder='Verification Code'
-                onChangeText={VerificationInputValue => this.setState({ VerificationInputValue })}
-                autoCapitalize='none'
-            />
-            <Button title="Verify" 
-                onPress={() => verifySignUp(this.state.EmailInputValue, this.state.VerificationInputValue, this.props)} />
-             <Button title="Resend Code" 
-                onPress={() => resendVerificationCode(this.state.EmailInputValue)} />
         </View>
       );
     }
-  
-  }
+
+    // Function that registers the inputted email and password when a user clicks the "Sign-Up" button
+    SignUp = async() => {
+        const email = this.state.EmailInputValue;
+        const password = this.state.PasswordInputValue;
+        var didError = false;
+        try {
+            await Auth.signUp({
+                username: email,
+                password: password,
+                attributes: {
+                    email: email
+                },
+                validationData: []    
+            })
+            .then(data => console.log(data))
+            .catch(error => {
+                    console.log(error.code);
+                    didError = true;
+                    if (typeof(error.code) === "undefined") {
+                        console.log("Email and password cannot be empty.");
+                        this.setState({ErrorMessage: "Email and password cannot be empty."});
+                    } else if (error.code === 'UsernameExistsException') {
+                        console.log("Email already in use.");
+                        this.setState({ErrorMessage: "Email already in use."});
+                    } else if (error.code === 'InvalidParameterException') {
+                        console.log("Invalid password entered");
+                        this.setState({ErrorMessage: "Passwords must contain at least 8 characters."});
+                    } else {
+                        console.log("Something else went wrong.");
+                        this.setState({ErrorMessage: "Something else went wrong."});
+                    }
+                 });
+            // Continue to verification page if Sign-Up was successful
+            if (didError === false) {
+                this.props.navigation.navigate('Verify', {userEmail : email});
+            }
+        } catch (err) {
+            console.log("catching error: " + err);
+        }
+    }
+
+}
 export default SignUpScreen;
 
 const styles = StyleSheet.create({
@@ -67,45 +99,53 @@ const styles = StyleSheet.create({
     TextStyle: {
         color: '#E88227',
         textDecorationLine: 'underline'
+    },
+    ErrorText: {
+        color: '#ff0000'
     }
 });
 
-async function SignUp(email, password) {
-    try {
-        console.log("fdklsajfkldsjaf " + email + " fjdksaf " + password)
-    Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-            email: email
-        },
-        validationData: []    
-    })
-        .then(data => console.log(data));
-    } catch (err) {
-        console.log(err);
-    }
-}
+// async function SignUp(email, password, props, state) {
+//     try {
+//         const check = await Auth.signUp({
+//             username: email,
+//             password: password,
+//             attributes: {
+//                 email: email
+//             },
+//             validationData: []    
+//         })
+//         //.then(data => console.log(data))
+//         //.catch(error => this.setState({ ErrorCode: error.code }))
+//         .catch(error => {
+//                 console.log(error.code);
+//                 if (typeof(error.code) === "undefined") {
+//                     console.log("Email and password cannot be empty.");
+//                     state.ErrorMessage = "Email and password cannot be empty.";
+//                 } else if (error.code === 'UsernameExistsException') {
+//                     // The error happens if the email entered is already in use
+//                     console.log("Email already in use.");
+//                     state.ErrorMessage = "Email already in use.";
+//                 } else if (error.code === 'InvalidParameterException') {
+//                     // The error happens when an invalid password is entered.
+//                     console.log("Invalid password entered");
+//                     state.ErrorMessage = "Passwords must contain at least 8 characters.";
+//                 } else {
+//                     console.log("Something else went wrong.");
+//                     state.ErrorMessage = "Something else went wrong.";
+//                 }
+//              });
 
-async function verifySignUp(email, code, props) {
-    try {
-        // After retrieving the confirmation code from the user
-        Auth.confirmSignUp(email, code, {
-            // Optional. Force user confirmation irrespective of existing alias. By default set to True.
-            forceAliasCreation: true    
-        }).then(data => console.log(data));
-        props.navigation.navigate('App');
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function resendVerificationCode(email) {
-    try {
-        Auth.resendSignUp(email).then(() => {
-            console.log('code resent successfully')});
-    } catch (err) {
-        console.log(err);
-    }
-}
+//         console.log(this);
+//         forceUpdate();
+//         console.log(check);
+//         console.log(check.userConfirmed);
+//         // Continue to verification page if user has not yet been verified
+//         if (check.userConfirmed === false) {
+//             props.navigation.navigate('Verify', {userEmail : email});
+//         }
+//     } catch (err) {
+//         console.log("catching error: " + err);
+//     }
+// }
 
