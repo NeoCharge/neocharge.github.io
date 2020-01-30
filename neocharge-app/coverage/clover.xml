@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1580405043685" clover="3.2.0">
-  <project timestamp="1580405043685" name="All files">
+<coverage generated="1580408321246" clover="3.2.0">
+  <project timestamp="1580408321246" name="All files">
     <metrics statements="34" coveredstatements="19" conditionals="70" coveredconditionals="34" methods="34" coveredmethods="18" elements="138" coveredelements="71" complexity="0" loc="34" ncloc="34" packages="2" files="2" classes="2"/>
     <package name="neocharge-app">
       <metrics statements="17" coveredstatements="7" conditionals="35" coveredconditionals="14" methods="16" coveredmethods="6"/>
