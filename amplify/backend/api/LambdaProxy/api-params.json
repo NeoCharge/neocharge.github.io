@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/dbaddusers",
+            "lambdaFunction": "addusers",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "LambdaProxy",
+    "apiName": "LambdaProxy",
+    "functionArns": [
+        {
+            "lambdaFunction": "addusers"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-neocharge-app-test-163256-authRole",
+        "unAuthRoleName": "amplify-neocharge-app-test-163256-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "addusers",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "a6aec2a1"
+}
