@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1579163610829" clover="3.2.0">
-  <project timestamp="1579163610829" name="All files">
-    <metrics statements="15" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="3" elements="20" coveredelements="14" complexity="0" loc="15" ncloc="15" packages="1" files="1" classes="1"/>
-    <file name="RateDisplay.js" path="/Users/hannahkwan/NeoChargeApp/TheJuicerz/neocharge-app/RateDisplay.js">
-      <metrics statements="15" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="3"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="1" type="stmt"/>
-      <line num="10" count="1" type="stmt"/>
-      <line num="13" count="0" type="stmt"/>
-      <line num="14" count="0" type="stmt"/>
-      <line num="16" count="0" type="stmt"/>
-      <line num="20" count="0" type="stmt"/>
-      <line num="25" count="1" type="stmt"/>
-      <line num="31" count="1" type="stmt"/>
-      <line num="34" count="1" type="stmt"/>
-    </file>
+<coverage generated="1580405043685" clover="3.2.0">
+  <project timestamp="1580405043685" name="All files">
+    <metrics statements="34" coveredstatements="19" conditionals="70" coveredconditionals="34" methods="34" coveredmethods="18" elements="138" coveredelements="71" complexity="0" loc="34" ncloc="34" packages="2" files="2" classes="2"/>
+    <package name="neocharge-app">
+      <metrics statements="17" coveredstatements="7" conditionals="35" coveredconditionals="14" methods="16" coveredmethods="6"/>
+      <file name="GraphComponent.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/GraphComponent.js">
+        <metrics statements="17" coveredstatements="7" conditionals="35" coveredconditionals="14" methods="16" coveredmethods="6"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="2" type="cond" truecount="14" falsecount="21"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="neocharge-app.screens">
+      <metrics statements="17" coveredstatements="12" conditionals="35" coveredconditionals="20" methods="18" coveredmethods="12"/>
+      <file name="HomeScreen.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/screens/HomeScreen.js">
+        <metrics statements="17" coveredstatements="12" conditionals="35" coveredconditionals="20" methods="18" coveredmethods="12"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="2" type="cond" truecount="20" falsecount="15"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
