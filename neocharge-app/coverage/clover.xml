@@ -1,51 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1580408321246" clover="3.2.0">
-  <project timestamp="1580408321246" name="All files">
-    <metrics statements="34" coveredstatements="19" conditionals="70" coveredconditionals="34" methods="34" coveredmethods="18" elements="138" coveredelements="71" complexity="0" loc="34" ncloc="34" packages="2" files="2" classes="2"/>
-    <package name="neocharge-app">
-      <metrics statements="17" coveredstatements="7" conditionals="35" coveredconditionals="14" methods="16" coveredmethods="6"/>
-      <file name="GraphComponent.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/GraphComponent.js">
-        <metrics statements="17" coveredstatements="7" conditionals="35" coveredconditionals="14" methods="16" coveredmethods="6"/>
+<coverage generated="1580432801126" clover="3.2.0">
+  <project timestamp="1580432801126" name="All files">
+    <metrics statements="53" coveredstatements="44" conditionals="166" coveredconditionals="76" methods="71" coveredmethods="41" elements="290" coveredelements="161" complexity="0" loc="53" ncloc="53" packages="3" files="10" classes="10"/>
+    <package name="assets">
+      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="car-icon.png" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/car-icon.png">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="2" type="cond" truecount="14" falsecount="21"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="81" count="1" type="stmt"/>
+      </file>
+      <file name="colors.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/colors.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+      </file>
+      <file name="history-icon.png" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/history-icon.png">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="notification-icon.png" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/notification-icon.png">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="schedule-icon.png" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/schedule-icon.png">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="smart-settings-icon.png" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/assets/smart-settings-icon.png">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="neocharge-app.screens">
-      <metrics statements="17" coveredstatements="12" conditionals="35" coveredconditionals="20" methods="18" coveredmethods="12"/>
-      <file name="HomeScreen.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/screens/HomeScreen.js">
-        <metrics statements="17" coveredstatements="12" conditionals="35" coveredconditionals="20" methods="18" coveredmethods="12"/>
+    <package name="components">
+      <metrics statements="37" coveredstatements="28" conditionals="119" coveredconditionals="49" methods="51" coveredmethods="25"/>
+      <file name="Dashboard.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/components/Dashboard.js">
+        <metrics statements="7" coveredstatements="6" conditionals="47" coveredconditionals="15" methods="20" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="2" type="cond" truecount="20" falsecount="15"/>
+        <line num="3" count="2" type="cond" truecount="15" falsecount="32"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+      </file>
+      <file name="HomeOption.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/components/HomeOption.js">
+        <metrics statements="9" coveredstatements="6" conditionals="35" coveredconditionals="15" methods="15" coveredmethods="6"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="2" type="cond" truecount="15" falsecount="20"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+      </file>
+      <file name="RateDisplay.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/components/RateDisplay.js">
+        <metrics statements="21" coveredstatements="16" conditionals="37" coveredconditionals="19" methods="16" coveredmethods="13"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="2" type="cond" truecount="19" falsecount="16"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="60" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="22" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="screens">
+      <metrics statements="9" coveredstatements="9" conditionals="47" coveredconditionals="27" methods="20" coveredmethods="16"/>
+      <file name="HomeScreen.js" path="/Users/caseydaly/NeoCharge/TheJuicerz/neocharge-app/screens/HomeScreen.js">
+        <metrics statements="9" coveredstatements="9" conditionals="47" coveredconditionals="27" methods="20" coveredmethods="16"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="4" type="cond" truecount="27" falsecount="20"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
       </file>
     </package>
   </project>
