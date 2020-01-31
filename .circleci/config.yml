@@ -37,6 +37,8 @@ jobs:
 
       - run: pwd
 
+      - run: ls
+
       # run tests!
       - run: npm test
 
