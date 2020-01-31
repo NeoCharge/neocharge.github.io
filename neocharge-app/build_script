@@ -1,0 +1,4 @@
+#!/bin/bash -eo pipefail
+
+npm install
+npm test
