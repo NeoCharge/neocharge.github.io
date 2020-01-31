@@ -14,7 +14,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo/neocharge-app
+    working_directory: ~/repo
 
     steps:
       - checkout
@@ -26,6 +26,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             #- v2.2-dependencies-
 
+      - run: pwd && ls
+
       - run: npm install
 
       #- save_cache:
@@ -35,11 +37,11 @@ jobs:
 
       - run: cd neocharge-app
 
-      - run: pwd
+      - run: pwd && ls
 
       - run: npm install
 
-      - run: ls
+      - run: pwd && ls
 
       # run tests!
       - run: npm test
