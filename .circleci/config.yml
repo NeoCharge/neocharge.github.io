@@ -35,7 +35,7 @@ jobs:
             #- node_modules
           #key: v2.2-dependencies-{{ checksum "package.json" }}
 
-      - run: cd neocharge-app
+      - run: cd neocharge-app && pwd && ls
 
       - run: pwd && ls
 
