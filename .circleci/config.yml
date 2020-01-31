@@ -35,5 +35,8 @@ jobs:
 
       - run: cat package.json
 
+      - run: pwd
+
       # run tests!
       - run: npm test
+
