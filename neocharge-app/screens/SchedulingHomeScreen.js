@@ -17,9 +17,7 @@ class SchedulingHomeScreen extends React.Component {
       timeThree:"11:00 PM",
       timeFour:"11:00 AM"
     }
-  
   }
-
 
   // Adding header title, color and font weight
   static navigationOptions = {
@@ -186,10 +184,6 @@ class SchedulingHomeScreen extends React.Component {
               />
 
             </View>
-            
-
-       
-          
      
       </View>
 
