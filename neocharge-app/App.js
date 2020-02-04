@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
 import AppNavigator from './navigation/AppNavigator';
 import GreetingScreen from './screens/GreetingScreen';
 import SetupScreen from './screens/SetupScreen';
+import SchedulingHomeScreen from './screens/SchedulingHomeScreen';
 
 Amplify.configure(aws_exports);
 
 /*export default function App() {
   return (
     <View style={styles.container}>
-      <AppNavigator />
+      <AppNavigator/>
     </View>
   );
 }*/
@@ -19,7 +20,7 @@ Amplify.configure(aws_exports);
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppNavigator/>
+      <SchedulingHomeScreen/>
     </View>
   );
 }
