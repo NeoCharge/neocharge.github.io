@@ -7,11 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-<<<<<<< HEAD
       - image: circleci/node:10.15
-=======
-      - image: circleci/node:7.10
->>>>>>> origin
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -26,32 +22,17 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-<<<<<<< HEAD
             - v2-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v2-dependencies-
 
       - run: npm i recursive-install
-=======
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn install
->>>>>>> origin
 
       - save_cache:
           paths:
             - node_modules
-<<<<<<< HEAD
             - neocharge-app/node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: cd neocharge-app && pwd && npm test
-=======
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: yarn test
->>>>>>> origin

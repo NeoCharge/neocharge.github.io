@@ -25,6 +25,11 @@
     "react-native-modal-datetime-picker": "^8.1.1",
     "react-native-modal-dropdown": "^0.7.0",
     "react-native-reanimated": "~1.2.0",
+<<<<<<< HEAD
+=======
+    "react-native-screens": "^2.0.0-alpha.32",
+    "react-native-svg": "9.9.5",
+>>>>>>> origin/dev
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.11.7",
     "react-navigation": "^4.0.10",
