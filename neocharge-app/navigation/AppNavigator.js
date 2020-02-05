@@ -15,7 +15,7 @@ const AuthStack = createSwitchNavigator(
     {
         initialRouteName: 'SignUp',
     }
-    );
+);
 
 export default createAppContainer(
     createSwitchNavigator(
@@ -24,10 +24,14 @@ export default createAppContainer(
             Auth: AuthStack,
             Setup: SetupScreen,
             App: TabNavigator,
+            Config: SetupScreen,
+
         },
         {
             // Change 'AuthLoading' to 'App' if you don't want to log-in everytime when testing
-            initialRouteName: 'AuthLoading',
+            // initialRouteName: 'App',
+            initialRouteName: 'AuthLoading'
+            // initialRouteName: 'Config',
         }
     )
 );
