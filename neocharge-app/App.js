@@ -9,21 +9,24 @@ import SchedulingHomeScreen from './screens/SchedulingHomeScreen';
 
 Amplify.configure(aws_exports);
 
-/*export default function App() {
+// This line disables the redbox with stacktrace for all console.error messages.
+console.reportErrorsAsExceptions = false;
+
+export default function App() {
   return (
     <View style={styles.container}>
       <AppNavigator/>
     </View>
   );
-}*/
+}
 
-export default function App() {
+/*export default function App() {
   return (
     <View style={styles.container}>
       <SchedulingHomeScreen/>
     </View>
   );
-}
+}*/
 
 const styles = StyleSheet.create({
   container: {
