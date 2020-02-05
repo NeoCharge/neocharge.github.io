@@ -7,12 +7,10 @@ class VerificationScreen extends React.Component {
         super(props);
         this.verifySignUp = this.verifySignUp.bind(this);
         this.state = {
-            //UserEmail: this.props.navigation.state.params.userEmail,
-            UserEmail: 'joshuaboe@comcast.net',
+            UserEmail: this.props.navigation.state.params.userEmail,
             VerificationInputValue: '',
             ErrorMessage: '',
             ResentMessage: '',
-            //ResentMessage: "A new code has been sent.",
             jsonDeviceLogs: []
         } 
     }
@@ -22,7 +20,8 @@ class VerificationScreen extends React.Component {
         <View style={styles.screen} >
             <View style={styles.contents}>
                 <Text style={styles.title}>Account Verification</Text>
-                <Text style={styles.TextStyle}>An email has been sent to {this.state.UserEmail}.</Text>
+                <Text style={styles.TextStyle}>An email has been sent to:</Text>
+                <Text style={styles.TextStyle}>{this.state.UserEmail}</Text>
                 <Text style={styles.TextStyle}>Please enter the included code to verify your account.</Text>
                 <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
                 <View style={styles.inputRow}>
@@ -54,7 +53,7 @@ class VerificationScreen extends React.Component {
         event.preventDefault();
         const email = this.state.UserEmail;
         const code = this.state.VerificationInputValue;
-        var didError = false;
+        var noErrors = true;
         try {
             // After retrieving the confirmation code from the user
             await Auth.confirmSignUp(email, code, {
@@ -63,23 +62,12 @@ class VerificationScreen extends React.Component {
             })
             .then(data => console.log(data))
             .catch (error => {
-                didError = true;
-                if (typeof(error.code) === "undefined") {
-                    console.log("Please enter a verification code.");
-                    this.setState({ErrorMessage: "Please enter a verification code."})
-                } else if (error.code === 'CodeMismatchException') {
-                    console.log("The entered verification code is not valid.");
-                    this.setState({ErrorMessage: "The entered verification code is not valid."});
-                } else if (error.code === 'NetworkError') {
-                    console.log("Network error.");
-                    this.setState({ErrorMessage: "Network error."});
-                } else {
-                    console.log("Something else went wrong.");
-                    this.setState({ErrorMessage: "Something else went wrong."});
-                }
+                console.log(error.code);
+                noErrors = false;
+                this.handleErrors(error.code);
             });
             // Continue to the "first-time-setup" screen upon successful verification
-            if (didError === false) {
+            if (noErrors) {
                 this.props.navigation.navigate('Setup')
             }
         } catch (err) {
@@ -87,13 +75,34 @@ class VerificationScreen extends React.Component {
         }
     }
 
+    handleErrors(errorcode) {
+        if (typeof(errorcode) === "undefined") {
+            console.log("Please enter a verification code.");
+            this.setState({ErrorMessage: "Please enter a verification code."})
+        } 
+        else if (errorcode === 'CodeMismatchException') {
+            console.log("The entered verification code is not valid.");
+            this.setState({ErrorMessage: "The entered verification code is not valid."});
+        } 
+        else if (errorcode === 'NetworkError') {
+            console.log("Network error.");
+            this.setState({ErrorMessage: "Network error."});
+        } 
+        else {
+            console.log("Something else went wrong.");
+            this.setState({ErrorMessage: "Something else went wrong."});
+        }
+    }
+    
+
     // Resends a new verification code via email
     resendVerificationCode = async() => {
         const email = this.state.UserEmail;
-        var didError = false;
+        var noErrors = true;
         try {
             await Auth.resendSignUp(email)
             .catch(error => {
+                noErrors = false;
                 if (error.code === 'NetworkError') {
                     console.log("Network error.");
                     this.setState({ErrorMessage: "Network error while resending code."});
@@ -102,7 +111,7 @@ class VerificationScreen extends React.Component {
                     this.setState({ErrorMessage: "Something went wrong attempting to resend code."});
                 }
             });
-            if (didError === false) {
+            if (noErrors) {
                 console.log("Code resent successfully.");
                 this.setState({ResentMessage: "A new code has been sent."});
             }
