@@ -4,64 +4,83 @@ import OnboardingLogo from '../components/OnboardingLogo';
 import OnboardingInput from '../components/OnboardingInput';
 import { API } from 'aws-amplify';
 
-const SetupScreen = props => {
-
-  const [deviceID, setDeviceID] = useState('');
-  const [timeZone, setTimeZone] = useState('');
-  const [primaryDevice, setPrimaryDevice] = useState('');
-  const [secondaryDevice, setSecondaryDevice] = useState('');
 
 
 
-  const timeZoneHandler = (selectedVal) => {
-      setTimeZone(selectedVal);
-  };
+class SetupScreen extends React.Component {
 
-  const primDevHandler = (selectedVal) => {
-      setPrimaryDevice(selectedVal);
-  };
-
-  const secDevHandler = (selectedVal) => {
-      setSecondaryDevice(selectedVal);
-  };
-
-  const setDeviceIDHandler = (device) => {
-    setDeviceID(device);
+  constructor(props) {
+    super(props)
+    this.state = {
+      deviceID: '',
+      timeZone: '',
+      primaryDevice: '',
+      secondaryDevice: ''
+    }
+    this.timeZoneHandler = this.timeZoneHandler.bind(this);
+    this.primDevHandler = this.primDevHandler.bind(this);
+    this.secDevHandler = this.secDevHandler.bind(this);
+    this.setDeviceIDHandler = this.setDeviceIDHandler.bind(this);
+    this.logOnboardingInfo = this.logOnboardingInfo.bind(this);
   }
 
-  async function logOnboardingInfo() {
-    console.log("timeZone: " + timeZone);
-    console.log("primaryDevice: " + primaryDevice);
-    console.log("secondaryDevice: " + secondaryDevice);
-    console.log("deviceID: " + deviceID);
 
-    let requestBody = {"timeZone":timeZone, "primaryDevice":primaryDevice, "secondaryDevice":secondaryDevice, "deviceID":deviceID};
+
+
+
+  timeZoneHandler(selectedVal) {
+    this.setState({ timeZone: selectedVal });
+  };
+
+  primDevHandler(selectedVal) {
+    this.setState({ primaryDevice: selectedVal });
+  };
+
+  secDevHandler(selectedVal) {
+    this.setState({ secondaryDevice: selectedVal });
+  };
+
+  setDeviceIDHandler(device) {
+    this.setState({ deviceID: device });
+  }
+
+  async logOnboardingInfo() {
+    console.log("timeZone: " + this.state.timeZone);
+    console.log("primaryDevice: " + this.state.primaryDevice);
+    console.log("secondaryDevice: " + this.state.secondaryDevice);
+    console.log("deviceID: " + this.state.deviceID);
+
+    let requestBody = { "timeZone": this.state.timeZone, "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice, "deviceID": this.state.deviceID };
     let jsonObj = {
-      body:requestBody
+      body: requestBody
     }
     const path = "/user"; // you can specify the path
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
     console.log(apiResponse);
+    this.props.navigation.navigate('App');
+
   };
 
-  return (
-    <View>
-      <View style={styles.logoContainer}>
-        <OnboardingLogo />
+  render() {
+    return (
+      <View>
+        <View style={styles.logoContainer}>
+          <OnboardingLogo />
+        </View>
+        <View style={styles.infoContainer}>
+          <OnboardingInput
+            primDevHandler={this.primDevHandler.bind(this)}
+            timeZoneHandler={this.timeZoneHandler.bind(this)}
+            secDevHandler={this.secDevHandler.bind(this)}
+            setDeviceIDHandler={this.setDeviceIDHandler.bind(this)} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Continue" onPress={this.logOnboardingInfo} />
+        </View>
       </View>
-      <View style={styles.infoContainer}>
-        <OnboardingInput 
-        primDevHandler={primDevHandler} 
-        timeZoneHandler={timeZoneHandler} 
-        secDevHandler={secDevHandler}
-        setDeviceIDHandler={setDeviceIDHandler}/>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Continue" onPress={logOnboardingInfo}/>
-      </View>
-    </View>
-  );
-};
+    );
+  };
+}
 
 const styles = StyleSheet.create({
   inputContainer: {
