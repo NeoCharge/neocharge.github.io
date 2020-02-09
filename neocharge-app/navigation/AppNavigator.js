@@ -10,10 +10,11 @@ const AuthStack = createSwitchNavigator(
     { 
         SignIn: SignInScreen, 
         SignUp: SignUpScreen,
+        Setup: SetupScreen,
         Verify: VerificationScreen,
     },
     {
-        initialRouteName: 'SignUp',
+        initialRouteName: 'Setup',
     }
 );
 
