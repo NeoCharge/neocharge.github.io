@@ -5,13 +5,9 @@ import 'react-native';
 import React from 'react';
 import SignInScreen from '../SignInScreen';
 import { Auth } from 'aws-amplify';
-import { mount, shallow, } from 'enzyme';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import {
-	CookieStorage,
-	CognitoUserPool,
-	CognitoUser,
 	CognitoUserSession,
 	CognitoIdToken,
 	CognitoAccessToken,
@@ -24,14 +20,6 @@ const session = new CognitoUserSession({
 	IdToken: idToken,
 	AccessToken: accessToken,
 });
-/*
-const user = new CognitoUser({
-  Username: 'username',
-  Pool: userPool,
-});
-*/
-
-const signin_screen = require('../SignInScreen');
 
 describe('snapshot testing', () => {
   test('renders correctly', () => {
