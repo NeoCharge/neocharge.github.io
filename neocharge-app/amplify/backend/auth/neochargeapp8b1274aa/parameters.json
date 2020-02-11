@@ -1,6 +1,6 @@
 {
     "identityPoolName": "neochargeapp8b1274aa_identitypool_8b1274aa",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "neocha8b1274aa",
     "userPoolName": "neochargeapp8b1274aa_userpool_8b1274aa",
     "autoVerifiedAttributes": [
