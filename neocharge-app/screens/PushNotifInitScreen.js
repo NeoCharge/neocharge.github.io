@@ -11,32 +11,18 @@ import { API } from 'aws-amplify';
 
 class PushNotifInitScreen extends React.Component {
 
-    componentDidMount() {
-        //registerForPushNotificationsAsync();
-        this.logPushNotifcationToken();
-    }
-
-    async logPushNotifcationToken() {
-    
-        let requestBody = { "pushToken": "CaseyTestPushToken" };
-        let jsonObj = {
-          body: requestBody
-        }
-        const path = "/pushtoken"; // you can specify the path
-        const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
-        console.log(apiResponse);
-        //this.props.navigation.navigate('App');
-    
-      };
+  componentDidMount() {
+    registerForPushNotificationsAsync();
+  }
 
 
-    render() {
-        return (
-          <View>
-            
-          </View>
-        );
-      };
+  render() {
+    return (
+      <View>
+
+      </View>
+    );
+  };
 }
 
 async function registerForPushNotificationsAsync() {
@@ -54,8 +40,30 @@ async function registerForPushNotificationsAsync() {
 
   // Get the token that identifies this device
   let token = await Notifications.getExpoPushTokenAsync();
+  console.log(token);
+  console.log(typeof token);
+  logPushNotifcationToken(token);
 
 
-}
+};
+
+async function logPushNotifcationToken(token) {
+
+  console.log("here\n");
+  console.log(token)
+  console.log(typeof token)
+
+
+  let requestBody = { "pushToken": token };
+  let jsonObj = {
+    body: requestBody
+  }
+  const path = "/pushtoken"; // you can specify the path
+  const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
+  console.log(apiResponse);
+  //this.props.navigation.navigate('App');
+
+};
+
 
 export default PushNotifInitScreen;
