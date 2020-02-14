@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
 import { Auth } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
 
 class SignUpScreen extends React.Component {
     constructor(props) {
@@ -85,8 +86,10 @@ class SignUpScreen extends React.Component {
                  });
             // Continue to verification page if Sign-Up was successful
             if (noErrors) {
+                this.setSecureStore("secure_email", email);
+                this.setSecureStore("secure_password", password);
                 // TODO should I await navigation in order to prevent memory leaks?
-               this.props.navigation.navigate('Verify', {userEmail : email});
+                this.props.navigation.navigate('Verify', {userEmail : email});
             }
         } catch (err) {
             console.log("catching error: " + err);
@@ -135,7 +138,11 @@ class SignUpScreen extends React.Component {
             this.setState({ErrorMessage: "Something else went wrong."});
         }
     }
-
+    
+    setSecureStore = async (key, value) => {
+        console.log("storing key: " + key + ", value: " + value);
+        await SecureStore.setItemAsync(key, value);
+    }
 
 }
 export default SignUpScreen;

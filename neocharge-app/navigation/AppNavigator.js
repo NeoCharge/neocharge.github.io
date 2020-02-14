@@ -8,20 +8,21 @@ import SetupScreen from '../screens/SetupScreen';
 
 const AuthStack = createSwitchNavigator(
     { 
-        SignIn: SignInScreen, 
+        AuthLoading: AuthLoadingScreen,
         SignUp: SignUpScreen,
-        Setup: SetupScreen,
+        SignIn: SignInScreen, 
         Verify: VerificationScreen,
+        Setup: SetupScreen,
     },
     {
-        initialRouteName: 'Setup',
+        initialRouteName: 'AuthLoading', // default
+        //initialRouteName: 'SetUp',
     }
 );
 
 export default createAppContainer(
     createSwitchNavigator(
         {
-            AuthLoading: AuthLoadingScreen,
             Auth: AuthStack,
             Setup: SetupScreen,
             App: TabNavigator,
@@ -31,7 +32,7 @@ export default createAppContainer(
         {
             // Change 'AuthLoading' to 'App' if you don't want to log-in everytime when testing
             // initialRouteName: 'App',
-            initialRouteName: 'AuthLoading'
+            initialRouteName: 'Auth'
             // initialRouteName: 'Config',
         }
     )

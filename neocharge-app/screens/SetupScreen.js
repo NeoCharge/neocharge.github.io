@@ -6,12 +6,13 @@ import { API } from 'aws-amplify';
 
 
 
-
 class SetupScreen extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      //userEmail: 'test@calpoly.edu',
+      userEmail: this.props.navigation.state.params.userEmail,
       deviceID: '',
       timeZone: '',
       primaryDevice: '',
@@ -45,12 +46,15 @@ class SetupScreen extends React.Component {
   }
 
   async logOnboardingInfo() {
+    console.log("userEmail: " + this.state.userEmail);
     console.log("timeZone: " + this.state.timeZone);
     console.log("primaryDevice: " + this.state.primaryDevice);
     console.log("secondaryDevice: " + this.state.secondaryDevice);
     console.log("deviceID: " + this.state.deviceID);
 
-    let requestBody = { "timeZone": this.state.timeZone, "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice, "deviceID": this.state.deviceID };
+    let requestBody = { "userEmail": this.state.userEmail, "timeZone": this.state.timeZone, 
+                        "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice, 
+                        "deviceID": this.state.deviceID };
     let jsonObj = {
       body: requestBody
     }
@@ -60,6 +64,7 @@ class SetupScreen extends React.Component {
     this.props.navigation.navigate('App');
 
   };
+
 
   render() {
     return (
