@@ -68,7 +68,7 @@ class VerificationScreen extends React.Component {
             });
             // Continue to the "first-time-setup" screen upon successful verification
             if (noErrors) {
-                this.props.navigation.navigate('Setup')
+                this.props.navigation.navigate('Setup', {userEmail : email})
             }
         } catch (err) {
             console.log("catching error: " + err);

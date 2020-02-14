@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
 import { Auth } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
 
 class SignInScreen extends React.Component {
     constructor(props) {
@@ -63,6 +64,8 @@ class SignInScreen extends React.Component {
                 });
             console.log(user);
             if (noErrors) {
+                this.setSecureStore("secure_email", email);
+                this.setSecureStore("secure_password", password);
                 this.props.navigation.navigate('App');
             }
         } catch (err) {
@@ -120,6 +123,11 @@ class SignInScreen extends React.Component {
             console.log("Something else went wrong");
             this.setState({ErrorMessage: "Something else went wrong."});
         }
+    }
+
+    setSecureStore = async (key, value) => {
+        console.log("storing key: " + key + ", value: " + value);
+        await SecureStore.setItemAsync(key, value);
     }
 }
 export default SignInScreen;
