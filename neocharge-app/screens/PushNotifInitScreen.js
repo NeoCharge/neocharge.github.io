@@ -42,19 +42,20 @@ async function registerForPushNotificationsAsync() {
   let token = await Notifications.getExpoPushTokenAsync();
   console.log(token);
   console.log(typeof token);
+  //if (!userHasToken()) {
   logPushNotifcationToken(token);
-
+  //}
+  
 
 };
 
 async function logPushNotifcationToken(token) {
 
-  console.log("here\n");
   console.log(token)
   console.log(typeof token)
 
 
-  let requestBody = { "pushToken": token };
+  let requestBody = {"pushToken": token };
   let jsonObj = {
     body: requestBody
   }
@@ -63,7 +64,17 @@ async function logPushNotifcationToken(token) {
   console.log(apiResponse);
   //this.props.navigation.navigate('App');
 
+
 };
+
+
+//TODO: write a function to see if the user has a token already
+//do we want to prompt the user every time they open the app if they aren't set up with push notifications??
+//return true if user has token associated, false if no token associated.
+async function userHasToken() {
+  //return false for now
+  return false;
+}
 
 
 export default PushNotifInitScreen;
