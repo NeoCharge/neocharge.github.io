@@ -18,4 +18,4 @@ jobs:
 
     steps:
       - run : npm install
-      - run : pwd && cd neocharge-app && npm install && npm test
+      - run : pwd && ls && cd neocharge-app && npm install && npm test
