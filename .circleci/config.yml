@@ -31,4 +31,4 @@ jobs:
             #- node_modules
           #key: v2.2-dependencies-{{ checksum "package.json" }}
 
-      - run: cd neocharge-app && npm install && npm test
+      - run: cd neocharge-app && npm install && npm install -g jest && npm test
