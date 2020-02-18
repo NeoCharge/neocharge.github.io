@@ -58,8 +58,8 @@ class SetupScreen extends React.Component {
     let jsonObj = {
       body: requestBody
     }
-    const path = "/user"; // you can specify the path
-    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
+    const path = "/user"; // path from root of API
+    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
     this.props.navigation.navigate('App');
 

@@ -5,6 +5,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import VerificationScreen from '../screens/VerificationScreen';
 import SetupScreen from '../screens/SetupScreen';
+import PushNotifInitScreen from "../screens/PushNotifInitScreen";
 
 const AuthStack = createSwitchNavigator(
     { 
