@@ -1,9 +1,61 @@
-import React from 'react';
-import { Platform, StyleSheet, Text, View, Image, Switch, Button } from "react-native";
+import React, {Component} from 'react';
+import { Platform, StyleSheet, Text, View, Image, Switch, Button} from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
-import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-datepicker';
 import Colors from '../assets/colors.js';
+import Slider from "react-native-slider";
+
+// class RangeSlider extends Component {
+//   state = {
+//     startLabel: this.props.initialStart,
+//     endLabel: this.props.initialEnd,
+//     start: this.props.initialStart,
+//     end: this.props.initialEnd,
+//     value: 0.2
+//   }
+  
+//   render() {
+//     const { color, min, max } = this.props;
+//     const { start, end, startLabel, endLabel } = this.state;
+    
+//     return (
+//       <View>
+//         <Text style={styles.sliderLabels}>{startLabel} - {endLabel}</Text>
+//         <View style={styles.sliders}>
+//           <Slider style={styles.backgroundSlider} minimumValue={this.min} maximumValue={this.max} thumbTintColor="transparent" />
+          
+//           <Slider style={styles.startSlider} onValueChange={this.handleStartValueChange} onSlidingComplete={this.handleStartSlidingComplete} value={this.asInverse(start)} step={1} minimumValue={min} maximumValue={max} thumbTintColor={color} minimumTrackTintColor={color} maximumTrackTintColor="transparent" />
+//           <Slider style={styles.endSlider} onValueChange={this.handleEndValueChange} onSlidingComplete={this.handleEndSlidingComplete} value={end} step={1} minimumValue={min} maximumValue={max} thumbTintColor={color} minimumTrackTintColor={color} maximumTrackTintColor="transparent" />
+          
+//         </View>
+//       </View>
+//     )
+//   }
+  
+//     asInverse(num) {
+//         const { min, max } = this.props;
+//         const numInverse = min + (max - num);
+//         return numInverse;
+//     }
+//     asForward(numInverse) {
+//         const { min, max } = this.props;
+//         const num = -numInverse + min + max;
+//         return num;
+//     }
+    
+//     handleStartValueChange = (startInverse) => {
+//         const start = this.asForward(startInverse);
+//         this.setState(() => ({ startLabel:start }));
+//     }
+//     handleStartSlidingComplete = (startInverse) => {
+//         const start = this.asForward(startInverse);
+//         this.setState(() => ({ start }));
+//     }
+
+//     handleEndValueChange = end => this.setState(() => ({ endLabel:end }))
+//     handleEndSlidingComplete = end => this.setState(() => ({ end }))
+// }
 
 
 class SchedulingHomeScreen extends React.Component {
@@ -15,7 +67,9 @@ class SchedulingHomeScreen extends React.Component {
       timeOne:"11:00 PM",
       timeTwo:"6:00 AM",
       timeThree:"11:00 PM",
-      timeFour:"11:00 AM"
+      timeFour:"11:00 AM",
+      value: 1,
+      value1: 1
     }
   }
 
@@ -65,9 +119,61 @@ class SchedulingHomeScreen extends React.Component {
               <Text style={styles.resetText}>Reset based on utility plan.</Text>  
             </View>
 
-            <Text style={styles.weekdaysText}>Weekdays</Text> 
+            <Text style={{...styles.weekdaysText, maxHeight: 100}}>Set Schedule</Text> 
+
+            <View style = {styles.backgroundTimeBox}>
+
+            <Text style = {{...styles.scrollText, marginLeft: 20, marginTop: 10}}>
+                Start: {this.state.value}:00
+            </Text>
+    
+
+            <View style={{...styles.containerSlider}}>
+                <Slider
+                  value={this.state.value}
+                  inverted = {'true'}
+                  minimumValue={1}
+                  maximumValue={24}
+                  step = {1}
+                  minimumTrackTintColor='orange'
+                  maximumTrackTintColor='white'
+                  thumbTintColor = 'red'
+                  onValueChange={value => this.setState({ value })}
+                />
+              </View>
+
+              </View>
+             
+              <View style = {styles.backgroundTimeBox}>
+                  <Text style = {{...styles.scrollText, marginTop: 15}}>
+                      End: {this.state.value1}:00
+                  </Text>
+
+                <View style={{...styles.containerSlider}}>
+                    <Slider
+                      value1={this.state.value1}
+                      inverted = {'true'}
+                      minimumValue={1}
+                      maximumValue={24}
+                      step = {1}
+                      minimumTrackTintColor='orange'
+                      maximumTrackTintColor='white'
+                      thumbTintColor = 'red'
+                      onValueChange={value1 => this.setState({ value1 })}
+                    />
+                </View>
+            
+
+              </View>
+              
+
+             
+
+          
+
+
             {/* Weekday Start */}
-            <View style={styles.timeOption}>
+            {/* <View style={styles.timeOption}>
               <Text style={styles.startsText1}>Starts</Text>  
               <DatePicker
                 style={{width: 100}}
@@ -93,10 +199,10 @@ class SchedulingHomeScreen extends React.Component {
                 onDateChange={(timeOne) => {this.setState({timeOne: timeOne})}}
               />
 
-            </View>
+            </View> */}
 
             {/* Weekday End */}
-            <View style={styles.timeOption}>
+            {/* <View style={styles.timeOption}>
               <Text style={styles.startsText1}>Ends</Text>  
               <DatePicker
                 style={{width: 100}}
@@ -122,12 +228,11 @@ class SchedulingHomeScreen extends React.Component {
                 onDateChange={(timeTwo) => {this.setState({timeTwo: timeTwo})}}
               />
 
-            </View>
+            </View> */}
 
 
 
-            <Text style={styles.weekdaysText}>Weekends</Text> 
-            {/* Weekend Start */}
+            {/* Weekend Start
             <View style={styles.timeOption}>
               <Text style={styles.startsText1}>Starts</Text>  
               <DatePicker
@@ -154,10 +259,10 @@ class SchedulingHomeScreen extends React.Component {
                 onDateChange={(timeThree) => {this.setState({timeThree: timeThree})}}
               />
 
-            </View>
+            </View> */}
 
              {/* Weekend Start */}
-             <View style={styles.timeOption}>
+             {/* <View style={styles.timeOption}>
               <Text style={styles.startsText1}>Ends</Text>  
               <DatePicker
                 style={{width: 100}}
@@ -183,8 +288,59 @@ class SchedulingHomeScreen extends React.Component {
                 onDateChange={(timeFour) => {this.setState({timeFour: timeFour})}}
               />
 
-            </View>
-     
+            </View> */}
+
+            {/* <View style={styles.containerRangeController}>
+        <View style={styles.myRangeWrap}>
+          <RangeSlider min={1} max={24} initialStart={1} initialEnd={24} color="red" />
+        </View>
+    </View>*/}
+
+
+
+  
+
+        {/* <View style={styles.containerSlider}>
+                <Slider
+                  value={this.state.value}
+                  minimumValue={1}
+                  maximumValue={12}
+                  step = {1}
+                  minimumTrackTintColor="orange"
+                  maximumTrackTintColor="white"
+                  onValueChange={value => this.setState({ value })}
+                />
+                <Text style = {styles.resetText}>
+                  {this.state.value}:00
+                </Text>
+              </View> */}
+
+           
+
+          
+              
+              {/* <View style = {flexDirection= 'row'}>
+              <View style={{...styles.containerSlider, marginLeft: 145}}>
+                <Slider
+                  value={this.state.value1}
+                  inverted = {'true'}
+                  minimumValue={1}
+                  maximumValue={12}
+                  step = {1}
+                  minimumTrackTintColor='white'
+                  maximumTrackTintColor='orange'
+                  thumbTintColor = 'red'
+                  onValueChange={value1 => this.setState({ value1 })}
+                />
+                <Text style = {styles.scrollText}>
+                  {this.state.value1}:00 pm
+                </Text>
+              </View>
+              </View>
+ */}
+
+      
+      
       </View>
 
       
@@ -206,6 +362,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primary
   },
+
+  containerSlider: {
+    flex: 1,
+    alignItems: "stretch",
+    justifyContent: "center",
+    width: 250,
+    maxHeight: 50,
+    marginLeft: 80
+    
+  },
   textContainer: {
     textAlign: "left",
     fontSize: 14,
@@ -215,7 +381,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'white'
     
   },
   switch: {
@@ -254,10 +421,21 @@ const styles = StyleSheet.create({
     
   },
 
-  weekdaysText: {
+  scrollText: {
     fontSize: 14,
+    color: '#51a0d5',
+    fontWeight: 'bold',
     marginLeft: 20,
-    marginBottom: 5,
+    color: '#51a0d5',
+    marginTop: 0,
+    height: 20
+    
+  },
+
+  weekdaysText: {
+    fontSize: 20,
+    marginLeft: 20,
+    marginBottom: 10,
     marginTop: 15,
     color: Colors.secondary
   },
@@ -274,7 +452,7 @@ const styles = StyleSheet.create({
   },
 
   weekendsText: {
-    fontSize: 14,
+    fontSize: 20,
     padding: '10%'
   },
 
@@ -300,6 +478,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+
+  backgroundTimeBox: {
+    flex: 1,
+    maxHeight: 90,
+    backgroundColor: '#363636',
+  },
+
+  backgroundTimeBox1: {
+    flex: 1,
+    maxHeight: 90,
+    backgroundColor: '#363636',
+  },
+
   timeTitles: {
     marginLeft: 20,
     // borderColor: 'black',
