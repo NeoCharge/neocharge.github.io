@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image } from "react-native";
+import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
@@ -21,10 +21,10 @@ class SettingsScreen extends React.Component {
   // Adding header title, color and font weight
   // navigation placed here for page routing purposes 
   static navigationOptions = {
-    title: "Settings",
+    title: 'Settings',
     headerStyle: {backgroundColor: Colors.accent2},
-    headerTintColor: "#fff",
-    headerTitleStyle: {fontWeight: "bold"}
+    headerTintColor: 'white',
+    headerTitleStyle: {fontWeight: 'bold'}
   };
 
   //onValueChange of the switch this function will be called
@@ -34,8 +34,8 @@ class SettingsScreen extends React.Component {
 
   render() {
     // hardcoded temporarily, fill in with real time data later on 
-      const items = ["Central Standard Time", "Mountain Standard Time", "Pacific Standard Time",
-      "Alaskan Standard Time", "Hawaii-Aleutian Standard Time", "Eastern Standard Time"];
+      const items = ['Central Standard Time', 'Mountain Standard Time', 'Pacific Standard Time',
+      'Alaskan Standard Time', 'Hawaii-Aleutian Standard Time', 'Eastern Standard Time'];
 
     return (
       <View style={styles.container}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   switch: {
     marginRight: 10,
-    alignItems: "stretch",
+    alignItems: 'stretch',
   },
   backgroundScheduleBox: {
     flex: 1,
