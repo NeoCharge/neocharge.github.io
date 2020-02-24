@@ -130,6 +130,20 @@ class SignInScreen extends React.Component {
         await SecureStore.setItemAsync(key, value);
     }
 }
+/*
+async function userHasSetUp(email) {
+    console.log("checking " + email + " has set up their account")
+  
+    let requestBody = { "userEmail":email};
+    let jsonObj = {
+      body: requestBody
+    }
+    const path = "/pushtoken"; // you can specify the path
+    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the API name
+    console.log(apiResponse);
+    //this.props.navigation.navigate('App');
+}*/
+
 export default SignInScreen;
 
 const styles = StyleSheet.create({
