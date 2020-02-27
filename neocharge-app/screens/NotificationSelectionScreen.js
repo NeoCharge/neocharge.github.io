@@ -4,12 +4,14 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
 import {API} from 'aws-amplify';
-// import DeviceInfo from 'react-native-device-info';
 
 class NotificationSelectionScreen extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
+        // Dummy email currently being used. 
+        // Needs to be changed to the email that user inputted on previous screens
+        userEmail: 'test@calpoly.edu',
         primaryDeviceSwitch: false, 
         secondaryDeviceSwitch: false, 
         chargeInterruptSwitch: false 
@@ -44,13 +46,12 @@ class NotificationSelectionScreen extends React.Component {
 
     //onValueChange of the switch this function will be called
    async onlogInfo() { 
+      console.log("User Email: " + this.state.userEmail);
       console.log("Primary Device Switch: " + this.state.primaryDeviceSwitch);
       console.log("Secondary Device Switch: " + this.state.secondaryDeviceSwitch);
       console.log("Charge Interruptions Switch: " + this.state.chargeInterruptSwitch); 
 
-      // Dummy email currently being used. 
-      // Needs to be changed to the email that user inputted on previous screens
-      let requestBody = { "email": "sampleEmail@gmail.com",
+      let requestBody = { "email": this.state.userEmail,
                           "primarydevice": this.state.primaryDeviceSwitch, 
                           "secondardevice": this.state.secondaryDeviceSwitch,
                           "chargeinterruptions": this.state.chargeInterruptSwitch};
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
       height: 40,
       borderColor: '#51a0d5',
       borderWidth: 1,
-      bottom: '50%',
+      bottom: '20%',
       width: '90%',
       borderRadius: 10
     }
