@@ -48,7 +48,10 @@ class NotificationSelectionScreen extends React.Component {
       console.log("Secondary Device Switch: " + this.state.secondaryDeviceSwitch);
       console.log("Charge Interruptions Switch: " + this.state.chargeInterruptSwitch); 
 
-      let requestBody = { "primarydevice": this.state.primaryDeviceSwitch, 
+      // Dummy email currently being used. 
+      // Needs to be changed to the email that user inputted on previous screens
+      let requestBody = { "email": "sampleEmail@gmail.com",
+                          "primarydevice": this.state.primaryDeviceSwitch, 
                           "secondardevice": this.state.secondaryDeviceSwitch,
                           "chargeinterruptions": this.state.chargeInterruptSwitch};
       let jsonObj = {
