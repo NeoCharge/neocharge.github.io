@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Button, Modal } from 'react-native';
 import OnboardingLogo from '../components/OnboardingLogo';
 import OnboardingInput from '../components/OnboardingInput';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 
 
 
@@ -11,7 +11,6 @@ class SetupScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      //userEmail: 'test@calpoly.edu',
       userEmail: this.props.navigation.state.params.userEmail,
       deviceID: '',
       timeZone: '',
@@ -24,10 +23,6 @@ class SetupScreen extends React.Component {
     this.setDeviceIDHandler = this.setDeviceIDHandler.bind(this);
     this.logOnboardingInfo = this.logOnboardingInfo.bind(this);
   }
-
-
-
-
 
   timeZoneHandler(selectedVal) {
     this.setState({ timeZone: selectedVal });
@@ -52,19 +47,23 @@ class SetupScreen extends React.Component {
     console.log("secondaryDevice: " + this.state.secondaryDevice);
     console.log("deviceID: " + this.state.deviceID);
 
+    var session = await Auth.currentSession();
+    var authToken = session["idToken"]["jwtToken"];
+
     let requestBody = { "userEmail": this.state.userEmail, "timeZone": this.state.timeZone, 
                         "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice, 
-                        "deviceID": this.state.deviceID };
+                        "deviceID": this.state.deviceID, "pushToken": "token-2222" };
     let jsonObj = {
+      headers: {
+        Authorization: authToken
+      },
       body: requestBody
     }
     const path = "/user"; // path from root of API
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
     this.props.navigation.navigate('App');
-
   };
-
 
   render() {
     return (

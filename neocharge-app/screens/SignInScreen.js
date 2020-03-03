@@ -39,7 +39,7 @@ class SignInScreen extends React.Component {
                 
                 <Text 
                     style={styles.ClickableText} 
-                    onPress={ ()=>  this.props.navigation.navigate('SignUp')}>
+                    onPress={ () => this.props.navigation.navigate('SignUp')}>
                     Don't have an account? Click here to Sign-Up.
                 </Text>
             </View>
@@ -48,7 +48,7 @@ class SignInScreen extends React.Component {
     }
 
 
-    SignIn = async() => {
+    async SignIn() {
         const email = this.state.EmailInputValue;
         const password = this.state.PasswordInputValue;
         var noErrors = true;
@@ -104,7 +104,7 @@ class SignInScreen extends React.Component {
             // The error happens when the password is reset in the Cognito console
             // In this case you need to call forgotPassword to reset the password
             console.log("This account's password has been reset.");
-            this.setState({ErrorMessage: "Your account's password has been reset. Please click \"Forgot Password\" to create a new password."});
+            this.setState({ErrorMessage: "Your account's password has been reset.\nPlease click \"Forgot Password\" to create a new password."});
         } 
         else if (errorcode === 'NotAuthorizedException') {
             // The error happens when the incorrect password is provided
@@ -114,7 +114,7 @@ class SignInScreen extends React.Component {
         else if (errorcode === 'UserNotFoundException') {
             // The error happens when the supplied username/email does not exist in the Cognito user pool
             console.log("Specified user could not be found.");
-            this.setState({ErrorMessage: "The specified user could not be found. Please try another email."});
+            this.setState({ErrorMessage: "The specified user could not be found.\nPlease try another email."});
         } 
         else if (errorcode === 'NetworkError') {
             console.log("Network error.");

@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image } from "react-native";
+import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image, Alert } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
 import DropdownMenu from 'react-native-dropdown-menu';
 import ListPopover from 'react-native-list-popover';
+import { Auth } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
 
 class SettingsScreen extends React.Component {
     constructor(props){
@@ -90,7 +92,7 @@ class SettingsScreen extends React.Component {
             
             {/* Manual Settings */}
             <Text style={styles.resetText}>Time Zone</Text>  
-            <View style={{flexDirection: 'row', justifyContent: 'stretch', marginTop: 50}} > 
+            <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 50}} > 
               <Text style={styles.resetText}>Primary Device</Text>  
               <Text style={styles.secondaryText}>Secondary Device</Text> 
             </View>
@@ -132,22 +134,15 @@ class SettingsScreen extends React.Component {
               onPress={() => this.setState({isVisible: true})}>
               <Text style = {{marginLeft: 60, color: 'white', fontSize: 20}}>{this.state.item || 'Select'}</Text>
           </TouchableHighlight>
-          <ListPopover
-              list={items}
-              isVisible={this.state.isVisible}
-              onClick={(item) => this.setState({item: item})}
-              onClose={() => this.setState({isVisible: false})}
-          />
           <Image style={{ marginLeft: 10, width: 28, height: 28, position: 'absolute', marginTop: 10}} source={require('../assets/timezone-icon.png')} />
         </View>
 
-        {/* Logout Button */}
+        {/* SignOut Button */}
         <View style={styles.logoutContainer}>
           <View style={styles.logoutButtonContainer}>
             <Button
-              onPress={this._onPressButton}
-              title = "Logout"
-              color = 'white'
+              onPress={() => this.confirmSignOut()}
+              title = "SignOut"
             />
           </View>
         </View>
@@ -155,6 +150,44 @@ class SettingsScreen extends React.Component {
   </View>
       );
     }
+
+    async confirmSignOut() {
+      Alert.alert(
+        'Sign Out',
+        'Are you sure you want to sign out?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log("canceled sign out"),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => this.SignOut()},
+        ],
+        {cancelable: false},
+      );
+    }
+
+    async SignOut() {
+      var noErrors = true;
+      try {
+        await Auth.signOut()
+          .then(data => console.log(data))
+          .catch(error => {
+            noErrors = false;
+            console.log(error);
+          });
+        if(noErrors) {
+          await SecureStore.deleteItemAsync("secure_email");
+          await SecureStore.deleteItemAsync("secure_password");
+          this.props.navigation.navigate('Auth');
+        }
+      } catch (err) {
+            console.log("catching error: " + err);
+      }
+
+
+    }
+
   }
   
   const AppStackNavigator = createStackNavigator({
@@ -276,3 +309,9 @@ class SettingsScreen extends React.Component {
 });
   
   export default Apps;
+//   <ListPopover
+//   list={items}
+//   isVisible={this.state.isVisible}
+//   onClick={(item) => this.setState({item: item})}
+//   onClose={() => this.setState({isVisible: false})}
+// />
