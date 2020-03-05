@@ -159,6 +159,8 @@ class SettingsScreen extends React.Component {
           console.log("catching error: " + err);
     }
   }
+}
+export default SettingsScreen;
 
 // for navigation to other screens
 const AppStackNavigator = createStackNavigator({
