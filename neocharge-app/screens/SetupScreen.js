@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Button, Modal } from 'react-native';
 import OnboardingLogo from '../components/OnboardingLogo';
 import OnboardingInput from '../components/OnboardingInput';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
@@ -51,14 +51,23 @@ class SetupScreen extends React.Component {
     this.setState({ deviceID: device });
   }
 
+  async hasValidDeviceID() {
+    let jsonObj = {
+      "deviceID": this.state.deviceID
+    };
+    const path = "/deviceid"; // path from root of API
+    const apiResponse = await API.get("LambdaProxy", path, jsonObj); //replace the desired API name
+    console.log("response: " + apiResponse);
+  }
+
   async logOnboardingInfo() {
     console.log("userEmail: " + this.state.userEmail);
     console.log("timeZone: " + this.state.timeZone);
     console.log("primaryDevice: " + this.state.primaryDevice);
     console.log("secondaryDevice: " + this.state.secondaryDevice);
     console.log("deviceID: " + this.state.deviceID);
-    console.log("now value is " + this.state.pushToken);
-    console.log("now type is " + typeof this.state.pushToken);
+
+
     let requestBody = {
       "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
       "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
