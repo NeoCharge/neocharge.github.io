@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, Switch, Button } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import Colors from '../akljldfjssets/colors.js';
+import Colors from '../assets/colors.js';
 import {API} from 'aws-amplify';
 
-class FirstTimeNoficiationSelectionScreen extends React.Component {
+class NotificationSelectionScreen extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
@@ -21,15 +21,6 @@ class FirstTimeNoficiationSelectionScreen extends React.Component {
       this.chargeInterruptToggle = this.chargeInterruptToggle.bind(this);
       this.onlogInfo = this.onlogInfo.bind(this);
     }
-
-    // Adding header title, color and font weight
-    // navigation placed here for page routing purposes 
-    static navigationOptions = {
-        title: 'Notification Options',
-        headerStyle: {backgroundColor: Colors.accent2},
-        headerTintColor: 'white',
-        headerTitleStyle: {fontWeight: 'bold'}
-    };
 
  
     primaryDeviceToggle(value) {
@@ -61,12 +52,9 @@ class FirstTimeNoficiationSelectionScreen extends React.Component {
       const path = "/settings"; // path from root of API
       const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
       console.log(apiResponse);
-
     };
   
-     
     render() {
-
         return (
           <View style={styles.container}>
 
@@ -103,15 +91,23 @@ class FirstTimeNoficiationSelectionScreen extends React.Component {
               value={this.state.chargeInterruptSwitch} />
           </View >
 
+          {/* <View style={styles.backgroundScheduleBox}>
+            <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
+            <Text style={{...styles.optionText, paddingRight: 90}}>Remind me to plug in </Text>
+            <Switch
+              style={styles.switch}
+              onValueChange={this.chargeInterruptToggle}
+              value={this.state.chargeInterruptSwitch} />
+          </View > */}
+
           <View style={styles.logoutContainer}>
                 <View style={styles.logoutButtonContainer}>
                     <Button onPress={this.onlogInfo}
-                        title="Continue"
+                        title="Save"
                         color='white'
                     />
             </View>
         </View>
-
 
           </View>
         );
@@ -141,13 +137,6 @@ const styles = StyleSheet.create({
       color: 'grey',
       fontWeight: 'bold',
       padding: 15
-    },
-    timeIcon: {
-      marginLeft: 10, 
-      width: 28, 
-      height: 28, 
-      position: 'absolute', 
-      marginTop: 10 
     },
     iconPictures: {
       marginLeft: 10, 
