@@ -63,7 +63,7 @@ class AuthLoadingScreen extends React.Component {
           })
           .catch(error => {console.log(error.response)}); //replace the API name
        
-        const setupComplete = (getuser.length > 0); // the user exists in our users table
+        const setupComplete = ((typeof getuser != undefined) && (getuser.length > 0)); // the user exists in our users table
         console.log("completed API call");
         console.log("setupComplete: " + setupComplete);
 
