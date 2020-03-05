@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Button, Modal } from 'react-native';
 import OnboardingLogo from '../components/OnboardingLogo';
 import OnboardingInput from '../components/OnboardingInput';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
-
 
 class SetupScreen extends React.Component {
 
@@ -34,7 +33,6 @@ class SetupScreen extends React.Component {
     console.log(typeof this.state.pushToken);
   }
 
-
   timeZoneHandler(selectedVal) {
     this.setState({ timeZone: selectedVal });
   };
@@ -59,15 +57,20 @@ class SetupScreen extends React.Component {
     console.log("deviceID: " + this.state.deviceID);
     console.log("now value is " + this.state.pushToken);
     console.log("now type is " + typeof this.state.pushToken);
-    let requestBody = {
-      "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
-      "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
-      "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
-    };
+
+    var session = await Auth.currentSession();
+    var authToken = session["idToken"]["jwtToken"];
+
+    let requestBody = { "userEmail": this.state.userEmail, "timeZone": this.state.timeZone, 
+                        "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice, 
+                        "deviceID": this.state.deviceID, "pushToken": this.state.pushToken };
     let jsonObj = {
+      headers: {
+        Authorization: authToken
+      },
       body: requestBody
     }
-    const path = "/user"; // path from root of API
+    const path = "/user";
 
     console.log(this.state.pushToken);
     console.log(typeof this.state.pushToken);
@@ -75,9 +78,7 @@ class SetupScreen extends React.Component {
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
     this.props.navigation.navigate('App');
-
   };
-
 
   render() {
     return (

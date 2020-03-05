@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
                         name='SCHEDULE CHARGE' />
 
                     <HomeOption nav={this.props.navigation}
-                        screenName={'SchedulingHome'}
+                        screenName={'Settings'}
                         img={require('../assets/smart-settings-icon.png')}
                         name='SMART SETTINGS' />
 

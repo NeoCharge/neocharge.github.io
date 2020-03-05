@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image } from 'react-native';
+import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image, Alert } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
 import ListPopover from 'react-native-list-popover';
+import { Auth } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
 import LogoutOption from '../components/LogoutOption';
 import DeviceSelection from '../components/DeviceSelection';
 
@@ -108,12 +110,55 @@ class SettingsScreen extends React.Component {
           />
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
         </View>
-       
-        <LogoutOption/>
+                                                 
+        {/* SignOut Button */}
+        <View style={styles.logoutContainer}>
+          <View style={styles.logoutButtonContainer}>
+            <Button
+              onPress={() => this.confirmSignOut()}
+              title = "SignOut"
+            />
+          </View>
+        </View>
+
       </View>
     );
   }
-}
+
+  async confirmSignOut() {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log("canceled sign out"),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => this.SignOut()},
+      ],
+      {cancelable: false},
+    );
+  }
+
+  async SignOut() {
+    var noErrors = true;
+    try {
+      await Auth.signOut()
+        .then(data => console.log(data))
+        .catch(error => {
+          noErrors = false;
+          console.log(error);
+        });
+      if(noErrors) {
+        await SecureStore.deleteItemAsync("secure_email");
+        await SecureStore.deleteItemAsync("secure_password");
+        this.props.navigation.navigate('Auth');
+      }
+    } catch (err) {
+          console.log("catching error: " + err);
+    }
+  }
 
 // for navigation to other screens
 const AppStackNavigator = createStackNavigator({
@@ -190,5 +235,4 @@ const styles = StyleSheet.create({
     height: 30
   }
 });
-
 export default Apps;

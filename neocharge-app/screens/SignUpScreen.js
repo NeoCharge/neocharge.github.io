@@ -60,8 +60,7 @@ class SignUpScreen extends React.Component {
     }
 
     // Function that registers the inputted email and password when a user clicks the "Sign-Up" button
-    async SignUp(event) {
-        event.preventDefault();
+    async SignUp() {
         const email = this.state.EmailInputValue;
         const password = this.state.PasswordInputValue;
         const confirmPassword = this.state.ConfirmPasswordInputValue;

@@ -35,7 +35,7 @@ class VerificationScreen extends React.Component {
                 </View>
                 <View style={styles.ButtonStyle}>
                     <Button title="Resend Code" 
-                            onPress={() => this.resendVerificationCode2()} />
+                            onPress={() => this.resendVerificationCode()} />
                 </View>
                 <Text style={styles.ResentStyle}>{this.state.ResentMessage}</Text>
                 <Text 
@@ -49,8 +49,7 @@ class VerificationScreen extends React.Component {
     }
   
     // Uses the entered verification code to verify the account
-    async verifySignUp(event) {
-        event.preventDefault();
+    async verifySignUp() {
         const email = this.state.UserEmail;
         const code = this.state.VerificationInputValue;
         var noErrors = true;
@@ -96,7 +95,7 @@ class VerificationScreen extends React.Component {
     
 
     // Resends a new verification code via email
-    resendVerificationCode = async() => {
+    async resendVerificationCode() {
         const email = this.state.UserEmail;
         var noErrors = true;
         try {
@@ -118,10 +117,6 @@ class VerificationScreen extends React.Component {
         } catch (err) {
             console.log("catching error: " + err);
         }
-    }
-
-    resendVerificationCode2 = async() => {
-        this.setState({ResentMessage: "A new code has been sent."});
     }
 
     // Returns the user to the Sign-Up screen and delete unverified user (?) TODO
