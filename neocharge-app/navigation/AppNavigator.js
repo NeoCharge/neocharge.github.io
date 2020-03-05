@@ -28,11 +28,11 @@ export default createAppContainer(
             Setup: SetupScreen,
             App: TabNavigator,
             Config: SetupScreen,
+            SignUp: SignUpScreen
 
         },
         {
             // Change 'AuthLoading' to 'App' if you don't want to log-in everytime when testing
-            // initialRouteName: 'App',
             initialRouteName: 'Auth'
             // initialRouteName: 'Config',
         }

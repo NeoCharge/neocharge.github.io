@@ -1,142 +1,116 @@
 import React from 'react';
 import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image, Alert } from "react-native";
 import { createAppContainer } from 'react-navigation';
-import { createStackNavigator} from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
-import DropdownMenu from 'react-native-dropdown-menu';
 import ListPopover from 'react-native-list-popover';
 import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
+import LogoutOption from '../components/LogoutOption';
+import DeviceSelection from '../components/DeviceSelection';
 
 class SettingsScreen extends React.Component {
-    constructor(props){
-      super(props)
-      this.state = {
-        isVisible: false
-      }
+  constructor(props) {
+    super(props)
+    this.state = {
+      isVisible: false,
+      primaryDeviceSwitch: false, 
+      secondaryDeviceSwitch: false, 
+      chargeInterruptSwitch: false
     }
+  }
 
-    // Adding header title, color and font weight
-    static navigationOptions = {
-      title: "Settings",
-      headerStyle: {
-        backgroundColor: Colors.accent2
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
-  
-    state = {switchValue1:false, switchValue2: false, switchValue3: false}
-    toggleSwitch1 = (value) => {
-        //onValueChange of the switch this function will be called
-        this.setState({switchValue1: value})
-     };
-     toggleSwitch2 = (value) => {this.setState({switchValue2: value})};
-     toggleSwitch3 = (value) => {this.setState({switchValue3: value})};
+  // Adding header title, color and font weight
+  // navigation placed here for page routing purposes 
+  static navigationOptions = {
+    title: 'Settings',
+    headerStyle: {backgroundColor: Colors.accent2},
+    headerTintColor: 'white',
+    headerTitleStyle: {fontWeight: 'bold'}
+  };
 
-      // alert user of logout
-     _onPressButton() {
-        alert('Confirm logging out of system')
-      }    
+  //onValueChange of the switch this function will be called
+  primaryDeviceToggle = (value) => { this.setState({ primaryDeviceSwitch: value })};
+  secondaryDeviceToggle = (value) => { this.setState({ secondaryDeviceSwitch: value }) };
+  chargeInterruptToggle = (value) => { this.setState({ chargeInterruptSwitch: value }) };
 
-  
-    render() {
-      var data = [["No Device", "Tesla", "Washer"]];
-      const items = ["Central Standard Time", "Mountain Standard Time", "Pacific Standard Time", 
-                      "Alaskan Standard Time", "Hawaii-Aleutian Standard Time", "Eastern Standard Time"];
-     
-      return (
-        <View style={styles.container}>  
+  render() {
+    // hardcoded temporarily, fill in with real time data later on 
+      const items = ['Central Standard Time', 'Mountain Standard Time', 'Pacific Standard Time',
+      'Alaskan Standard Time', 'Hawaii-Aleutian Standard Time', 'Eastern Standard Time'];
 
-            {/* display user account */}
-            <Text style={styles.resetText}>Account</Text> 
-            <View style={styles.backgroundScheduleBox}> 
-              <Image style={{ marginLeft: 10, width: 55, height: 55}} source={require('../assets/female-icon.png')} />
-              <Text style={styles.startsText1}>Jane Doe</Text>  
-            </View>
-      
-            {/* Push Notification Options */}
-            <Text style={styles.resetText}>Notifications</Text>  
+    return (
+      <View style={styles.container}>
 
-            {/* Primary Device Notification */}
-            <View style={styles.backgroundScheduleBox}>
-                <Image style={{ marginLeft: 10, width: 30, height: 30}} source={require('../assets/electric-car-icon.png')} />
-                <Text style={styles.optionText1}>Primary Device</Text> 
-                <Switch
-                    style={styles.switch}
-                    onValueChange = {this.toggleSwitch1}
-                    value = {this.state.switchValue1}/>
-            </View> 
-
-             {/* Secondary Device Notification */} 
-            <View style={styles.backgroundScheduleBox}> 
-                <Image style={{ marginLeft: 10, width: 30, height: 30}} source={require('../assets/home-icon.png')} />
-                <Text style={styles.optionText2}>Secondary Device</Text> 
-                <Switch
-                    style={styles.switch}
-                    onValueChange = {this.toggleSwitch2}
-                    value = {this.state.switchValue2}/>
-            </View>
-
-            {/* Interruptions Notification */} 
-            <View style={styles.backgroundScheduleBox}> 
-                <Image style={{ marginLeft: 10, width: 30, height: 30}} source={require('../assets/pause-icon.png')} />
-                <Text style={styles.optionText3}>Charge Interruptions</Text> 
-                <Switch
-                    style={styles.switch}
-                    onValueChange = {this.toggleSwitch3}
-                    value = {this.state.switchValue3}/>
-            </View >
-            
-            {/* Manual Settings */}
-            <Text style={styles.resetText}>Time Zone</Text>  
-            <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 50}} > 
-              <Text style={styles.resetText}>Primary Device</Text>  
-              <Text style={styles.secondaryText}>Secondary Device</Text> 
-            </View>
-
-            {/* Configure Primary Device */}
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View/>
-                <DropdownMenu
-                    bgColor={'#363636'}
-                    tintColor={'#51a0d5'}
-                    activityTintColor={'green'}
-                    arrowImg={20} 
-                    optionTextStyle={{color: '#333333'}}
-                    titleStyle={{marginLeft: 10, fontSize: 17, width: '50%'}} 
-                    handler={(selection, row) => this.setState({text: data[selection][row]})}
-                    data={data}
-                    >
-                </DropdownMenu>
-                
-              {/* Configure Secondary Device */}
-              <View/>
-                <DropdownMenu
-                    bgColor={'#363636'}
-                    tintColor={'#51a0d5'}
-                    activityTintColor={'green'}
-                    arrowImg={20}   
-                    optionTextStyle={{color: '#333333'}}
-                    titleStyle={{marginLeft: 40, fontSize: 17, width: '50%'}} 
-                    handler={(selection, row) => this.setState({text: data[selection][row]})}
-                    data={data}
-                    >
-                </DropdownMenu>
-            </View>
-
-       {/* TimeZone Selection DropDown */}
-       <View style={styles.containerTimeZone}>
-          <TouchableHighlight
-              style={styles.buttonTimeZone}
-              onPress={() => this.setState({isVisible: true})}>
-              <Text style = {{marginLeft: 60, color: 'white', fontSize: 20}}>{this.state.item || 'Select'}</Text>
-          </TouchableHighlight>
-          <Image style={{ marginLeft: 10, width: 28, height: 28, position: 'absolute', marginTop: 10}} source={require('../assets/timezone-icon.png')} />
+        {/* display user account */}
+        <Text style={{...styles.headersText, marginLeft: 40}}>Account</Text>
+        <View style={styles.backgroundScheduleBox}>
+          <Image style={{ marginLeft: 10, width: 55, height: 55 }} source={require('../assets/female-icon.png')} />
+          <Text style={styles.userProfileText}>Jane Doe</Text>
         </View>
 
+        {/* Push Notification Options */}
+        <Text style={{...styles.headersText, marginLeft: 40}}>Notifications</Text>
+
+        {/* Primary Device Notification */}
+        <View style={styles.backgroundScheduleBox}>
+          <Image style={styles.iconPictures} source={require('../assets/electric-car-icon.png')} />
+          <Text style={{...styles.optionText, paddingRight: 147}}>Primary Device</Text>
+          <Switch
+            style={styles.switch}
+            onValueChange={this.primaryDeviceToggle}
+            value={this.state.primaryDeviceSwitch} />
+        </View>
+
+        {/* Secondary Device Notification */}
+        <View style={styles.backgroundScheduleBox}>
+          <Image style={styles.iconPictures} source={require('../assets/home-icon.png')} />
+          <Text style={{...styles.optionText, paddingRight: 120}}>Secondary Device</Text>
+          <Switch
+            style={styles.switch}
+            onValueChange={this.secondaryDeviceToggle}
+            value={this.state.secondaryDeviceSwitch} />
+        </View>
+
+        {/* Interruptions Notification */}
+        <View style={styles.backgroundScheduleBox}>
+          <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
+          <Text style={{...styles.optionText, paddingRight: 100}}>Charge Interruptions</Text>
+          <Switch
+            style={styles.switch}
+            onValueChange={this.chargeInterruptToggle}
+            value={this.state.chargeInterruptSwitch} />
+        </View >
+
+        {/* Manual Settings */}
+        <Text style={{...styles.headersText, marginLeft: 40}}>Time Zone</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'stretch', marginTop: 50 }} >
+          <Text style={{...styles.headersText, marginLeft: 40}}>Primary Device</Text>
+          <Text style={{...styles.headersText, marginLeft: 110}}>Secondary Device</Text>
+        </View>
+
+        {/* Configure Primary and Secondary Device */}
+        <View style={styles.deviceSelectionContainer}>
+          <DeviceSelection/>
+          <DeviceSelection/>
+        </View>
+
+        {/* TimeZone Selection DropDown */}
+        <View style={styles.containerTimeZone}>
+          <TouchableHighlight
+            style={styles.buttonTimeZone}
+            onPress={() => this.setState({ isVisible: true })}>
+            <Text style={{ marginLeft: 60, color: 'white', fontSize: 20 }}>{this.state.item || 'Select'}</Text>
+          </TouchableHighlight>
+          <ListPopover
+            list={items}
+            isVisible={this.state.isVisible}
+            onClick={(item) => this.setState({ item: item })}
+            onClose={() => this.setState({ isVisible: false })}
+          />
+          <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
+        </View>
+                                                 
         {/* SignOut Button */}
         <View style={styles.logoutContainer}>
           <View style={styles.logoutButtonContainer}>
@@ -147,171 +121,118 @@ class SettingsScreen extends React.Component {
           </View>
         </View>
 
-  </View>
-      );
-    }
-
-    async confirmSignOut() {
-      Alert.alert(
-        'Sign Out',
-        'Are you sure you want to sign out?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log("canceled sign out"),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => this.SignOut()},
-        ],
-        {cancelable: false},
-      );
-    }
-
-    async SignOut() {
-      var noErrors = true;
-      try {
-        await Auth.signOut()
-          .then(data => console.log(data))
-          .catch(error => {
-            noErrors = false;
-            console.log(error);
-          });
-        if(noErrors) {
-          await SecureStore.deleteItemAsync("secure_email");
-          await SecureStore.deleteItemAsync("secure_password");
-          this.props.navigation.navigate('Auth');
-        }
-      } catch (err) {
-            console.log("catching error: " + err);
-      }
-
-
-    }
-
+      </View>
+    );
   }
-  
-  const AppStackNavigator = createStackNavigator({
-    Schedule: {screen: SettingsScreen}});
-  
-  const Apps = createAppContainer(AppStackNavigator);
 
-  // styling elements
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.primary,
-      minWidth: '100%'
-    },
-    containerTimeZone: {
-      flex: 1,
-      backgroundColor: Colors.primary,
-      minWidth: '100%',
-      minHeight: 60,
-      position: 'absolute',
-      marginTop: '88%'
-    },
-    optionText1: {
-      fontSize: 20,
-      color: Colors.secondary,
-      marginLeft: 30,
-      paddingRight: 147
-    }, 
-    optionText2: {
-      fontSize: 20,
-      color: Colors.secondary,
-      marginLeft: 30,
-      paddingRight: 120
-    }, 
-    optionText3: {
-      fontSize: 20,
-      color: Colors.secondary,
-      marginLeft: 30,
-      paddingRight: 100
-    }, 
-    resetText: {
-      fontSize: 14,
-      color: 'grey',
-      fontWeight: 'bold',
-      marginLeft: 40,
-      marginBottom: 10,
-      marginTop: 15,
-    },
-    secondaryText: {
-      fontSize: 14,
-      color: 'grey',
-      fontWeight: 'bold',
-      marginLeft: 110,
-      marginBottom: 10,
-      marginTop: 15
-    },
-    startsText1: {
-      fontSize: 20,
-      marginLeft: 20,
-      color: 'white'
-    },
-    switch: {
-      marginRight: 10,
-      alignItems: "stretch",
-    },
-    backgroundScheduleBox: {
-      flex: 1,
-      flexDirection: 'row',
-      width: '100%',
-      maxHeight: 60,
-      backgroundColor: '#363636',
-      alignItems: 'center',
-      marginRight: 90
-    },
-    backgroundPrimaryBox: {
-        flex: 1,
-        flexDirection: 'row',
-        maxHeight: 48,
-        width: '50%',
-        backgroundColor: '#363636',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      },
-    backgroundBox: {
-      flex: 1,
-      flexDirection: 'row',
-      width: '100%',
-      maxHeight: 100,
-      backgroundColor: '#363636',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    },
-   logoutContainer: {
+  async confirmSignOut() {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log("canceled sign out"),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => this.SignOut()},
+      ],
+      {cancelable: false},
+    );
+  }
+
+  async SignOut() {
+    var noErrors = true;
+    try {
+      await Auth.signOut()
+        .then(data => console.log(data))
+        .catch(error => {
+          noErrors = false;
+          console.log(error);
+        });
+      if(noErrors) {
+        await SecureStore.deleteItemAsync("secure_email");
+        await SecureStore.deleteItemAsync("secure_password");
+        this.props.navigation.navigate('Auth');
+      }
+    } catch (err) {
+          console.log("catching error: " + err);
+    }
+  }
+
+// for navigation to other screens
+const AppStackNavigator = createStackNavigator({
+  Schedule: { screen: SettingsScreen }});
+const Apps = createAppContainer(AppStackNavigator);
+
+// styling elements
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: 'center',
-    justifyContent:'center'
-   },
-   logoutButtonContainer: {
-    backgroundColor: '#363636',
+    backgroundColor: Colors.primary,
+    minWidth: '100%'
+  },
+  containerTimeZone: {
+    flex: 1,
+    backgroundColor: Colors.primary,
+    minWidth: '100%',
+    minHeight: 60,
     position: 'absolute',
-    justifyContent:'center',
-    height: 40,
-    borderColor: '#51a0d5',
-    borderWidth: 1,
-    bottom: '50%',
-    width: '90%',
-    borderRadius: 10
-   },
+    marginTop: '88%'
+  },
+  deviceSelectionContainer: {
+    flex: 1, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between'
+  },
+  optionText: {
+    fontSize: 20,
+    color: Colors.secondary,
+    marginLeft: 30
+  },
+  headersText: {
+    fontSize: 14,
+    color: 'grey',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 15,
+  },
+  userProfileText: {
+    fontSize: 20,
+    marginLeft: 20,
+    color: 'white'
+  },
+  switch: {
+    marginRight: 10,
+    alignItems: 'stretch',
+  },
+  backgroundScheduleBox: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    maxHeight: 60,
+    backgroundColor: Colors.appleBlue,
+    alignItems: 'center',
+    marginRight: 90
+  },
   buttonTimeZone: {
-    backgroundColor: '#363636',
+    backgroundColor: Colors.appleBlue,
     padding: 10,
     width: '100%',
     height: 50,
     justifyContent: 'center'
+  },
+  timeIcon: {
+    marginLeft: 10, 
+    width: 28, 
+    height: 28, 
+    position: 'absolute', 
+    marginTop: 10 
+  },
+  iconPictures: {
+    marginLeft: 10, 
+    width: 30, 
+    height: 30
   }
 });
-  
-  export default Apps;
-//   <ListPopover
-//   list={items}
-//   isVisible={this.state.isVisible}
-//   onClick={(item) => this.setState({item: item})}
-//   onClose={() => this.setState({isVisible: false})}
-// />
+export default Apps;
