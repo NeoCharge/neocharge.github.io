@@ -84,7 +84,7 @@ class SettingsScreen extends React.Component {
 
         {/* Manual Settings */}
         <Text style={{...styles.headersText, marginLeft: 40}}>Time Zone</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'stretch', marginTop: 50 }} >
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }} >
           <Text style={{...styles.headersText, marginLeft: 40}}>Primary Device</Text>
           <Text style={{...styles.headersText, marginLeft: 110}}>Secondary Device</Text>
         </View>
