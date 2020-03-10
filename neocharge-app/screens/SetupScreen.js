@@ -6,7 +6,6 @@ import { API, Auth } from 'aws-amplify';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
-
 class SetupScreen extends React.Component {
 
   constructor(props) {
@@ -33,7 +32,6 @@ class SetupScreen extends React.Component {
     console.log(this.state.pushToken);
     console.log(typeof this.state.pushToken);
   }
-
 
   timeZoneHandler(selectedVal) {
     this.setState({ timeZone: selectedVal });
@@ -74,9 +72,12 @@ class SetupScreen extends React.Component {
       "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
     };
     let jsonObj = {
+      headers: {
+        Authorization: authToken
+      },
       body: requestBody
     }
-    const path = "/user"; // path from root of API
+    const path = "/user";
 
     console.log(this.state.pushToken);
     console.log(typeof this.state.pushToken);
@@ -84,9 +85,7 @@ class SetupScreen extends React.Component {
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
     this.props.navigation.navigate('App');
-
   };
-
 
   render() {
     return (

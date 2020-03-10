@@ -17,26 +17,14 @@ class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     try {
+      // ATTENTION uncomment these to mimic a logged out user
+      // await SecureStore.deleteItemAsync("secure_email");
+      // await SecureStore.deleteItemAsync("secure_password");
+
       var userEmail = await SecureStore.getItemAsync("secure_email");
       var userPassword = await SecureStore.getItemAsync("secure_password");
       console.log("userEmail: " + userEmail);
       console.log("userPassword: " + userPassword);
-
-      const path = "/user"; // you can specify the path
-      let getuser = await API.get("LambdaProxy", path,
-        {
-          "queryStringParameters": {
-              "userEmail": userEmail
-          }
-        })
-        .catch(error => {console.log(error.response)}); //replace the API name
-      const setupComplete = (getuser.length > 0); // the user exists in our users table
-      console.log("completed API call");
-      console.log("setupComplete: " + setupComplete);
-
-      // Uncomment these lines if you'd like to go to Auth pages
-      //userEmail = 'none';
-      //userPassword = 'none';
 
       // This will switch to the:
       //  -Auth screens if the user is not signed in
@@ -58,6 +46,27 @@ class AuthLoadingScreen extends React.Component {
             }
       });
       if (signInSuccess) {
+        // Check if user has completed first time setup
+        const path = "/user";
+        var session = await Auth.currentSession();
+        var authToken = session["idToken"]["jwtToken"];
+        console.log(authToken);
+        let getuser = await API.get("LambdaProxy", path,
+          {
+            headers: {
+              Authorization: authToken
+            },
+            "queryStringParameters": {
+                "userEmail": userEmail
+            }
+
+          })
+          .catch(error => {console.log(error.response)}); //replace the API name
+       
+        const setupComplete = ((typeof getuser != undefined) && (getuser.length > 0)); // the user exists in our users table
+        console.log("completed API call");
+        console.log("setupComplete: " + setupComplete);
+
         if(setupComplete) {
           this.props.navigation.navigate('App');
         }
