@@ -82,6 +82,16 @@ class SetupScreen extends React.Component {
     console.log(this.state.pushToken);
     console.log(typeof this.state.pushToken);
 
+    let devID = "XSD-934859734-TTYZ";
+
+    let hasValidID = await hasValidDeviceID(this.state.deviceID);
+
+    if (!hasValidID) {
+      console.log("entered non valid id");
+      alert("Must enter a valid device ID.");
+      return;
+    }
+
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
     this.props.navigation.navigate('App');
@@ -133,6 +143,23 @@ async function registerForPushNotificationsAsync(userEmail) {
 
 
 };
+
+async function hasValidDeviceID(deviceID) {
+  const path = "/deviceid"; // you can specify the path
+
+  console.log("path is " + path);
+  let valid = await API.get("LambdaProxy", path,
+  {
+    "queryStringParameters": {
+        "deviceID": deviceID
+    }
+  }).catch(error => {console.log(error.response)});
+
+  console.log("response type: " + (typeof valid));
+
+  console.log("api response: " + valid);
+  return valid;
+}
 
 async function logPushNotifcationToken(token, userEmail) {
 
