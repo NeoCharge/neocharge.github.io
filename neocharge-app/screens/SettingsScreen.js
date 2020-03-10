@@ -14,25 +14,17 @@ class SettingsScreen extends React.Component {
     super(props)
     this.state = {
       isVisible: false,
-      primaryDeviceSwitch: false, 
-      secondaryDeviceSwitch: false, 
-      chargeInterruptSwitch: false
     }
   }
 
   // Adding header title, color and font weight
   // navigation placed here for page routing purposes 
-  static navigationOptions = {
-    title: 'Settings',
-    headerStyle: {backgroundColor: Colors.accent2},
-    headerTintColor: 'white',
-    headerTitleStyle: {fontWeight: 'bold'}
-  };
-
-  //onValueChange of the switch this function will be called
-  primaryDeviceToggle = (value) => { this.setState({ primaryDeviceSwitch: value })};
-  secondaryDeviceToggle = (value) => { this.setState({ secondaryDeviceSwitch: value }) };
-  chargeInterruptToggle = (value) => { this.setState({ chargeInterruptSwitch: value }) };
+  // static navigationOptions = {
+  //   title: 'Settings',
+  //   headerStyle: {backgroundColor: Colors.accent2},
+  //   headerTintColor: 'white',
+  //   headerTitleStyle: {fontWeight: 'bold'}
+  // };
 
   render() {
     // hardcoded temporarily, fill in with real time data later on 
@@ -50,37 +42,22 @@ class SettingsScreen extends React.Component {
         </View>
 
         {/* Push Notification Options */}
-        <Text style={{...styles.headersText, marginLeft: 40}}>Notifications</Text>
+        <Text style={{...styles.headersText, marginLeft: 40}}>General</Text>
 
         {/* Primary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/electric-car-icon.png')} />
-          <Text style={{...styles.optionText, paddingRight: 147}}>Primary Device</Text>
-          <Switch
-            style={styles.switch}
-            onValueChange={this.primaryDeviceToggle}
-            value={this.state.primaryDeviceSwitch} />
+          <Text style={{...styles.optionText, paddingRight: 147}}>Configure Vehicle</Text>
+          <Image style={styles.iconPictures} source={require('../assets/rightArrow.png')} />
+
         </View>
 
         {/* Secondary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/home-icon.png')} />
-          <Text style={{...styles.optionText, paddingRight: 120}}>Secondary Device</Text>
-          <Switch
-            style={styles.switch}
-            onValueChange={this.secondaryDeviceToggle}
-            value={this.state.secondaryDeviceSwitch} />
+          <Text style={{...styles.optionText, paddingRight: 120}}>NeoCharge Device</Text>
+          <Image style={{...styles.iconPictures, marginLeft: 27}} source={require('../assets/rightArrow.png')} />
         </View>
-
-        {/* Interruptions Notification */}
-        <View style={styles.backgroundScheduleBox}>
-          <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
-          <Text style={{...styles.optionText, paddingRight: 100}}>Charge Interruptions</Text>
-          <Switch
-            style={styles.switch}
-            onValueChange={this.chargeInterruptToggle}
-            value={this.state.chargeInterruptSwitch} />
-        </View >
 
         {/* Manual Settings */}
         <Text style={{...styles.headersText, marginLeft: 40}}>Time Zone</Text>
@@ -180,7 +157,7 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     minHeight: 60,
     position: 'absolute',
-    marginTop: '88%'
+    marginTop: '73%'
   },
   deviceSelectionContainer: {
     flex: 1, 
