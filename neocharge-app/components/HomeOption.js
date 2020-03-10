@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from "../assets/colors";
 
@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        // borderColor: Colors.secondary,
-        // borderWidth: 2,
         flex: 1,
         alignSelf: 'stretch',
         height: undefined,
