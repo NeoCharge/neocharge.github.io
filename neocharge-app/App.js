@@ -6,6 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 import GreetingScreen from './screens/GreetingScreen';
 import SetupScreen from './screens/SetupScreen';
 import SchedulingHomeScreen from './screens/SchedulingHomeScreen';
+import ChargingHistoryScreen from './screens/ChargingHistoryScreen';
 
 Amplify.configure(aws_exports);
 
@@ -15,18 +16,18 @@ console.reportErrorsAsExceptions = false;
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppNavigator/>
+      <AppNavigator />
     </View>
   );
 }
 
-/*export default function App() {
-  return (
-    <View style={styles.container}>
-      <SchedulingHomeScreen/>
-    </View>
-  );
-}*/
+// export default function App() {
+//   return (
+//     <View style={styles.container}>
+//       <ChargingHistoryScreen />
+//     </View>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {

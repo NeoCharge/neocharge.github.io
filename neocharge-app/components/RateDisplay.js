@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
 export default class RateDisplay extends React.Component {
     constructor(props) {
@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
     container: {
         padding: 30,
         borderRadius: 15,
-        width: "40%",
-        height: "20%",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#ffffff"
+        width: '40%',
+        height: '20%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff'
     },
     textNum: {
         fontSize: 35
