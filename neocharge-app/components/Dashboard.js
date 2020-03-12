@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default class Dashboard extends React.Component {
+
+
+    setSmartCharge = () => {
+        console.log("going to change smart charge here");
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -33,15 +40,19 @@ export default class Dashboard extends React.Component {
                     <View style={styles.pause}>
                         <Text style={styles.smalltext}>PAUSE</Text>
                     </View>
+                    <TouchableHighlight onPress={this.setSmartCharge}>
+                        <View style={{ ...styles.circle, marginLeft: 15 }}>
 
-                    <View style={{ ...styles.circle, marginLeft: 15 }}>
-                        <Image
-                            source={require('../assets/smart-icon.png')}
-                            style={styles.smartIcon}
-                            resizeMode='contain'
-                        />
-                        <Text style={styles.text}>SMART</Text>
-                    </View>
+                            <Image
+                                source={require('../assets/smart-icon.png')}
+                                style={styles.smartIcon}
+                                resizeMode='contain'
+                            />
+                            <Text style={styles.text}>SMART</Text>
+
+                        </View>
+                    </TouchableHighlight>
+
                 </View>
             </View>
 
