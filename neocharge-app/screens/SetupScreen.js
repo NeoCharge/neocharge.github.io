@@ -72,9 +72,9 @@ class SetupScreen extends React.Component {
       "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
     };
     let jsonObj = {
-      headers: {
-        Authorization: authToken
-      },
+      // headers: {
+      //   Authorization: authToken
+      // },
       body: requestBody
     }
     const path = "/user";
@@ -149,11 +149,11 @@ async function hasValidDeviceID(deviceID) {
 
   console.log("path is " + path);
   let valid = await API.get("LambdaProxy", path,
-  {
-    "queryStringParameters": {
+    {
+      "queryStringParameters": {
         "deviceID": deviceID
-    }
-  }).catch(error => {console.log(error.response)});
+      }
+    }).catch(error => { console.log(error.response) });
 
   console.log("response type: " + (typeof valid));
 

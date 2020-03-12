@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
                         name='SMART SETTINGS' />
 
                     <HomeOption nav={this.props.navigation}
-                        screenName={'SchedulingHome'}
+                        screenName={'Notifications'}
                         img={require('../assets/notification-icon.png')}
                         name='NOTIFICATIONS' />
                 </View>
