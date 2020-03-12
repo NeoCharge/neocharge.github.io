@@ -28,26 +28,26 @@ class SettingsScreen extends React.Component {
 
   render() {
     // hardcoded temporarily, fill in with real time data later on 
-      const items = ['Central Standard Time', 'Mountain Standard Time', 'Pacific Standard Time',
+    const items = ['Central Standard Time', 'Mountain Standard Time', 'Pacific Standard Time',
       'Alaskan Standard Time', 'Hawaii-Aleutian Standard Time', 'Eastern Standard Time'];
 
     return (
       <View style={styles.container}>
 
         {/* display user account */}
-        <Text style={{...styles.headersText, marginLeft: 40}}>Account</Text>
+        <Text style={{ ...styles.headersText, marginLeft: 40 }}>Account</Text>
         <View style={styles.backgroundScheduleBox}>
           <Image style={{ marginLeft: 10, width: 55, height: 55 }} source={require('../assets/female-icon.png')} />
           <Text style={styles.userProfileText}>Jane Doe</Text>
         </View>
 
         {/* Push Notification Options */}
-        <Text style={{...styles.headersText, marginLeft: 40}}>General</Text>
+        <Text style={{ ...styles.headersText, marginLeft: 40 }}>General</Text>
 
         {/* Primary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/electric-car-icon.png')} />
-          <Text style={{...styles.optionText, paddingRight: 147}}>Configure Vehicle</Text>
+          <Text style={{ ...styles.optionText, paddingRight: 147 }}>Configure Vehicle</Text>
           <Image style={styles.iconPictures} source={require('../assets/rightArrow.png')} />
 
         </View>
@@ -55,21 +55,21 @@ class SettingsScreen extends React.Component {
         {/* Secondary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/home-icon.png')} />
-          <Text style={{...styles.optionText, paddingRight: 120}}>NeoCharge Device</Text>
-          <Image style={{...styles.iconPictures, marginLeft: 27}} source={require('../assets/rightArrow.png')} />
+          <Text style={{ ...styles.optionText, paddingRight: 120 }}>NeoCharge Device</Text>
+          <Image style={{ ...styles.iconPictures, marginLeft: 27 }} source={require('../assets/rightArrow.png')} />
         </View>
 
         {/* Manual Settings */}
-        <Text style={{...styles.headersText, marginLeft: 40}}>Time Zone</Text>
+        <Text style={{ ...styles.headersText, marginLeft: 40 }}>Time Zone</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }} >
-          <Text style={{...styles.headersText, marginLeft: 40}}>Primary Device</Text>
-          <Text style={{...styles.headersText, marginLeft: 110}}>Secondary Device</Text>
+          <Text style={{ ...styles.headersText, marginLeft: 40 }}>Primary Device</Text>
+          <Text style={{ ...styles.headersText, marginLeft: 110 }}>Secondary Device</Text>
         </View>
 
         {/* Configure Primary and Secondary Device */}
         <View style={styles.deviceSelectionContainer}>
-          <DeviceSelection/>
-          <DeviceSelection/>
+          <DeviceSelection />
+          <DeviceSelection />
         </View>
 
         {/* TimeZone Selection DropDown */}
@@ -87,13 +87,13 @@ class SettingsScreen extends React.Component {
           />
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
         </View>
-                                                 
+
         {/* SignOut Button */}
         <View style={styles.logoutContainer}>
           <View style={styles.logoutButtonContainer}>
             <Button
               onPress={() => this.confirmSignOut()}
-              title = "SignOut"
+              title="Sign Out"
             />
           </View>
         </View>
@@ -112,9 +112,9 @@ class SettingsScreen extends React.Component {
           onPress: () => console.log("canceled sign out"),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => this.SignOut()},
+        { text: 'OK', onPress: () => this.SignOut() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -127,13 +127,13 @@ class SettingsScreen extends React.Component {
           noErrors = false;
           console.log(error);
         });
-      if(noErrors) {
+      if (noErrors) {
         await SecureStore.deleteItemAsync("secure_email");
         await SecureStore.deleteItemAsync("secure_password");
         this.props.navigation.navigate('Auth');
       }
     } catch (err) {
-          console.log("catching error: " + err);
+      console.log("catching error: " + err);
     }
   }
 }
@@ -141,7 +141,8 @@ export default SettingsScreen;
 
 // for navigation to other screens
 const AppStackNavigator = createStackNavigator({
-  Schedule: { screen: SettingsScreen }});
+  Schedule: { screen: SettingsScreen }
+});
 const Apps = createAppContainer(AppStackNavigator);
 
 // styling elements
@@ -160,8 +161,8 @@ const styles = StyleSheet.create({
     marginTop: '73%'
   },
   deviceSelectionContainer: {
-    flex: 1, 
-    flexDirection: 'row', 
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between'
   },
   optionText: {
@@ -202,15 +203,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   timeIcon: {
-    marginLeft: 10, 
-    width: 28, 
-    height: 28, 
-    position: 'absolute', 
-    marginTop: 10 
+    marginLeft: 10,
+    width: 28,
+    height: 28,
+    position: 'absolute',
+    marginTop: 10
   },
   iconPictures: {
-    marginLeft: 10, 
-    width: 30, 
+    marginLeft: 10,
+    width: 30,
     height: 30
+  },
+  logoutContainer: {
+    marginBottom: 30
   }
 });

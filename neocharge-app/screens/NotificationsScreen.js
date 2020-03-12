@@ -44,9 +44,9 @@ class NotificationSelectionScreen extends React.Component {
 
     let requestBody = {
       "email": this.state.userEmail,
-      "primarydevice": this.state.primaryDeviceSwitch,
-      "secondardevice": this.state.secondaryDeviceSwitch,
-      "chargeinterruptions": this.state.chargeInterruptSwitch
+      "primarydevice": this.state.primaryDeviceSwitch.toString(),
+      "secondardevice": this.state.secondaryDeviceSwitch.toString(),
+      "chargeinterruptions": this.state.chargeInterruptSwitch.toString()
     };
     let jsonObj = {
       body: requestBody

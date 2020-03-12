@@ -8,10 +8,10 @@ import SetupScreen from '../screens/SetupScreen';
 import PushNotifInitScreen from "../screens/PushNotifInitScreen";
 
 const AuthStack = createSwitchNavigator(
-    { 
+    {
         AuthLoading: AuthLoadingScreen,
         SignUp: SignUpScreen,
-        SignIn: SignInScreen, 
+        SignIn: SignInScreen,
         Verify: VerificationScreen,
         Setup: SetupScreen,
     },
@@ -20,6 +20,9 @@ const AuthStack = createSwitchNavigator(
         //initialRouteName: 'SetUp',
     }
 );
+
+// Disable all error popups for Demo
+console.disableYellowBox = true;
 
 export default createAppContainer(
     createSwitchNavigator(

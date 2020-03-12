@@ -50,7 +50,7 @@ class AuthLoadingScreen extends React.Component {
         const path = "/user";
         // var session = await Auth.currentSession();
         // var authToken = session["idToken"]["jwtToken"];
-        console.log(authToken);
+        // console.log(authToken);
         let getuser = await API.get("LambdaProxy", path,
           {
             // headers: {
