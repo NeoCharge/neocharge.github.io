@@ -15,7 +15,6 @@ class AuthLoadingScreen extends React.Component {
     this._bootstrapAsync();
   }
 
-  // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     try {
       let userEmail = await SecureStore.getItemAsync("secure_email");
