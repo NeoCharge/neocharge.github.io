@@ -1,7 +1,5 @@
-import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from '../screens/HomeScreen';
-import PrimaryDeviceScreen from '../screens/PrimaryDeviceScreen';
 import SchedulingHomeScreen from '../screens/SchedulingHomeScreen';
 import ChargingHistoryScreen from '../screens/ChargingHistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';

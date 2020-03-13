@@ -6,6 +6,7 @@ import {
   Text,
   Image,
 } from 'react-native';
+import Colors from '../assets/colors';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 
@@ -17,21 +18,16 @@ class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     try {
-      // ATTENTION uncomment these to mimic a logged out user
-      // await SecureStore.deleteItemAsync("secure_email");
-      // await SecureStore.deleteItemAsync("secure_password");
-
-      var userEmail = await SecureStore.getItemAsync("secure_email");
-      var userPassword = await SecureStore.getItemAsync("secure_password");
+      let userEmail = await SecureStore.getItemAsync("secure_email");
+      let userPassword = await SecureStore.getItemAsync("secure_password");
       console.log("userEmail: " + userEmail);
-      console.log("userPassword: " + userPassword);
 
       // This will switch to the:
       //  -Auth screens if the user is not signed in
       //  -Verification screen if the user has an account but it is not yet verified
       //  -Setup screen if the user has not yet completed the first time setup
       //  -App (Home) screen
-      var signInSuccess = true;
+      let signInSuccess = true;
       await Auth.signIn(userEmail, userPassword)
         .catch(error => {
           signInSuccess = false;
@@ -48,8 +44,13 @@ class AuthLoadingScreen extends React.Component {
       if (signInSuccess) {
         // Check if user has completed first time setup
         const path = "/user";
-        // var session = await Auth.currentSession();
-        // var authToken = session["idToken"]["jwtToken"];
+        // TODO The commented out lines fetch an auth token from Cognito and send it in the API's GET request
+        //      in order to authenticate the request as someone in our user pool. This is important for security
+        //      purposes so that not just anyone can call our lambda functions. We need to add these same lines 
+        //      to every API call, but, in the meantime, they are commented out.
+        //
+        // let session = await Auth.currentSession();
+        // let authToken = session["idToken"]["jwtToken"];
         // console.log(authToken);
         let getuser = await API.get("LambdaProxy", path,
           {
@@ -61,7 +62,7 @@ class AuthLoadingScreen extends React.Component {
             }
 
           })
-          .catch(error => { console.log(error.response) }); //replace the API name
+          .catch(error => { console.log(error.response) });
 
         const setupComplete = ((typeof getuser != undefined) && (getuser.length > 0)); // the user exists in our users table
         console.log("completed API call");
@@ -98,7 +99,7 @@ export default AuthLoadingScreen;
 const styles = StyleSheet.create({
   screen: {
     padding: 30,
-    backgroundColor: "#242424",
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   TextStyle: {
-    color: '#fff',
+    color: 'white',
     fontSize: 20,
     marginBottom: '5%',
   },
