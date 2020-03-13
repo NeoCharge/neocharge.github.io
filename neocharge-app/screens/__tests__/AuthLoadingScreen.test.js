@@ -56,8 +56,6 @@ describe('background authenticating', () => {
       });
 
     // Call function for testing
-    //component.setState({EmailInputValue: 'email'});
-    //component.setState({PasswordInputValue: 'Password1'});
     await component.componentDidMount();
 
     // Check expected behavior
