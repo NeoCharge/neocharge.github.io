@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
 import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
+import Colors from '../assets/colors';
 
 class SignUpScreen extends React.Component {
     constructor(props) {
@@ -17,46 +18,49 @@ class SignUpScreen extends React.Component {
     }
 
     static navigationOptions = {
-      title: 'Please sign up',
+        title: 'Please sign up',
     };
 
-  
+
     render() {
-      return (
-        <View style={styles.screen} >
-            <View style={styles.contents} >
-                <Text style={styles.title}>Sign-Up</Text>
-                <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
-                <TextInput
-                    style={styles.inputContainer}
-                    placeholder='Email'
-                    onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
-                    autoCapitalize='none'
-                />
-                <TextInput
-                    style={styles.inputContainer}
-                    placeholder='Password'
-                    onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
-                    secureTextEntry={true}
-                    autoCapitalize='none'
-                />
-                <TextInput
-                    style={styles.inputContainer}
-                    placeholder='Confirm Password'
-                    onChangeText={ConfirmPasswordInputValue => this.setState({ ConfirmPasswordInputValue })}
-                    secureTextEntry={true}
-                    autoCapitalize='none'
-                />
-                <Button title="Sign up"
-                    onPress={this.SignUp} />
-                <Text 
-                    style={styles.ClickableText} 
-                    onPress={ () =>  this.props.navigation.navigate('SignIn')}>
-                    Already have an account? Click here to Sign-In.
+        return (
+            <View style={styles.screen} >
+                <View style={styles.contents} >
+                    <Text style={styles.title}>Sign-Up</Text>
+                    <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
+                    <TextInput
+                        style={styles.inputContainer}
+                        placeholder='Email'
+                        placeholderTextColor={Colors.faded}
+                        onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
+                        autoCapitalize='none'
+                    />
+                    <TextInput
+                        style={styles.inputContainer}
+                        placeholder='Password'
+                        placeholderTextColor={Colors.faded}
+                        onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
+                        secureTextEntry={true}
+                        autoCapitalize='none'
+                    />
+                    <TextInput
+                        style={styles.inputContainer}
+                        placeholder='Confirm Password'
+                        placeholderTextColor={Colors.faded}
+                        onChangeText={ConfirmPasswordInputValue => this.setState({ ConfirmPasswordInputValue })}
+                        secureTextEntry={true}
+                        autoCapitalize='none'
+                    />
+                    <Button title="Sign up"
+                        onPress={this.SignUp} />
+                    <Text
+                        style={styles.ClickableText}
+                        onPress={() => this.props.navigation.navigate('SignIn')}>
+                        Already have an account? Click here to Sign-In.
                 </Text>
+                </View>
             </View>
-        </View>
-      );
+        );
     }
 
     // Function that registers the inputted email and password when a user clicks the "Sign-Up" button
@@ -66,7 +70,7 @@ class SignUpScreen extends React.Component {
         const confirmPassword = this.state.ConfirmPasswordInputValue;
         var noErrors = true;
         try {
-            if(!(noErrors = this.checkValidInput(email, password, confirmPassword))) {
+            if (!(noErrors = this.checkValidInput(email, password, confirmPassword))) {
                 return //return if the input was not valid
             }
             await Auth.signUp({
@@ -75,20 +79,20 @@ class SignUpScreen extends React.Component {
                 attributes: {
                     email: email
                 },
-                validationData: []    
+                validationData: []
             })
-            .then(data => console.log(data))
-            .catch(error => {
+                .then(data => console.log(data))
+                .catch(error => {
                     console.log(error.code);
                     noErrors = false;
                     this.handleErrors(error.code);
-                 });
+                });
             // Continue to verification page if Sign-Up was successful
             if (noErrors) {
                 this.setSecureStore("secure_email", email);
                 this.setSecureStore("secure_password", password);
                 // TODO should I await navigation in order to prevent memory leaks?
-                this.props.navigation.navigate('Verify', {userEmail : email});
+                this.props.navigation.navigate('Verify', { userEmail: email });
             }
         } catch (err) {
             console.log("catching error: " + err);
@@ -98,46 +102,46 @@ class SignUpScreen extends React.Component {
     checkValidInput(email, password, confirmPassword) {
         if (email.length === 0) {
             console.log("No email was given.");
-            this.setState({ErrorMessage: "Please enter an email address."});
+            this.setState({ ErrorMessage: "Please enter an email address." });
             return false;
-        } 
+        }
         if (password.length < 8) {
             console.log("Invalid password entered");
-            this.setState({ErrorMessage: "Passwords must contain at least 8 characters."});
+            this.setState({ ErrorMessage: "Passwords must contain at least 8 characters." });
             return false;
         }
         if (password !== confirmPassword) {
             console.log("Passwords did not match.");
-            this.setState({ErrorMessage: "The entered passwords do not match. Please try again."});
+            this.setState({ ErrorMessage: "The entered passwords do not match. Please try again." });
             return false;
-        } 
+        }
         return true;
     }
 
 
 
     handleErrors(errorcode) {
-        if (typeof(errorcode) === "undefined") {
+        if (typeof (errorcode) === "undefined") {
             console.log("Email and password cannot be empty.");
-            this.setState({ErrorMessage: "Email and password cannot be empty."});
-        } 
+            this.setState({ ErrorMessage: "Email and password cannot be empty." });
+        }
         else if (errorcode === 'UsernameExistsException') {
             console.log("Email already in use.");
-            this.setState({ErrorMessage: "Email already in use."});
+            this.setState({ ErrorMessage: "Email already in use." });
         }
         else if (errorcode === 'InvalidParameterException') {
             console.log("Invalid password entered");
-            this.setState({ErrorMessage: "Invalid password entered."});
-        } 
+            this.setState({ ErrorMessage: "Invalid password entered." });
+        }
         else if (errorcode === 'NetworkError') {
             console.log("Network error.");
-            this.setState({ErrorMessage: "Network error."});
+            this.setState({ ErrorMessage: "Network error." });
         } else {
             console.log("Something else went wrong.");
-            this.setState({ErrorMessage: "Something else went wrong."});
+            this.setState({ ErrorMessage: "Something else went wrong." });
         }
     }
-    
+
     setSecureStore = async (key, value) => {
         console.log("storing key: " + key + ", value: " + value);
         await SecureStore.setItemAsync(key, value);
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         paddingLeft: 10,
         borderWidth: 1,
-        marginBottom: '5%',
+        marginBottom: '5%'
     },
     ClickableText: {
         color: '#E88227', //orange
