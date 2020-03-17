@@ -3,8 +3,23 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
 import Colors from '../assets/colors';
+import * as SecureStore from 'expo-secure-store';
+import { API, Auth } from 'aws-amplify';
 
 export default class HomeScreen extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            userEmail: ""
+        }
+    }
+
+    // async componentDidMount() {
+    //     this.state.userEmail = await SecureStore.getItemAsync("secure_email");
+    // }
+
+
     render() {
         return (
             <View style={styles.container}>
