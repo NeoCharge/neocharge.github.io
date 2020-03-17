@@ -1,8 +1,86 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import * as SecureStore from 'expo-secure-store';
+import { API, Auth } from 'aws-amplify';
 
 export default class Dashboard extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            userEmail: "",
+            smartChargeStyle: styles.smartChargeOff,
+            pauseStyle: styles.pauseOff,
+            pauseText: "PAUSE"
+        }
+    }
+
+    async componentDidMount() {
+        this.state.userEmail = await SecureStore.getItemAsync("secure_email");
+        console.log("email on dashboard: " + this.state.userEmail);
+
+        let jsonObj = {
+            "userEmail": this.state.userEmail
+        };
+        const path = "/smartcharge"; // path from root of API
+        console.log("making request");
+
+        let isSet = await API.get("LambdaProxy", path,
+          {
+            "queryStringParameters": {
+              "userEmail": this.state.userEmail
+            }
+
+          })
+          .catch(error => { console.log(error.response) });
+
+        console.log("response: " + isSet);
+
+        console.log(isSet);
+        if (isSet) {
+            this.setState({smartChargeStyle : styles.smartChargeOn})
+        } else {
+            this.setState({smartChargeStyle : styles.smartChargeOff})
+        }
+        console.log(this.state.userEmail);
+    }
+
+    async setSmartCharge() {
+        if (this.state.smartChargeStyle == styles.smartChargeOn) {
+            this.setState({ smartChargeStyle: styles.smartChargeOff })
+        } else {
+            this.setState({ smartChargeStyle: styles.smartChargeOn })
+        }
+
+        console.log(this.state.userEmail);
+        console.log(typeof this.state.userEmail);
+
+        let requestBody = {
+            "userEmail": this.state.userEmail
+        };
+        let jsonObj = {
+            body: requestBody
+        };
+        const path = "/smartcharge";
+        const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
+        console.log(apiResponse);
+    }
+
+    //TODO: put logic of actual pausing/connection to backend in here
+    setPause = () => {
+        if (this.state.pauseStyle == styles.pauseOn) {
+            this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
+            console.log("unpaused");
+        } else {
+            //TODO: find out what might be a good way to indicate textually to the user that the 
+            //charge is paused, i.e. changed the text below to "RESUME"????
+            this.setState({ pauseStyle: styles.pauseOn, pauseText: "PAUSE" })
+            console.log("paused");
+        }
+
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -25,28 +103,32 @@ export default class Dashboard extends React.Component {
                 </View>
 
                 <View style={styles.charging}>
-                    <View style={{ ...styles.circle, marginRight: 15 }}>
+                    <View style={{ ...styles.circle }}>
                         <Text style={{ fontSize: 40, color: Colors.secondary }}>9.6</Text>
                         <Text style={styles.text}>KWH</Text>
                     </View>
 
-                    <View style={styles.pause}>
-                        <Text style={styles.smalltext}>PAUSE</Text>
-                    </View>
+                    <TouchableOpacity style={this.state.pauseStyle} onPress={this.setPause.bind(this)}>
+                        <View>
+                            <Text style={styles.smalltext}>{this.state.pauseText}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.setSmartCharge.bind(this)} style={this.state.smartChargeStyle}>
+                        <View >
+                            <Image
+                                source={require('../assets/smart-icon.png')}
+                                style={styles.smartIcon}
+                                resizeMode='contain'
+                            />
+                            <Text style={styles.text}>SMART</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                    <View style={{ ...styles.circle, marginLeft: 15 }}>
-                        <Image
-                            source={require('../assets/smart-icon.png')}
-                            style={styles.smartIcon}
-                            resizeMode='contain'
-                        />
-                        <Text style={styles.text}>SMART</Text>
-                    </View>
                 </View>
             </View>
 
         );
-    }
+    };
 }
 
 const styles = StyleSheet.create({
@@ -110,17 +192,52 @@ const styles = StyleSheet.create({
         height: 130,
         borderRadius: 130,
         borderColor: Colors.secondary,
-        borderWidth: 2
+        borderWidth: 2,
+        marginRight: 15
     },
-    pause: {
+    smartChargeOff: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        width: 130,
+        height: 130,
+        borderRadius: 130,
+        borderColor: Colors.secondary,
+        borderWidth: 2,
+        marginLeft: 15
+    },
+    smartChargeOn: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        width: 130,
+        height: 130,
+        borderRadius: 130,
+        borderColor: "#ffd700",
+        borderWidth: 2,
+        marginLeft: 15,
+        color: "#ffd700"
+    },
+    pauseOn: {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10,
         marginBottom: 60,
         width: 80,
         height: 80,
-        borderRadius: 80,
+        borderRadius: 90,
         borderColor: Colors.accent2,
         borderWidth: 2
     },
+    pauseOff: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        marginBottom: 60,
+        width: 80,
+        height: 80,
+        borderRadius: 90,
+        borderColor: Colors.secondary,
+        borderWidth: 2
+    }
 });
