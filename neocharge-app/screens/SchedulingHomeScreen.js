@@ -4,7 +4,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 // import DatePicker from 'react-native-datepicker';
 import Colors from '../assets/colors.js';
-import Slider from "react-native-slider";
+//import Slider from '@react-native-community/slider';
+import MultiSlider from 'react-native-multi-slider';
 
 // class RangeSlider extends Component {
 //   state = {
@@ -69,7 +70,8 @@ class SchedulingHomeScreen extends React.Component {
       timeThree: "11:00 PM",
       timeFour: "11:00 AM",
       value: 1,
-      value1: 1
+      value1: 1,
+      multiSliderValue: [3, 7]
     }
   }
 
@@ -91,7 +93,7 @@ class SchedulingHomeScreen extends React.Component {
     this.setState({ switchValue: value })
   };
 
-
+  multiSliderValuesChange (values) { this.state.multiSliderValue = values; }
 
   render() {
     const { show, date, mode } = this.state;
@@ -99,16 +101,16 @@ class SchedulingHomeScreen extends React.Component {
 
       <View style={styles.container}>
         <Text style={styles.instructionText}>To charge at certain times,
-            set a schedule and plug in. Charging at off-peak hours saves
+        set a schedule and plug in. Charging at off-peak hours saves
                 you money.</Text>
 
-        <View style={styles.backgroundScheduleBox}>
+        {/* <View style={styles.backgroundScheduleBox}>
           <Text style={styles.optionText}>Schedule</Text>
           <Switch
             style={styles.switch}
             onValueChange={this.toggleSwitch}
             value={this.state.switchValue} />
-        </View>
+        </View> */}
 
 
 
@@ -123,12 +125,26 @@ class SchedulingHomeScreen extends React.Component {
 
         <View style={styles.backgroundTimeBox}>
 
+        <View>
+          <Text>Two Markers:</Text>
+        </View>
+        <MultiSlider
+          values={[this.state.multiSliderValue[0], this.state.multiSliderValue[1]]}
+          sliderLength={250}
+          onValuesChange={this.multiSliderValuesChange.bind(this)}
+          min={0}
+          max={10}
+          step={1}
+          allowOverlap
+          snapped
+        />
+
           <Text style={{ ...styles.scrollText, marginLeft: 20, marginTop: 10 }}>
             Start: {this.state.value}:00
             </Text>
 
 
-          <View style={{ ...styles.containerSlider }}>
+          {/* <View style={{ ...styles.containerSlider }}>
             <Slider
               value={this.state.value}
               inverted={'true'}
@@ -161,7 +177,7 @@ class SchedulingHomeScreen extends React.Component {
               thumbTintColor='red'
               onValueChange={value1 => this.setState({ value1 })}
             />
-          </View>
+          </View> */}
 
 
         </View>
