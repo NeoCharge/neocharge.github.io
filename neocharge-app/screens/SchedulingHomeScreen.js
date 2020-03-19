@@ -3,7 +3,9 @@ import { Platform, StyleSheet, Text, View, Image, Switch, Button } from "react-n
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
+import * as SecureStore from 'expo-secure-store';
 import MultiSlider from 'react-native-multi-slider';
+import { API, Auth } from 'aws-amplify';
 
 class SchedulingHomeScreen extends React.Component {
 
@@ -11,18 +13,42 @@ class SchedulingHomeScreen extends React.Component {
     super(props)
     //set value in state for initial date
     this.state = {
-      timeOne: "11:00 PM",
-      timeTwo: "6:00 AM",
-      timeThree: "11:00 PM",
-      timeFour: "11:00 AM",
       value: 1,
       value1: 1,
-      multiSliderValue: [0, 11] ,
+      multiSliderValue: [0, 11],
       startTime: "12:00 PM",
-      endTime: "5:30 PM"
+      endTime: "5:30 PM",
+      userEmail: ""
 
     }
   }
+
+  async componentDidMount() {
+    this.state.userEmail = await SecureStore.getItemAsync("secure_email");
+    const path = "/chargeschedule"; // path from root of API
+    console.log("making request");
+
+    let times = await API.get("LambdaProxy", path,
+      {
+        "queryStringParameters": {
+          "userEmail": this.state.userEmail
+        }
+
+      })
+      .catch(error => { console.log(error.response) });
+
+      //times will contain an array of size 2, with start time and then end time .... [startTime, endTime]
+      if (times.length > 0) {
+        //TODO: create a method to convert these string times to slider values, and set the state on the slider values appropriately
+        
+      } 
+      //user has not set up their desired charge times yet...
+      else {
+
+      }
+    console.log("response: " + times);
+
+}
 
   // Adding header title, color and font weight
   static navigationOptions = {
@@ -44,27 +70,27 @@ class SchedulingHomeScreen extends React.Component {
 
   sliderValToString(sliderVal) {
     let timeVal;
-    if (sliderVal < 3) {
+    if (sliderVal < 2) {
       timeVal = ((.5 * sliderVal) + 12);
     } else if (sliderVal < 24) {
       timeVal = (.5 * sliderVal);
-    } else if (sliderVal < 27) {
-      timeVal = ((.5 * (sliderVal-24)) + 12);
+    } else if (sliderVal < 26) {
+      timeVal = ((.5 * (sliderVal - 24)) + 12);
     } else {
-      timeVal = (.5 * (sliderVal-24));
+      timeVal = (.5 * (sliderVal - 24));
     }
 
     let retVal;
     if (timeVal % 1 == 0.5) {
-      retVal=(timeVal-.5).toString() + ":30";
+      retVal = (timeVal - .5).toString() + ":30";
     } else {
-      retVal= timeVal.toString() + ":00";
+      retVal = timeVal.toString() + ":00";
     }
 
     if (sliderVal < 24) {
-      retVal+=" PM";
+      retVal += " PM";
     } else {
-      retVal+=" AM";
+      retVal += " AM";
     }
 
     return retVal;
@@ -72,10 +98,27 @@ class SchedulingHomeScreen extends React.Component {
 
   }
 
-  multiSliderValuesChange(values) { 
+  multiSliderValuesChange(values) {
     let startStr = this.sliderValToString(values[0]);
     let endStr = this.sliderValToString(values[1]);
     this.setState({ multiSliderValue: values, startTime: startStr, endTime: endStr })
+  }
+
+  async saveSchedule() {
+    console.log("saving schedule");
+
+    console.log(this.state.userEmail);
+    console.log(typeof this.state.userEmail);
+
+    let requestBody = {
+      "userEmail": this.state.userEmail
+    };
+    let jsonObj = {
+      body: requestBody
+    };
+    const path = "/smartcharge";
+    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
+    console.log(apiResponse);
   }
 
   render() {
@@ -114,8 +157,13 @@ class SchedulingHomeScreen extends React.Component {
         </View>
 
         <View style={styles.currentSelectedTimes}>
-            <Text style={styles.selectedTimesText}>START: {this.state.startTime}</Text>
-            <Text style={styles.selectedTimesText}>END: {this.state.endTime}</Text>
+          <Text style={styles.selectedTimesText}>START: {this.state.startTime}</Text>
+          <Text style={styles.selectedTimesText}>END: {this.state.endTime}</Text>
+        </View>
+
+        <View style={styles.saveScheduleButtonContainer}>
+          <Button title="Save Schedule"
+            onPress={this.saveSchedule.bind(this)} />
         </View>
 
       </View>
@@ -289,6 +337,13 @@ const styles = StyleSheet.create({
   selectedTimesText: {
     fontSize: 15,
     color: Colors.secondary
+  },
+  saveScheduleButton: {
+
+  },
+  saveScheduleButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "center"
   }
 
 
