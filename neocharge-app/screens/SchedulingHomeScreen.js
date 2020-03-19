@@ -2,62 +2,8 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image, Switch, Button } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-// import DatePicker from 'react-native-datepicker';
 import Colors from '../assets/colors.js';
-//import Slider from '@react-native-community/slider';
 import MultiSlider from 'react-native-multi-slider';
-
-// class RangeSlider extends Component {
-//   state = {
-//     startLabel: this.props.initialStart,
-//     endLabel: this.props.initialEnd,
-//     start: this.props.initialStart,
-//     end: this.props.initialEnd,
-//     value: 0.2
-//   }
-
-//   render() {
-//     const { color, min, max } = this.props;
-//     const { start, end, startLabel, endLabel } = this.state;
-
-//     return (
-//       <View>
-//         <Text style={styles.sliderLabels}>{startLabel} - {endLabel}</Text>
-//         <View style={styles.sliders}>
-//           <Slider style={styles.backgroundSlider} minimumValue={this.min} maximumValue={this.max} thumbTintColor="transparent" />
-
-//           <Slider style={styles.startSlider} onValueChange={this.handleStartValueChange} onSlidingComplete={this.handleStartSlidingComplete} value={this.asInverse(start)} step={1} minimumValue={min} maximumValue={max} thumbTintColor={color} minimumTrackTintColor={color} maximumTrackTintColor="transparent" />
-//           <Slider style={styles.endSlider} onValueChange={this.handleEndValueChange} onSlidingComplete={this.handleEndSlidingComplete} value={end} step={1} minimumValue={min} maximumValue={max} thumbTintColor={color} minimumTrackTintColor={color} maximumTrackTintColor="transparent" />
-
-//         </View>
-//       </View>
-//     )
-//   }
-
-//     asInverse(num) {
-//         const { min, max } = this.props;
-//         const numInverse = min + (max - num);
-//         return numInverse;
-//     }
-//     asForward(numInverse) {
-//         const { min, max } = this.props;
-//         const num = -numInverse + min + max;
-//         return num;
-//     }
-
-//     handleStartValueChange = (startInverse) => {
-//         const start = this.asForward(startInverse);
-//         this.setState(() => ({ startLabel:start }));
-//     }
-//     handleStartSlidingComplete = (startInverse) => {
-//         const start = this.asForward(startInverse);
-//         this.setState(() => ({ start }));
-//     }
-
-//     handleEndValueChange = end => this.setState(() => ({ endLabel:end }))
-//     handleEndSlidingComplete = end => this.setState(() => ({ end }))
-// }
-
 
 class SchedulingHomeScreen extends React.Component {
 
@@ -71,7 +17,10 @@ class SchedulingHomeScreen extends React.Component {
       timeFour: "11:00 AM",
       value: 1,
       value1: 1,
-      multiSliderValue: [3, 7]
+      multiSliderValue: [0, 11] ,
+      startTime: "12:00 PM",
+      endTime: "5:30 PM"
+
     }
   }
 
@@ -93,7 +42,41 @@ class SchedulingHomeScreen extends React.Component {
     this.setState({ switchValue: value })
   };
 
-  multiSliderValuesChange (values) { this.state.multiSliderValue = values; }
+  sliderValToString(sliderVal) {
+    let timeVal;
+    if (sliderVal < 3) {
+      timeVal = ((.5 * sliderVal) + 12);
+    } else if (sliderVal < 24) {
+      timeVal = (.5 * sliderVal);
+    } else if (sliderVal < 27) {
+      timeVal = ((.5 * (sliderVal-24)) + 12);
+    } else {
+      timeVal = (.5 * (sliderVal-24));
+    }
+
+    let retVal;
+    if (timeVal % 1 == 0.5) {
+      retVal=(timeVal-.5).toString() + ":30";
+    } else {
+      retVal= timeVal.toString() + ":00";
+    }
+
+    if (sliderVal < 24) {
+      retVal+=" PM";
+    } else {
+      retVal+=" AM";
+    }
+
+    return retVal;
+
+
+  }
+
+  multiSliderValuesChange(values) { 
+    let startStr = this.sliderValToString(values[0]);
+    let endStr = this.sliderValToString(values[1]);
+    this.setState({ multiSliderValue: values, startTime: startStr, endTime: endStr })
+  }
 
   render() {
     const { show, date, mode } = this.state;
@@ -104,18 +87,6 @@ class SchedulingHomeScreen extends React.Component {
         set a schedule and plug in. Charging at off-peak hours saves
                 you money.</Text>
 
-        {/* <View style={styles.backgroundScheduleBox}>
-          <Text style={styles.optionText}>Schedule</Text>
-          <Switch
-            style={styles.switch}
-            onValueChange={this.toggleSwitch}
-            value={this.state.switchValue} />
-        </View> */}
-
-
-
-        {/* <Text>{this.state.switchValue?'Switch is ON':'Switch is OFF'}</Text> */}
-
         <View style={styles.textContainer}>
           <Text style={styles.scheduleWarning}>Turn off the schedule in your car.</Text>
           <Text style={styles.resetText}>Reset based on utility plan.</Text>
@@ -125,237 +96,27 @@ class SchedulingHomeScreen extends React.Component {
 
         <View style={styles.backgroundTimeBox}>
 
-        <View>
-          <Text>Two Markers:</Text>
-        </View>
-        <MultiSlider
-          values={[this.state.multiSliderValue[0], this.state.multiSliderValue[1]]}
-          sliderLength={250}
-          onValuesChange={this.multiSliderValuesChange.bind(this)}
-          min={0}
-          max={10}
-          step={1}
-          allowOverlap
-          snapped
-        />
-
-          <Text style={{ ...styles.scrollText, marginLeft: 20, marginTop: 10 }}>
-            Start: {this.state.value}:00
-            </Text>
-
-
-          {/* <View style={{ ...styles.containerSlider }}>
-            <Slider
-              value={this.state.value}
-              inverted={'true'}
-              minimumValue={1}
-              maximumValue={24}
+          <View style={styles.containerSlider}>
+            <MultiSlider
+              style={{ alignItems: "center", justifyContent: "center" }}
+              values={[this.state.multiSliderValue[0], this.state.multiSliderValue[1]]}
+              sliderLength={250}
+              onValuesChange={this.multiSliderValuesChange.bind(this)}
+              min={0}
+              max={48}
               step={1}
-              minimumTrackTintColor='orange'
-              maximumTrackTintColor='white'
-              thumbTintColor='red'
-              onValueChange={value => this.setState({ value })}
+
             />
           </View>
 
-        </View>
-
-        <View style={styles.backgroundTimeBox}>
-          <Text style={{ ...styles.scrollText, marginTop: 15 }}>
-            End: {this.state.value1}:00
-                  </Text>
-
-          <View style={{ ...styles.containerSlider }}>
-            <Slider
-              value1={this.state.value1}
-              inverted={'true'}
-              minimumValue={1}
-              maximumValue={24}
-              step={1}
-              minimumTrackTintColor='orange'
-              maximumTrackTintColor='white'
-              thumbTintColor='red'
-              onValueChange={value1 => this.setState({ value1 })}
-            />
-          </View> */}
 
 
         </View>
 
-
-
-
-
-
-
-        {/* Weekday Start */}
-        {/* <View style={styles.timeOption}>
-              <Text style={styles.startsText1}>Starts</Text>  
-              <DatePicker
-                style={{width: 100}}
-                customStyles={{
-                  dateIcon: {
-                    display:'none'
-                  },
-                  dateInput: {
-                    borderWidth:0,
-                    marginRight: 5
-                  },
-                  dateText: {
-                    fontSize: 18,
-                    color: 'white'
-                  }
-              }}
-                date={this.state.timeOne} //initial date from state
-                mode="time" //The enum of date, datetime and time
-                placeholder="select time"
-                format="h:mm A"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(timeOne) => {this.setState({timeOne: timeOne})}}
-              />
-
-            </View> */}
-
-        {/* Weekday End */}
-        {/* <View style={styles.timeOption}>
-              <Text style={styles.startsText1}>Ends</Text>  
-              <DatePicker
-                style={{width: 100}}
-                customStyles={{
-                  dateIcon: {
-                    display:'none'
-                  },
-                  dateInput: {
-                    borderWidth:0,
-                    marginRight: 5
-                  },
-                  dateText: {
-                    fontSize: 18,
-                    color: 'white'
-                  }
-              }}
-                date={this.state.timeTwo} //initial date from state
-                mode="time" //The enum of date, datetime and time
-                placeholder="select time"
-                format="h:mm A"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(timeTwo) => {this.setState({timeTwo: timeTwo})}}
-              />
-
-            </View> */}
-
-
-
-        {/* Weekend Start
-            <View style={styles.timeOption}>
-              <Text style={styles.startsText1}>Starts</Text>  
-              <DatePicker
-                style={{width: 100}}
-                customStyles={{
-                  dateIcon: {
-                    display:'none'
-                  },
-                  dateInput: {
-                    borderWidth:0,
-                    marginRight: 5
-                  },
-                  dateText: {
-                    fontSize: 18,
-                    color: 'white'
-                  }
-              }}
-                date={this.state.timeThree} //initial date from state
-                mode="time" //The enum of date, datetime and time
-                placeholder="select time"
-                format="h:mm A"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(timeThree) => {this.setState({timeThree: timeThree})}}
-              />
-
-            </View> */}
-
-        {/* Weekend Start */}
-        {/* <View style={styles.timeOption}>
-              <Text style={styles.startsText1}>Ends</Text>  
-              <DatePicker
-                style={{width: 100}}
-                customStyles={{
-                  dateIcon: {
-                    display:'none'
-                  },
-                  dateInput: {
-                    borderWidth:0,
-                    marginRight: 5
-                  },
-                  dateText: {
-                    fontSize: 18,
-                    color: 'white'
-                  }
-              }}
-                date={this.state.timeFour} //initial date from state
-                mode="time" //The enum of date, datetime and time
-                placeholder="select time"
-                format="h:mm A"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(timeFour) => {this.setState({timeFour: timeFour})}}
-              />
-
-            </View> */}
-
-        {/* <View style={styles.containerRangeController}>
-        <View style={styles.myRangeWrap}>
-          <RangeSlider min={1} max={24} initialStart={1} initialEnd={24} color="red" />
+        <View style={styles.currentSelectedTimes}>
+            <Text style={styles.selectedTimesText}>START: {this.state.startTime}</Text>
+            <Text style={styles.selectedTimesText}>END: {this.state.endTime}</Text>
         </View>
-    </View>*/}
-
-
-
-
-
-        {/* <View style={styles.containerSlider}>
-                <Slider
-                  value={this.state.value}
-                  minimumValue={1}
-                  maximumValue={12}
-                  step = {1}
-                  minimumTrackTintColor="orange"
-                  maximumTrackTintColor="white"
-                  onValueChange={value => this.setState({ value })}
-                />
-                <Text style = {styles.resetText}>
-                  {this.state.value}:00
-                </Text>
-              </View> */}
-
-
-
-
-
-        {/* <View style = {flexDirection= 'row'}>
-              <View style={{...styles.containerSlider, marginLeft: 145}}>
-                <Slider
-                  value={this.state.value1}
-                  inverted = {'true'}
-                  minimumValue={1}
-                  maximumValue={12}
-                  step = {1}
-                  minimumTrackTintColor='white'
-                  maximumTrackTintColor='orange'
-                  thumbTintColor = 'red'
-                  onValueChange={value1 => this.setState({ value1 })}
-                />
-                <Text style = {styles.scrollText}>
-                  {this.state.value1}:00 pm
-                </Text>
-              </View>
-              </View>
- */}
-
-
 
       </View>
 
@@ -365,14 +126,6 @@ class SchedulingHomeScreen extends React.Component {
   }
 }
 
-// const AppStackNavigator = createStackNavigator({
-//     Schedule: {
-//       screen: SchedulingHomeScreen
-//     },
-//   });
-
-// const Apps = createAppContainer(AppStackNavigator);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -381,11 +134,11 @@ const styles = StyleSheet.create({
 
   containerSlider: {
     flex: 1,
-    alignItems: "stretch",
+    alignItems: "center",
     justifyContent: "center",
     width: 250,
     maxHeight: 50,
-    marginLeft: 80
+    marginTop: 30
 
   },
   textContainer: {
@@ -498,7 +251,9 @@ const styles = StyleSheet.create({
   backgroundTimeBox: {
     flex: 1,
     maxHeight: 90,
-    backgroundColor: '#363636',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#363636'
   },
 
   backgroundTimeBox1: {
@@ -522,6 +277,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#363636',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+
+  currentSelectedTimes: {
+    marginHorizontal: 50,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    marginTop: 15
+  },
+  selectedTimesText: {
+    fontSize: 15,
+    color: Colors.secondary
   }
 
 
