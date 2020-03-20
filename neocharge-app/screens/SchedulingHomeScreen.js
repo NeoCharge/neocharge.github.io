@@ -27,7 +27,6 @@ class SchedulingHomeScreen extends React.Component {
     this.state.userEmail = await SecureStore.getItemAsync("secure_email");
     const path = "/chargeschedule"; // path from root of API
     console.log("making request");
-
     let times = await API.get("LambdaProxy", path,
       {
         "queryStringParameters": {
@@ -37,18 +36,33 @@ class SchedulingHomeScreen extends React.Component {
       })
       .catch(error => { console.log(error.response) });
 
-      //times will contain an array of size 2, with start time and then end time .... [startTime, endTime]
-      if (times.length > 0) {
-        //TODO: create a method to convert these string times to slider values, and set the state on the slider values appropriately
-        
-      } 
-      //user has not set up their desired charge times yet...
-      else {
-
-      }
+    //times will contain an array of size 2, with start time and then end time .... [startTime, endTime]
+    if (times.length > 0) {
+      let startSliderVal = this.stringTimeToSlider(times[0]);
+      let endSliderVal = this.stringTimeToSlider(times[1]);
+      let startStr = this.sliderValToString(startSliderVal);
+      let endStr = this.sliderValToString(endSliderVal);
+      this.setState({ multiSliderValue: [startSliderVal, endSliderVal], startTime: startStr, endTime: endStr });
+      console.log("start time: " + this.stringTimeToSlider(times[0]));
+      console.log("end time: " + this.stringTimeToSlider(times[1]));
+    }
+    //user has not set up their desired charge times yet...
+    else {
+      alert("Desired charge times not selected. Please select the time period to charge your vehicle on the slider bar below.")
+    }
     console.log("response: " + times);
 
-}
+  }
+
+  stringTimeToSlider(strTime) {
+    let strTimes = strTime.split(":");
+    let timeNum = parseInt(strTimes[0]);
+    let sliderVal = (timeNum >= 12) ? 2 * timeNum - 24 : 2 * timeNum + 24;
+    if (strTimes[1] == "30") {
+      sliderVal += 1;
+    }
+    return sliderVal
+  }
 
   // Adding header title, color and font weight
   static navigationOptions = {
@@ -101,7 +115,31 @@ class SchedulingHomeScreen extends React.Component {
   multiSliderValuesChange(values) {
     let startStr = this.sliderValToString(values[0]);
     let endStr = this.sliderValToString(values[1]);
-    this.setState({ multiSliderValue: values, startTime: startStr, endTime: endStr })
+    this.setState({ multiSliderValue: values, startTime: startStr, endTime: endStr });
+    console.log("values changed!");
+  }
+
+  sliderToDBTime(sliderVal) {
+    let timeVal;
+    if (sliderVal < 24) {
+      timeVal = ((.5 * sliderVal) + 12);
+    } else {
+      timeVal = ((.5 * sliderVal) - 12);
+    }
+
+    if (timeVal % 1 == 0.5) {
+      timeVal-=0.5;
+    }
+
+    let retVal = timeVal.toString();
+
+    if (sliderVal % 2 == 0) {
+      retVal+= ":00";
+    } else {
+      retVal+= ":30";
+    }
+    retVal+=":00";
+    return retVal;
   }
 
   async saveSchedule() {
@@ -110,15 +148,21 @@ class SchedulingHomeScreen extends React.Component {
     console.log(this.state.userEmail);
     console.log(typeof this.state.userEmail);
 
+    let dbStart = this.sliderToDBTime(this.state.multiSliderValue[0]);
+    let dbEnd = this.sliderToDBTime(this.state.multiSliderValue[1]);
     let requestBody = {
-      "userEmail": this.state.userEmail
+      "userEmail": this.state.userEmail,
+      "startTime": dbStart,
+      "endTime": dbEnd
     };
     let jsonObj = {
       body: requestBody
     };
-    const path = "/smartcharge";
+    const path = "/chargeschedule";
     const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
     console.log(apiResponse);
+    console.log("start: " + dbStart);
+    console.log("end: " + dbEnd);
   }
 
   render() {
