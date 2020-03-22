@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ -d "react-codemod" ] 
+then
+    echo "Found direcotry ./react-codemod." 
+else
+    echo "Directory ./react-codemod does not exist."
+    echo "Cloning react-codemod into current directory."
+    git clone https://github.com/reactjs/react-codemod.git
+fi
+
+echo "Performing react transformations"
+jscodeshift -t ./react-codemod/transforms/class.js node_modules/react-native-multi-slider
+jscodeshift -t ./react-codemod/transforms/React-PropTypes-to-prop-types.js node_modules/react-native-multi-slider
+jscodeshift -t ./react-codemod/transforms/ReactNative-View-propTypes.js node_modules/react-native-multi-slider
+
+unameOut="$(uname -s)"
+mac="Mac"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
+if [ "$machine" == "$mac" ]
+then
+    sed -i "" "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/mockProps.js
+    sed -i "" "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/Slider.js
+else
+    sed -i "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/mockProps.js
+    sed -i "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/Slider.js
+fi

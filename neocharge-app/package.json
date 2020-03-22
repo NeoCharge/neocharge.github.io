@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "./post_install"
   },
   "dependencies": {
     "@aws-amplify/api": "^1.2.4",
@@ -20,6 +21,7 @@
     "aws-amplify-react-native": "^3.2.2",
     "expo": "^35.0.0",
     "expo-secure-store": "^8.0.0",
+    "jscodeshift": "^0.7.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
