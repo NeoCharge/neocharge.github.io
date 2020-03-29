@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
+import BannerIcon from '../components/BannerIcon';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
 import { API, Auth } from 'aws-amplify';
@@ -18,6 +19,19 @@ export default class HomeScreen extends React.Component {
     // async componentDidMount() {
     //     this.state.userEmail = await SecureStore.getItemAsync("secure_email");
     // }
+
+        // Adding header title, color and font weight
+        static navigationOptions = {
+            title: "Home",
+            headerLeft: <BannerIcon/>,
+            headerStyle: {
+                backgroundColor: Colors.accent2
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+                fontWeight: "bold"
+            }
+        };
 
 
     render() {
