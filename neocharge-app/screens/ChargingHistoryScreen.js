@@ -3,6 +3,7 @@ import GraphComponent from "../components/GraphComponent";
 import { View, StyleSheet, TextInput, Text, Button } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
+import * as SecureStore from 'expo-secure-store';
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -12,22 +13,30 @@ export default class HomeScreen extends React.Component {
             jsonDeviceLogsTimes: [],
             jsonDeviceLogsDates: [],
             graphData: [],
-            kind: ''
+            kind: '',
+            userEmail: '',
+            userHasData: true
+
         }
     }
 
-    buttonClickListener = () => {
-        // const { TextInputValue } = this.state;
+    async componentDidMount() {
+        this.state.userEmail = await SecureStore.getItemAsync("secure_email");
         API.get("LambdaProxy", "/chargeHistory",
             {
                 "queryStringParameters": {
-                    "deviceId": "testId1"
+                    "email": this.state.userEmail
                 }
             })
             .then(
                 response => {
-                    this.setState({ jsonDeviceLogsTimes: response["times"], jsonDeviceLogsDates: response["dates"] })
-                    this.setState({ graphData: response["times"], kind: 'times' })
+                    if (response != null) {
+                        this.setState({ jsonDeviceLogsTimes: response["times"], jsonDeviceLogsDates: response["dates"] });
+                        this.setState({ graphData: response["times"], kind: 'times' });
+                    } else {
+                        console.log("couldn't find any logs for this user");
+                        this.setState({ userHasData: false });
+                    }
                 }
             ).catch(error => {
                 console.log(error.response)
@@ -109,16 +118,33 @@ export default class HomeScreen extends React.Component {
         this.setState({ graphData: newData, kind: 'dates' })
     }
 
+    // Adding header title, color and font weight
+    static navigationOptions = {
+        title: "Charge History",
+        headerStyle: {
+            backgroundColor: Colors.accent2
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+            fontWeight: "bold"
+        }
+    };
+
+    renderMessage() {
+        if (this.state.userHasData) {
+            return null;
+        } else {
+            return (<View>
+                <Text style={styles.noChargeText}>After your first charge, your charging history will appear here!</Text>
+            </View>);
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.getUserButton}>
-                    <Button
-                        onPress={this.buttonClickListener}
-                        title='Get User Data'
-                        color={Colors.secondary}
-                    />
-                </View>
+
+                {this.renderMessage()}
 
                 <View style={styles.graph}>
                     <GraphComponent
@@ -183,13 +209,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: Colors.secondary
     },
-    getUserButton: {
-        // flex: 1,
-        height: '5%',
-        width: '40%',
-        marginTop: 50,
-        backgroundColor: 'orange'
-    },
     timeButtons: {
         flex: 1,
         flexDirection: 'row',
@@ -200,6 +219,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         height: '20%',
         width: '20%'
+    },
+    noChargeText: {
+        fontSize: 20,
+        textAlign: 'center',
+        justifyContent: 'center',
+        marginHorizontal: '20%',
+        marginTop: '15%',
+        color: Colors.secondary
     }
 
 });
