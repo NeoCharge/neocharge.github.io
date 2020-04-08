@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -d "react-codemod" ] 
+if [ -f "./react-codemod/transforms/class.js" -a -f "./react-codemod/transforms/React-PropTypes-to-prop-types.js" -a -f "./react-codemod/transforms/ReactNative-View-propTypes.js" ]
 then
-    echo "Found direcotry ./react-codemod." 
+    echo "Found necessary files in ./react-codemod." 
 else
     echo "Directory ./react-codemod does not exist."
     echo "Cloning react-codemod into current directory."
@@ -10,6 +10,7 @@ else
 fi
 
 echo "Performing react transformations"
+
 jscodeshift -t ./react-codemod/transforms/class.js node_modules/react-native-multi-slider
 jscodeshift -t ./react-codemod/transforms/React-PropTypes-to-prop-types.js node_modules/react-native-multi-slider
 jscodeshift -t ./react-codemod/transforms/ReactNative-View-propTypes.js node_modules/react-native-multi-slider
@@ -24,11 +25,14 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-if [ "$machine" == "$mac" ]
+if ! grep -Fq "var { ViewPropTypes } = require('react-native');" node_modules/react-native-multi-slider/mockProps.js
 then
-    sed -i "" "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/mockProps.js
-    sed -i "" "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/Slider.js
-else
-    sed -i "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/mockProps.js
-    sed -i "s|var ReactNative = require('react-native');|var ReactNative = require('react-native');\nvar { ViewPropTypes } = require('react-native');|" node_modules/react-native-multi-slider/Slider.js
+    if [ "$machine" == "$mac" ]
+    then
+        sed -i "" $'s|var ReactNative = require(\'react-native\');|var ReactNative = require(\'react-native\');\\\n var { ViewPropTypes } = require(\'react-native\');|' node_modules/react-native-multi-slider/mockProps.js
+        sed -i "" $'s|var ReactNative = require(\'react-native\');|var ReactNative = require(\'react-native\');\\\n var { ViewPropTypes } = require(\'react-native\');|' node_modules/react-native-multi-slider/Slider.js
+    else
+        sed -i $'s|var ReactNative = require(\'react-native\');|var ReactNative = require(\'react-native\');\\\n var { ViewPropTypes } = require(\'react-native\');|' node_modules/react-native-multi-slider/mockProps.js
+        sed -i $'s|var ReactNative = require(\'react-native\');|var ReactNative = require(\'react-native\');\\\n var { ViewPropTypes } = require(\'react-native\');|' node_modules/react-native-multi-slider/Slider.js
+    fi
 fi
