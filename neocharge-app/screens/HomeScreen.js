@@ -4,7 +4,6 @@ import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
 import BannerIcon from '../components/BannerIcon';
 import Colors from '../assets/colors';
-import * as SecureStore from 'expo-secure-store';
 import { API, Auth } from 'aws-amplify';
 
 export default class HomeScreen extends React.Component {
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     subcontainer2: {
         flex: 3,
         flexDirection: 'column',
-        paddingBottom: 20,
+        paddingBottom: 5,
     },
     image: {
         flex: 1,

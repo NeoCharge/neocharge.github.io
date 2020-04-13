@@ -11,7 +11,7 @@ export default class HomeOption extends React.Component {
                     <Image
                         source={this.props.img}
                         style={styles.image}
-                        resizeMode='cover'
+                        resizeMode='contain'
                     />
                 </View>
                 <Text style={styles.text}> {this.props.name} </Text>
@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: 60,
-        height: 60
+        height: 60,
     }
 });
