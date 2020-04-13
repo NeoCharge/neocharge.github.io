@@ -54,7 +54,6 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.subcontainer2}>
                     <HomeOption nav={this.props.navigation}
                         screenName={'ChargingHistory'}
-                        /* TODO the remove './josh' from assets */
                         img={require('../assets/history-icon.png')}
                         name='CHARGING HISTORY' />
 
