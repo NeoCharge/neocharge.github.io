@@ -5,7 +5,10 @@ const BannerIcon = props => {
 
   return (
     <View style={styles.imageContainer}>
-        <Image source={require('../assets/NeoCharge-Banner-Logo.png')}/>
+        <Image 
+          style={styles.imageStyle}
+          source={require('../assets/NeoCharge-Banner-Logo.png')}
+          resizeMode='contain'/>
     </View>
   );
 };
@@ -15,6 +18,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     paddingLeft: 20
+  },
+  imageStyle: {
+    width: 50,
+    height: 50
+
   }
 });
 

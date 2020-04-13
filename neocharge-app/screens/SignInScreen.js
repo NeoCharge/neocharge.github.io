@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
 
@@ -54,22 +54,47 @@ class SignInScreen extends React.Component {
     async SignIn() {
         const email = this.state.EmailInputValue;
         const password = this.state.PasswordInputValue;
-        var noErrors = true;
+        let signInSuccess = true;
         try {
-            if (!(noErrors = this.checkValidInput(email, password))) {
+            if (!(signInSuccess = this.checkValidInput(email, password))) {
                 return //return if the input was not valid
             }
             const user = await Auth.signIn(email, password)
                 .catch(error => {
                     console.log(error.code);
-                    noErrors = false;
+                    signInSuccess = false;
                     this.handleErrors(error.code, email);
                 });
             console.log(user);
-            if (noErrors) {
+            if (signInSuccess) {
+                // save user credentials locally on phone
                 this.setSecureStore("secure_email", email);
                 this.setSecureStore("secure_password", password);
-                this.props.navigation.navigate('App');
+                
+                // check if user has finished first time setup
+                const path = "/user";
+                // let session = await Auth.currentSession();
+                // let authToken = session["idToken"]["jwtToken"];
+                // console.log(authToken);
+                let getuser = await API.get("LambdaProxy", path,
+                  {
+                    // headers: {
+                    //   Authorization: authToken
+                    // },
+                    "queryStringParameters": {
+                      "userEmail": email
+                    }
+        
+                  })
+                  .catch(error => { console.log(error.response) });
+        
+                const setupComplete = ((typeof getuser != undefined) && (getuser.length > 0)); // the user exists in our users table
+                if (setupComplete) {
+                    this.props.navigation.navigate('App');
+                }
+                else {
+                    this.props.navigation.navigate('Setup', { userEmail: email });
+                }
             }
         } catch (err) {
             console.log("catching error: " + err);
