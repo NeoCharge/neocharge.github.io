@@ -1,4 +1,4 @@
 # TheJuicerz
 
-Testing Travis build...
-Checking if change applied.
+# About
+For any feedback, email us at thejuicerzcapstone@gmail.com
