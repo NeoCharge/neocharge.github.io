@@ -21,7 +21,7 @@ If you run into any issues while installing, please [contact](contact.md) us!
 ## Application Walkthrough 
 ### First Time Users
 
-<img src="images/signup.png" width = 30% height = 30% title="SignUp Screen">
+<img src="images/signup.png" title="SignUp Screen">
 
 Upon opening the app, you will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
@@ -44,15 +44,15 @@ The main screen allows you to view how far along the car has been charged. It al
 
 To charging history graph will allow you to see how much the car was charged for the day, week, month, and year. 
 
-<img src="/images/graph.png" title="Schedule Screen">
+<img src="images/graph.png" title="Schedule Screen">
 
 The schedule charge option will allow you to set a recurring charge for the car. Once the car is plugged in, the car will begin and end charging at the times specified here. 
 
 
-<img src="/images/settings.png" title="Settings Screen">
+<img src="images/settings.png" title="Settings Screen">
 
 The settings screen will provide you with information about your account. It will also allow you to change time zones if needed as well as configure your primary and secondary devices. You also have the option to sign out of your account here, which will bring you back to the main sign in page. 
 
-<img src="/images/notifications.png" title="Notifications Screen">
+<img src="images/notifications.png" title="Notifications Screen">
 
 This screen will allow you to select the notifications you would like to recieve on your mobile device. 
