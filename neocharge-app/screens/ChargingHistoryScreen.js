@@ -1,6 +1,6 @@
 import React from 'react';
 import GraphComponent from "../components/GraphComponent";
-import { View, StyleSheet, TextInput, Text, Button } from 'react-native';
+import { Alert, View, StyleSheet, TextInput, Text, Button } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
@@ -13,7 +13,7 @@ export default class HomeScreen extends React.Component {
             jsonDeviceLogsTimes: [],
             jsonDeviceLogsDates: [],
             graphData: [],
-            kind: '',
+            graphType: '',
             userEmail: '',
             userHasData: true
 
@@ -32,7 +32,7 @@ export default class HomeScreen extends React.Component {
                 response => {
                     if (response != null) {
                         this.setState({ jsonDeviceLogsTimes: response["times"], jsonDeviceLogsDates: response["dates"] });
-                        this.setState({ graphData: response["times"], kind: 'times' });
+                        this.setState({ graphData: response["times"], graphType: 'times' });
                     } else {
                         console.log("couldn't find any logs for this user");
                         this.setState({ userHasData: false });
@@ -46,11 +46,10 @@ export default class HomeScreen extends React.Component {
     dayListener = () => {
         const data = this.state.jsonDeviceLogsTimes
         const newData = []
-        const oneDay = 1000 * 60 * 60 * 24;
 
         data.forEach(obj => {
-            const d = new Date("December 3, 2019 11:13:00").toISOString().split('T')[0]
-            const today = Date.parse(d)
+            const todayString = new Date().toISOString().split('T')[0]
+            const today = Date.parse(todayString)
             const date = Date.parse(obj.startTime.substring(0, 10))
             if (date == today) {
                 newData.push(obj)
@@ -58,7 +57,11 @@ export default class HomeScreen extends React.Component {
         }
         )
 
-        this.setState({ graphData: newData, kind: 'times' })
+        if (newData.length == 0) {
+            Alert.alert("Your vehicle hasn't been charged today.")
+        }
+
+        this.setState({ graphData: newData, graphType: 'times' })
     }
 
     weekListener = () => {
@@ -68,8 +71,8 @@ export default class HomeScreen extends React.Component {
         const oneWeek = oneDay * 7;
 
         data.forEach(obj => {
-            const d = new Date("December 3, 2019 11:13:00").toISOString().split('T')[0]
-            const today = Date.parse(d)
+            const todayString = new Date().toISOString().split('T')[0]
+            const today = Date.parse(todayString)
             const date = Date.parse(obj.startTime.substring(0, 10))
             if (date >= (today - oneWeek) && date <= today) {
                 newData.push(obj)
@@ -77,18 +80,17 @@ export default class HomeScreen extends React.Component {
         }
         )
 
-        this.setState({ graphData: newData, kind: 'dates' })
+        this.setState({ graphData: newData, graphType: 'dates' })
     }
 
     monthListener = () => {
         const data = this.state.jsonDeviceLogsDates
         const newData = []
-        const oneDay = 1000 * 60 * 60 * 24;
 
         data.forEach(obj => {
-            const d = new Date("December 3, 2019 11:13:00")
-            const todaysMonth = d.getMonth()
-            const todaysYear = d.getFullYear()
+            const today = new Date()
+            const todaysMonth = today.getMonth()
+            const todaysYear = today.getFullYear()
             const dateMonth = new Date(obj.startTime).getMonth()
             const dateYear = new Date(obj.startTime).getFullYear()
             if (todaysMonth == dateMonth && todaysYear == dateYear) {
@@ -97,25 +99,24 @@ export default class HomeScreen extends React.Component {
         }
         )
 
-        this.setState({ graphData: newData, kind: 'dates' })
+        this.setState({ graphData: newData, graphType: 'dates' })
     }
 
     yearListener = () => {
         const data = this.state.jsonDeviceLogsDates
         const newData = []
-        const oneDay = 1000 * 60 * 60 * 24;
 
         data.forEach(obj => {
-            const d = new Date("February 26, 2019 11:13:00")
-            const today = d.getFullYear()
+            const today = new Date()
+            const year = today.getFullYear()
             const date = new Date(obj.startTime).getFullYear()
-            if (date == today) {
+            if (date == year) {
                 newData.push(obj)
             }
         }
         )
 
-        this.setState({ graphData: newData, kind: 'dates' })
+        this.setState({ graphData: newData, graphType: 'dates' })
     }
 
     // Adding header title, color and font weight
@@ -149,7 +150,7 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.graph}>
                     <GraphComponent
                         data={this.state.graphData}
-                        kind={this.state.kind}
+                        graphType={this.state.graphType}
                     />
                 </View>
 

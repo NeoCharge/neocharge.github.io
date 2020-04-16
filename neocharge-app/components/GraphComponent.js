@@ -12,25 +12,8 @@ import {
 } from 'victory-native';
 import Colors from '../assets/colors.js';
 
-class CustomFlyout extends React.Component {
-  render() {
-    // const { x, y, orientation } = this.props;
-    // const newY = orientation === "bottom" ? y - 35 : y + 35;
-    return (
-      <>
-        {/* <View style={styles.line}></View> */}
-      </>
-    );
-  }
-}
 
 export default class GraphComponent extends React.Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //       dataLabe: '',
-  //   }
-  // }
 
   transformDates() {
     const rawList = this.props.data
@@ -49,8 +32,8 @@ export default class GraphComponent extends React.Component {
     const formattedJson = []
 
     rawList.forEach(obj => {
-      const d = new Date("December 3, 2019 11:13:00").toISOString().split('T')[0]
-      const today = Date.parse(d)
+      const todayString = new Date().toISOString().split('T')[0]
+      const today = Date.parse(todayString)
       const date = Date.parse(obj.startTime.substring(0, 10))
       if (date == today)
         formattedJson.push({
@@ -64,31 +47,25 @@ export default class GraphComponent extends React.Component {
   }
 
   render() {
-    const screenWidth = Dimensions.get('window').width;
 
     return (
       <View style={styles.container}>
         <VictoryChart
-          // width={screenWidth - 50}
           height={300}
-          // domainPadding={{ x: 40 }}
           theme={theme}
           containerComponent={
             <VictoryVoronoiContainer
               mouseFollowTooltips
               voronoiDimension="x"
               labels={({ datum }) => `${datum.Length}`}
-              labelComponent={
-                <VictoryTooltip
-                  flyoutComponent={<CustomFlyout />}
-                />
-              }
+            // labelComponent={
+            //   <VictoryTooltip />
+            // }
             />
           }
         >
-          {/* <VictoryLabel x={175} y={10} textAnchor='middle'/> */}
           <VictoryLine
-            data={this.props.kind == 'times' ? this.transformTimes() : this.transformDates()}
+            data={this.props.graphType == 'times' ? this.transformTimes() : this.transformDates()}
             x='ChargeDate'
             y='Length'
             sortKey='ChargeDate'
