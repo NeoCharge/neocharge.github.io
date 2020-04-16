@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0-a1",
     "orientation": "portrait",
     "icon": "./assets/NeoCharge-Logo.png",
     "splash": {
@@ -25,6 +25,11 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.NeoCharge.NeoCharge",
+      "versionCode": 1
     }
+
   }
 }
