@@ -14,3 +14,5 @@ All of the major features that will be implemented into the NeoCharge app will f
 ### Control over the charging session:
 - Users will be able to set limits on when they would want to charge
 - Users will also have the option to start a charging session right away
+
+### [Try our app now](installation.md)!
