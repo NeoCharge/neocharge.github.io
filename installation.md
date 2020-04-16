@@ -16,7 +16,7 @@ If you are downloading on an android phone, the installation process should begi
 If prompted, enable "install(ing) unknown apps from this source." After the installation finishes, tap "Open" to open the application.
 
 ### Installation Issues?
-If you have any issues while attempting to install, please [contact](contact.md) us!
+If you run into any issues while installing, please [contact](contact.md) us!
 
 ## Application Walkthrough 
 ### First Time Users:
