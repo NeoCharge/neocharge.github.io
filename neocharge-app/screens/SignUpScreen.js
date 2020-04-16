@@ -143,7 +143,6 @@ class SignUpScreen extends React.Component {
     }
 
     setSecureStore = async (key, value) => {
-        console.log("storing key: " + key + ", value: " + value);
         await SecureStore.setItemAsync(key, value);
     }
 
