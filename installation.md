@@ -21,26 +21,26 @@ If you run into any issues while installing, please [contact](contact.md) us!
 ## Application Walkthrough 
 ### First Time Users
 
-<img src="/images/signup.png" title="SignUp Screen">
+<img src="images/signup.png" width = 30% height = 30% title="SignUp Screen">
 
 Upon opening the app, you will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
-<img src="/images/verification.png" title="Verification Screen">
+<img src="images/verification.png" title="Verification Screen">
 
 Next, you will be taken to the the account verification screen which requires the code that was sent to your specified email address. 
 
-<img src="/images/deviceId.png" title="Device Id Screen">
+<img src="images/deviceId.png" title="Device Id Screen">
 
 Upon successful verification, you will be prompted to enter the device id which can be found on the back of your NeoCharge device. You will also be able to specify the time zone as well as configure your primary and secondary devices here. 
 
 ### All Users
 
-<img src="/images/dashboard.png" title="Dashboard Screen">
+<img src="images/dashboard.png" title="Dashboard Screen">
 
 The main screen allows you to view how far along the car has been charged. It also gives you the control of starting and stopping your charge, enable the smart charge feature, and also allows you to view how fast the car is being charged.
 
 
-<img src="/images/schedule.png" title="Charging History Screen">
+<img src="images/schedule.png" title="Charging History Screen">
 
 To charging history graph will allow you to see how much the car was charged for the day, week, month, and year. 
 
