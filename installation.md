@@ -19,39 +19,40 @@ If prompted, enable "install(ing) unknown apps from this source." After the inst
 If you run into any issues while installing, please [contact](contact.md) us!
 
 ## Application Walkthrough 
-### First Time Users:
+### First Time Users
 
 INSERT SIGN UP PAGE SCREENSHOT HERE
 
 Upon opening the app, you will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
-INSERT VERIFICATION CODE SCREENSHOT HERE
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/verification.png" width=30% height=30% title="Verification Screen">
 
 Next, you will be taken to the the account verification screen which requires the code that was sent to your specified email address. 
 
-INSERT DEVICEID SCREENSHOT HERE
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/deviceId.png" width=30% height=30% title="Device Id Screen">
 
 Upon successful verification, you will be prompted to enter the device id which can be found on the back of your NeoCharge device. You will also be able to specify the time zone as well as configure your primary and secondary devices here. 
 
-## All Users
+### All Users
 
-INSERT DASHBOARD SCREEN
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/dashboard.png" width=30% height=30% title="Dashboard Screen">
 
 The main screen allows you to view how far along the car has been charged. It also gives you the control of starting and stopping your charge, enable the smart charge feature, and also allows you to view how fast the car is being charged.
 
 
-INSERT CHARGING HISTORY SCREEN
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/schedule.png" width=30% height=30% title="Charging History Screen">
 
 To charging history graph will allow you to see how much the car was charged for the day, week, month, and year. 
 
-INSERT SCHEDULE CHARGE SCREEN
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/graph.png" width=30% height=30% title="Schedule Screen">
 
 The schedule charge option will allow you to set a recurring charge for the car. Once the car is plugged in, the car will begin and end charging at the times specified here. 
 
-INSERT SETTINGS SCREEN HERE
+
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/settings.png" width=30% height=30% title="Settings Screen">
 
 The settings screen will provide you with information about your account. It will also allow you to change time zones if needed as well as configure your primary and secondary devices. You also have the option to sign out of your account here, which will bring you back to the main sign in page. 
 
-INSERT NOTIFICATIONS SCREEN HERE
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/notifications.png" width=30% height=30% title="Notifications Screen">
 
 This screen will allow you to select the notifications you would like to recieve on your mobile device. 
