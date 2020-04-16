@@ -13,7 +13,10 @@ If you are downloading on a computer, please transfer the file over to your phon
 
 If you are downloading on an android phone, the installation process should begin immediately.
 
-If prompted, enable "install(ing) unknown apps from this source. After the installation finishes, tap "Open" to open the application.
+If prompted, enable "install(ing) unknown apps from this source." After the installation finishes, tap "Open" to open the application.
+
+### Installation Issues?
+If you have any issues while attempting to install, please [contact](contact.md) us!
 
 ## Application Walkthrough 
 ### First Time Users:
