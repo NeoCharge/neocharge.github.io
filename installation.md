@@ -21,7 +21,7 @@ If you run into any issues while installing, please [contact](contact.md) us!
 ## Application Walkthrough 
 ### First Time Users
 
-INSERT SIGN UP PAGE SCREENSHOT HERE
+<img src="https://github.com/CPSECapstone/TheJuicerz/blob/master/images/signup.png" width=30% height=30% title="SignUp Screen">
 
 Upon opening the app, you will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
