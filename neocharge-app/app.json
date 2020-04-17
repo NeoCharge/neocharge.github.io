@@ -3,15 +3,15 @@
     "name": "NeoCharge",
     "slug": "neocharge-app",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "37.0.0",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0-a1",
+    "version": "1.0",
     "orientation": "portrait",
-    "icon": "./assets/NeoCharge-Logo.png",
+    "icon": "./assets/NeoCharge-Logo-White.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,12 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.getneocharge.neochargeapp"
     },
     "android": {
       "package": "com.NeoCharge.NeoCharge",
       "versionCode": 1
     }
-
   }
 }
