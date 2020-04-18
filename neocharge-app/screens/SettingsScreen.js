@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image, Aler
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
-import ListPopover from 'react-native-list-popover';
+//import ListPopover from 'react-native-list-popover';
 import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import LogoutOption from '../components/LogoutOption';
@@ -79,12 +79,12 @@ class SettingsScreen extends React.Component {
             onPress={() => this.setState({ isVisible: true })}>
             <Text style={{ marginLeft: 60, color: 'white', fontSize: 20 }}>{this.state.item || 'Select'}</Text>
           </TouchableHighlight>
-          <ListPopover
+          {/*<ListPopover
             list={items}
             isVisible={this.state.isVisible}
             onClick={(item) => this.setState({ item: item })}
             onClose={() => this.setState({ isVisible: false })}
-          />
+          />*/ }
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
         </View>
 

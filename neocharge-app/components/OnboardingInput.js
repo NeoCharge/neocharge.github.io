@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Text, Button, Picker } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import ModalDropdown from 'react-native-modal-dropdown'
 
 const OnboardingInput = props => {
 
@@ -16,15 +15,15 @@ const OnboardingInput = props => {
     };
 
     const timeZoneHandler = (selectedVal) => {
-        props.timeZoneHandler(timeZoneInputs[selectedVal]);
+        props.timeZoneHandler(selectedVal);
     };
 
     const primDevHandler = (selectedVal) => {
-        props.primDevHandler(deviceInputs[selectedVal]);
+        props.primDevHandler(selectedVal);
     };
 
     const secDevHandler = (selectedVal) => {
-        props.secDevHandler(deviceInputs[selectedVal]);
+        props.secDevHandler(selectedVal);
     };
 
     return (
@@ -41,49 +40,65 @@ const OnboardingInput = props => {
             <View style={styles.deviceInfoContainer}>
                 <Text style={styles.promptText}>Select Time Zone</Text>
                 <View style={styles.pickerContainer}>
-                    <ModalDropdown options={timeZoneInputs} onSelect={timeZoneHandler} />
+                    <Picker
+                        onValueChange={(itemValue, itemIndex) => timeZoneHandler(itemValue)}>
+                        <Picker.Item label="PST" value="PST" />
+                        <Picker.Item label="MST" value="MST" />
+                        <Picker.Item label="CST" value="CST" />
+                        <Picker.Item label="EST" value="EST" />
+                    </Picker>
                 </View>
-            </View>
-            <View style={styles.deviceInfoContainer}>
-                <Text style={styles.promptText}>Select Primary Device</Text>
-                <View style={styles.pickerContainer}>
-                    <ModalDropdown options={deviceInputs} onSelect={primDevHandler} />
                 </View>
-            </View>
-            <View style={styles.deviceInfoContainer}>
-                <Text style={styles.promptText}>Select Secondary Device</Text>
-                <View style={styles.pickerContainer}>
-                    <ModalDropdown options={deviceInputs} onSelect={secDevHandler} />
+                <View style={styles.deviceInfoContainer}>
+                    <Text style={styles.promptText}>Select Primary Device</Text>
+                    <View style={styles.pickerContainer}>
+                    <Picker
+                        onValueChange={(itemValue, itemIndex) => primDevHandler(itemValue)}>
+                        <Picker.Item label="Vehicle" value="Vehicle" />
+                        <Picker.Item label="Washer/Dryer" value="Washer/Dryer" />
+                        <Picker.Item label="None" value="None" />
+                    </Picker>
+                    </View>
                 </View>
-            </View>
+                <View style={styles.deviceInfoContainer}>
+                    <Text style={styles.promptText}>Select Secondary Device</Text>
+                    <View style={styles.pickerContainer}>
+                    <Picker
+                        onValueChange={(itemValue, itemIndex) => secDevHandler(itemValue)}>
+                        <Picker.Item label="Vehicle" value="Vehicle" />
+                        <Picker.Item label="Washer/Dryer" value="Washer/Dryer" />
+                        <Picker.Item label="None" value="None" />
+                    </Picker>
+                    </View>
+                </View>
 
-        </View>
+            </View>
     );
 };
 
 const styles = StyleSheet.create({
-    inputContainer: {
-        justifyContent: 'center',
+                inputContainer: {
+                justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 20
     },
     deviceInfoContainer: {
-        flexDirection: 'row',
+                flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: "center",
         width: '90%',
         padding: 10
     },
     promptText: {
-        textAlign: "center",
+                textAlign: "center",
         fontSize: 20
     },
     textContainer: {
-        flexDirection: 'column',
+                flexDirection: 'column',
         justifyContent: 'center'
     },
     itemStyle: {
-        fontSize: 10
+                fontSize: 10
     }
 });
 
