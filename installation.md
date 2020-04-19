@@ -31,7 +31,9 @@ Next, you will be taken to the the account verification screen which requires th
 
 <img src="images/deviceId.png" title="Device Id Screen">
 
-Upon successful verification, you will be prompted to enter the device id which can be found on the back of your NeoCharge device. You will also be able to specify the time zone as well as configure your primary and secondary devices here. 
+Upon successful verification, you will be prompted to enter the device id which can be found on the back of your NeoCharge device. You will also be able to specify the time zone as well as configure your primary and secondary devices here.
+
+<strong>Important Note for Alpha Testers:</strong> If you do not own a physical NeoCharge device, enter "mydevice" for the device id field. 
 
 ### All Users
 
