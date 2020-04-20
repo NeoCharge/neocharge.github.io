@@ -4,6 +4,7 @@
 ### IOS Users:
 
 Begin by first installing the TestFlight IOS app onto your mobile device. To start running the application, accept the invitation sent to you either in the TestFlight iOS app or with a redemption code found via a link in the beta invitation. Once accepted you can install the prerelease build. The TestFlight app will notify you when new builds are available. To update to the latest build, simply tap Update. 
+<strong>Important Note for Alpha Testers:</strong> Please create an App Store Connect account [here](https://appstoreconnect.apple.com/login). Then send an email to thejuicerzcapstone@gmail.com, including your name and the email you signed up for App Store Connect with, and we will send you an invite to download our app on TestFlight.
 
 
 ### Android Users: 
