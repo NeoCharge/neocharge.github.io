@@ -15,7 +15,8 @@ class SetupScreen extends React.Component {
       deviceID: '', timeZone: '',
       primaryDevice: '',
       secondaryDevice: '',
-      pushToken: ''
+      pushToken: '',
+      hasLoggedData: false
     }
 
     this.timeZoneHandler = this.timeZoneHandler.bind(this);
@@ -59,42 +60,45 @@ class SetupScreen extends React.Component {
   }
 
   async logOnboardingInfo() {
-    console.log("userEmail: " + this.state.userEmail);
-    console.log("timeZone: " + this.state.timeZone);
-    console.log("primaryDevice: " + this.state.primaryDevice);
-    console.log("secondaryDevice: " + this.state.secondaryDevice);
-    console.log("deviceID: " + this.state.deviceID);
+
+    //check to see if the user has already clicked the continue button
+    //if they have, then don't enter, because it will create another user entry in the DB
+    if (!this.state.hasLoggedData) {
+      console.log("userEmail: " + this.state.userEmail);
+      console.log("timeZone: " + this.state.timeZone);
+      console.log("primaryDevice: " + this.state.primaryDevice);
+      console.log("secondaryDevice: " + this.state.secondaryDevice);
+      console.log("deviceID: " + this.state.deviceID);
 
 
-    let requestBody = {
-      "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
-      "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
-      "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
-    };
-    let jsonObj = {
-      // headers: {
-      //   Authorization: authToken
-      // },
-      body: requestBody
+      let requestBody = {
+        "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
+        "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
+        "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
+      };
+      let jsonObj = {
+        body: requestBody
+      }
+      const path = "/user";
+
+      console.log(this.state.pushToken);
+      console.log(typeof this.state.pushToken);
+
+      let devID = "XSD-934859734-TTYZ";
+
+      let hasValidID = await hasValidDeviceID(this.state.deviceID);
+
+      if (!hasValidID) {
+        console.log("entered non valid id");
+        alert("Must enter a valid device ID.");
+        return;
+      }
+
+      const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
+      console.log(apiResponse);
+      this.state.hasLoggedData = true;
+      this.props.navigation.navigate('App');
     }
-    const path = "/user";
-
-    console.log(this.state.pushToken);
-    console.log(typeof this.state.pushToken);
-
-    let devID = "XSD-934859734-TTYZ";
-
-    let hasValidID = await hasValidDeviceID(this.state.deviceID);
-
-    if (!hasValidID) {
-      console.log("entered non valid id");
-      alert("Must enter a valid device ID.");
-      return;
-    }
-
-    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
-    console.log(apiResponse);
-    this.props.navigation.navigate('App');
   };
 
   render() {
