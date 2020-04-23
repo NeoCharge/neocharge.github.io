@@ -20,30 +20,43 @@ export default class Dashboard extends React.Component {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
         console.log("email on dashboard: " + this.state.userEmail);
 
-        let jsonObj = {
-            "userEmail": this.state.userEmail
-        };
-        const path = "/smartcharge"; // path from root of API
-        console.log("making request");
-
-        let isSet = await API.get("LambdaProxy", path,
-          {
+        let query = {
             "queryStringParameters": {
-              "userEmail": this.state.userEmail
+                "userEmail": this.state.userEmail
             }
+        };
 
-          })
-          .catch(error => { console.log(error.response) });
+        // Get SmartCharge Status
+        const path = "/smartcharge"; // path from root of API
+        console.log("making smartcharge GET request");
+
+        let isSet = await API.get("LambdaProxy", path, query)
+            .catch(error => { console.log(error.response) });
 
         console.log("response: " + isSet);
 
-        console.log(isSet);
+        console.log("smart charge status: " + isSet);
         if (isSet) {
-            this.setState({smartChargeStyle : styles.smartChargeOn})
+            this.setState({ smartChargeStyle: styles.smartChargeOn })
         } else {
-            this.setState({smartChargeStyle : styles.smartChargeOff})
+            this.setState({ smartChargeStyle: styles.smartChargeOff })
         }
         console.log(this.state.userEmail);
+
+        // Get Pause Status
+        console.log("making pause GET request");
+
+        let pauseIsSet = await API.get("LambdaProxy", "/pausecharge", query)
+            .catch(error => { console.log(error.response) });
+
+        console.log("response: " + pauseIsSet);
+
+        console.log("pause status: " + pauseIsSet);
+        if (pauseIsSet) {
+            this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
+        } else {
+            this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
+        }
     }
 
     async setSmartCharge() {
@@ -64,23 +77,20 @@ export default class Dashboard extends React.Component {
         };
         const path = "/smartcharge";
         const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
-        console.log(apiResponse);
+        console.log("smartcharge: " + apiResponse);
     }
 
     //TODO: put logic of actual pausing/connection to backend in here
-    async setPause () {
+    async setPause() {
         if (this.state.pauseStyle == styles.pauseOn) {
             this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
             console.log("unpaused");
-        } else 
-        {
+        } else {
             //TODO: find out what might be a good way to indicate textually to the user that the 
             //charge is paused, i.e. changed the text below to "RESUME"????
             this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
             console.log("paused");
         }
-        console.log(this.state.userEmail);
-        console.log(typeof this.state.userEmail);
 
         let requestBody = {
             "userEmail": this.state.userEmail
@@ -89,8 +99,10 @@ export default class Dashboard extends React.Component {
             body: requestBody
         };
         const path = "/pausecharge";
-        const apiResponse = await API.put("LambdaProxy", path, jsonObj);
-        console.log(apiResponse);
+        await API.put("LambdaProxy", path, jsonObj)
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 
     render() {
