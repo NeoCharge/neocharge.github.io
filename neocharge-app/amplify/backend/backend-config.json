@@ -1,66 +1,4 @@
 {
-<<<<<<< HEAD
-    "function": {
-        "addusers": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        },
-        "dbPostTest": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        },
-        "neochargeapp074866b8": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        },
-        "addUser": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        }
-    },
-    "api": {
-        "LambdaProxy": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "addusers",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "LambdaProxy2": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "dbPostTest",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        }
-    },
-    "auth": {
-        "neochargeapp8b1274aa": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": []
-        }
-    }
-}
-=======
 	"function": {
 		"addusers": {
 			"service": "Lambda",
@@ -73,6 +11,26 @@
 			"build": true
 		},
 		"neochargeapp074866b8": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		},
+		"addUser": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		},
+		"getUser": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		},
+		"notificationSettings": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		},
+		"getMostRecentCharge": {
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true
@@ -116,7 +74,3 @@
 		}
 	}
 }
-<<<<<<< Updated upstream
->>>>>>> bb3fb087133771761b3ea521df909b56005b0932
-=======
->>>>>>> Stashed changes
