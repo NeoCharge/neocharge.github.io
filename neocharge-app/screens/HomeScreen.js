@@ -3,29 +3,10 @@ import { View, StyleSheet, Text, Image, useEffect } from 'react-native';
 import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
 import BannerIcon from '../components/BannerIcon';
+import DeviceDisplay from '../components/DeviceDisplay';
 import Colors from '../assets/colors';
-import Devices from '../assets/devices';
-import { API } from 'aws-amplify';
-import * as SecureStore from 'expo-secure-store';
 
-const DELAY = 5000;
-const NONE = 0;
-const PRIMARY = 1;
-const SECONDARY = 2;
-
-export default class PrimaryDeviceScreen extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            device: '',
-            port: NONE,
-            image: Devices.images["Logo"],
-            primary: Colors.primary,
-            secondary: Colors.primary,
-            userEmail: ''
-        }
-    }
-
+export default class HomeScreen extends React.Component {
     // Adding header title, color and font weight
     static navigationOptions = {
         title: "Home",
@@ -39,76 +20,12 @@ export default class PrimaryDeviceScreen extends React.Component {
         }
     };
 
-    async componentDidMount() {
-        this.state.userEmail = await SecureStore.getItemAsync("secure_email");
-        this.interval = setInterval(this.getRequest, DELAY);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    getRequest = () => {
-        API.get("LambdaProxy", "/chargeHistory",
-            {
-                "queryStringParameters": {
-                    "email": this.state.userEmail
-                }
-            })
-            .then(
-                response => {
-                    if (response != null) {
-                        this.setState({ device: response["curDevice"] });
-                        this.setState({ port: response["port"] });
-                    } else {
-                        console.log("No device currently charging");
-                    }
-                }
-            ).catch(error => {
-                console.log(error.response)
-            });
-
-        if (this.state.port === PRIMARY) {
-            this.setState({ primary: Colors.faded })
-            this.setState({ secondary: Colors.primary })
-        } else if (this.state.port === SECONDARY) {
-            this.setState({ secondary: Colors.faded })
-            this.setState({ primary: Colors.primary })
-        } else {
-            this.setState({ primary: Colors.primary })
-            this.setState({ secondary: Colors.primary })
-        }
-
-        if (Devices.images[this.state.device] === undefined) {
-            this.setState({ image: Devices.images["Logo"] })
-        } else {
-            // Find image based on the curDevice name, must match constant in devices.js
-            this.setState({ image: Devices.images[this.state.device] })
-        }
-    }
-
     render() {
 
         return (
             <View style={styles.container}>
-                <View style={styles.tabs}>
-                    <View style={{ ...styles.tab, backgroundColor: this.state.primary }}>
-                        <Text style={styles.text}>PRIMARY</Text>
-                    </View>
 
-                    <View style={{ ...styles.tab, backgroundColor: this.state.secondary }}>
-                        <Text style={styles.text}>SECONDARY</Text>
-                    </View>
-                </View>
-                <View style={styles.subcontainer1}>
-                    <Image
-                        source={this.state.image}
-                        style={styles.image}
-                        resizeMode='contain'
-                    />
-                    <Text style={{ ...styles.text, color: Colors.secondary, marginBottom: 10 }}>CHARGING</Text>
-                </View>
-
+                <DeviceDisplay />
                 <Dashboard />
 
                 <View style={styles.subcontainer2}>
@@ -171,13 +88,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingBottom: 20,
     },
-    image: {
-        flex: 1,
-        alignSelf: 'stretch',
-        height: undefined,
-        width: undefined,
-        margin: 25
-    },
+    // image: {
+    //     flex: 1,
+    //     alignSelf: 'stretch',
+    //     height: undefined,
+    //     width: undefined,
+    //     margin: 25
+    // },
     text: {
         color: Colors.secondary,
         fontSize: 20
