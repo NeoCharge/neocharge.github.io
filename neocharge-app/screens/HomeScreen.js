@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, useEffect } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
 import BannerIcon from '../components/BannerIcon';
