@@ -9,6 +9,8 @@ import * as SecureStore from 'expo-secure-store';
 import LogoutOption from '../components/LogoutOption';
 import DeviceSelection from '../components/DeviceSelection';
 
+let AppConfig = require('../app.json');
+
 class SettingsScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -87,6 +89,9 @@ class SettingsScreen extends React.Component {
           />*/ }
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
         </View>
+
+        {/* Version */}
+        <Text style={{ ...styles.versionText, marginRight: 20 }}>v {AppConfig.expo.version}</Text>
 
         {/* SignOut Button */}
         <View style={styles.logoutContainer}>
@@ -176,6 +181,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 15,
+  },
+  versionText: {
+    fontSize: 14,
+    color: 'grey',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 15,
+    textAlign : 'right'
   },
   userProfileText: {
     fontSize: 20,
