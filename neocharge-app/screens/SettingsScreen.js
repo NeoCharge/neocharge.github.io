@@ -1,13 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch, Button, TouchableHighlight, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
-//import ListPopover from 'react-native-list-popover';
 import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
-import LogoutOption from '../components/LogoutOption';
 import DeviceSelection from '../components/DeviceSelection';
+import RNPickerSelect from 'react-native-picker-select';
 
 class SettingsScreen extends React.Component {
   constructor(props) {
@@ -16,21 +15,7 @@ class SettingsScreen extends React.Component {
       isVisible: false,
     }
   }
-
-  // Adding header title, color and font weight
-  // navigation placed here for page routing purposes 
-  // static navigationOptions = {
-  //   title: 'Settings',
-  //   headerStyle: {backgroundColor: Colors.accent2},
-  //   headerTintColor: 'white',
-  //   headerTitleStyle: {fontWeight: 'bold'}
-  // };
-
   render() {
-    // hardcoded temporarily, fill in with real time data later on 
-    const items = ['Central Standard Time', 'Mountain Standard Time', 'Pacific Standard Time',
-      'Alaskan Standard Time', 'Hawaii-Aleutian Standard Time', 'Eastern Standard Time'];
-
     return (
       <View style={styles.container}>
 
@@ -72,20 +57,24 @@ class SettingsScreen extends React.Component {
           <DeviceSelection />
         </View>
 
-        {/* TimeZone Selection DropDown */}
-        <View style={styles.containerTimeZone}>
-          <TouchableHighlight
-            style={styles.buttonTimeZone}
-            onPress={() => this.setState({ isVisible: true })}>
-            <Text style={{ marginLeft: 60, color: 'white', fontSize: 20 }}>{this.state.item || 'Select'}</Text>
-          </TouchableHighlight>
-          {/*<ListPopover
-            list={items}
-            isVisible={this.state.isVisible}
-            onClick={(item) => this.setState({ item: item })}
-            onClose={() => this.setState({ isVisible: false })}
-          />*/ }
+      {/* Time Zone Selection */}
+    <View style={styles.containerTimeZone}>
+      <View style={styles.buttonTimeZone}>
+          <RNPickerSelect
+              onValueChange={(value) => console.log(value)}
+              placeholder = {{label: 'Select a time', value: null}}
+              items={[
+                  { label: 'Pacific Standard Time', value: 'Pacific Standard Time' },
+                  { label: 'Central Standard Time', value: 'Central Standard Time' },
+                  { label: 'Mountain Standard Time', value: 'Mountain Standard Time' },
+                  { label: 'Eastern Standard Time', value: 'Eastern Standard Time' },
+                  { label: 'Alaska Standard Time', value: 'Alaska Standard Time' },
+                  { label: 'Atlantic Standard Time', value: 'Atlantic Standard Time' },
+                  { label: 'Hawaii-Aleutian Standard Time', value: 'Hawaii-Aleutian Standard Time' },
+              ]}
+          />
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
+          </View>
         </View>
 
         {/* SignOut Button */}
@@ -139,7 +128,6 @@ class SettingsScreen extends React.Component {
 }
 export default SettingsScreen;
 
-// for navigation to other screens
 const AppStackNavigator = createStackNavigator({
   Schedule: { screen: SettingsScreen }
 });
@@ -198,6 +186,7 @@ const styles = StyleSheet.create({
   buttonTimeZone: {
     backgroundColor: Colors.appleBlue,
     padding: 10,
+    paddingLeft: 70,
     width: '100%',
     height: 50,
     justifyContent: 'center'
