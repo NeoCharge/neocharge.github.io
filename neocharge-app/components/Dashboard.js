@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import { API, Auth } from 'aws-amplify';
 
@@ -91,7 +91,7 @@ export default class Dashboard extends React.Component {
                 this.setState({ chargeStyle: chargeRate["SecChargeRate"]})
             }
         } else {
-            console.log("Error, no primary device charge rate")
+            console.log("Error, no device charge rate detected.")
         }
     }
 
