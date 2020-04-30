@@ -25,6 +25,7 @@ export default class DeviceDisplay extends React.Component {
 
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
+
         await this.getRequest();
 
         // Set interval to poll database for most recent change
@@ -40,17 +41,24 @@ export default class DeviceDisplay extends React.Component {
     async getRequest() {
         const jsonObj = {
             "queryStringParameters": {
-                "email": this.state.userEmail
+                "userEmail": this.state.userEmail
             }
         };
 
+        let primDev;
+        let secDev;
+        let priChargeRate;
+        let secChargeRate;
+
         // console.log("making device display request")
-        await API.get("LambdaProxy", "/chargeHistory", jsonObj)
+        await API.get("LambdaProxy", "/chargerate", jsonObj)
             .then(
                 response => {
                     if (response != null) {
-                        this.setState({ device: response["curDevice"] });
-                        this.setState({ port: response["port"] });
+                        primDev = response["PrimDev"]
+                        priChargeRate = response["PriChargeRate"]
+                        secDev = response["SecDev"]
+                        secChargeRate = response["SecChargeRate"]
                     } else {
                         console.log("No device currently charging");
                     }
@@ -58,6 +66,18 @@ export default class DeviceDisplay extends React.Component {
             ).catch(error => {
                 console.log(error.response)
             });
+
+        if (priChargeRate <= 30 && secChargeRate > 30) {
+            this.setState({ device: secDev })
+            this.setState({ port: SECONDARY })
+        }
+        else if (secChargeRate <= 30 && priChargeRate > 30) {
+            this.setState({ device: primDev })
+            this.setState({ port: PRIMARY })
+        }
+        else {
+            this.setState({ port: NONE })
+        }
 
         if (this.state.port === PRIMARY) {
             this.setState({ primaryHighlight: Colors.faded })
