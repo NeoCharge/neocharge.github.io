@@ -14,8 +14,7 @@ export default class Dashboard extends React.Component {
             userEmail: "",
             smartChargeStyle: styles.smartChargeOff,
             pauseStyle: styles.pauseOff,
-            pauseText: "PAUSE",
-            chargeText: "0"
+            pauseText: "PAUSE"
         }
     }
     
@@ -26,16 +25,14 @@ export default class Dashboard extends React.Component {
         let query = {
             "queryStringParameters": {
                 "userEmail": this.state.userEmail
-            }
-        };
+            }};
 
-        //Get ChargeRate Value
+        // Get ChargeRate Information
         console.log("making chargerate GET request");
         await this.getChargeRate();
         
         // Set interval to poll database for most recent change
         this.interval = setInterval(async () => {this.getChargeRate();}, DELAY);
-        
 
         // Get SmartCharge Status
         const path = "/smartcharge"; // path from root of API
@@ -86,6 +83,7 @@ export default class Dashboard extends React.Component {
        
         //To do: add logic to detect what tab (primary or secondary) user is on
         // Then display charge rate accordingly
+        // may be easier to change lambda function to handle that logic
         if (chargeRate) {
             this.setState({ chargeStyle: chargeRate["PriChargeRate"]})
         } else {
