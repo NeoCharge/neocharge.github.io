@@ -91,7 +91,7 @@ export default class Dashboard extends React.Component {
                 this.setState({ chargeStyle: chargeRate["SecChargeRate"]})
             }
         } else {
-            console.log("Error, no device charge rate detected.")
+            console.log("Error, no ChargeRate response.")
         }
     }
 
