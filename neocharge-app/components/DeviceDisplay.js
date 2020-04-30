@@ -50,11 +50,13 @@ export default class DeviceDisplay extends React.Component {
         let priChargeRate;
         let secChargeRate;
 
-        // console.log("making device display request")
+        console.log("making device display request")
         await API.get("LambdaProxy", "/chargerate", jsonObj)
             .then(
                 response => {
                     if (response != null) {
+                        console.log(response)
+                        this.setState({ port: response["CurDevice"] })
                         primDev = response["PrimDev"]
                         priChargeRate = response["PriChargeRate"]
                         secDev = response["SecDev"]
@@ -67,22 +69,12 @@ export default class DeviceDisplay extends React.Component {
                 console.log(error.response)
             });
 
-        if (priChargeRate <= 30 && secChargeRate > 30) {
-            this.setState({ device: secDev })
-            this.setState({ port: SECONDARY })
-        }
-        else if (secChargeRate <= 30 && priChargeRate > 30) {
-            this.setState({ device: primDev })
-            this.setState({ port: PRIMARY })
-        }
-        else {
-            this.setState({ port: NONE })
-        }
-
         if (this.state.port === PRIMARY) {
+            this.setState({ device: primDev })
             this.setState({ primaryHighlight: Colors.faded })
             this.setState({ secondaryHighlight: Colors.primary })
         } else if (this.state.port === SECONDARY) {
+            this.setState({ device: secDev })
             this.setState({ secondaryHighlight: Colors.faded })
             this.setState({ primaryHighlight: Colors.primary })
         } else {
