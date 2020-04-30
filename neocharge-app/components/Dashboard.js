@@ -5,6 +5,8 @@ import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handl
 import * as SecureStore from 'expo-secure-store';
 import { API, Auth } from 'aws-amplify';
 
+const DELAY = 5000;
+
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props)
@@ -12,10 +14,11 @@ export default class Dashboard extends React.Component {
             userEmail: "",
             smartChargeStyle: styles.smartChargeOff,
             pauseStyle: styles.pauseOff,
-            pauseText: "PAUSE"
+            pauseText: "PAUSE",
+            chargeText: "0"
         }
     }
-
+    
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
         console.log("email on dashboard: " + this.state.userEmail);
@@ -25,6 +28,14 @@ export default class Dashboard extends React.Component {
                 "userEmail": this.state.userEmail
             }
         };
+
+        //Get ChargeRate Value
+        console.log("making chargerate GET request");
+        await this.getChargeRate();
+        
+        // Set interval to poll database for most recent change
+        this.interval = setInterval(async () => {this.getChargeRate();}, DELAY);
+        
 
         // Get SmartCharge Status
         const path = "/smartcharge"; // path from root of API
@@ -57,6 +68,33 @@ export default class Dashboard extends React.Component {
         } else {
             this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
         }
+    }
+
+    async getChargeRate() {
+        let requestBody = {
+            "queryStringParameters": {
+                "userEmail": this.state.userEmail
+            }
+        };
+
+        const path = "/chargerate";
+        let chargeRate = await API.get("LambdaProxy", path, requestBody)
+            .catch(error => {
+                console.log(error.response)
+            });    
+        console.log("charge rate response: " + chargeRate)
+       
+        //To do: add logic to detect what tab (primary or secondary) user is on
+        // Then display charge rate accordingly
+        if (chargeRate) {
+            this.setState({ chargeStyle: chargeRate["PriChargeRate"]})
+        } else {
+            console.log("Error, no primary device charge rate")
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     async setSmartCharge() {
@@ -128,8 +166,8 @@ export default class Dashboard extends React.Component {
 
                 <View style={styles.charging}>
                     <View style={{ ...styles.circle }}>
-                        <Text style={{ fontSize: 40, color: Colors.secondary }}>9.6</Text>
-                        <Text style={styles.text}>KWH</Text>
+                        <Text style={{ fontSize: 40, color: Colors.secondary }}>{this.state.chargeStyle}</Text>
+                        <Text style={styles.text}>KW</Text>
                     </View>
 
                     <TouchableOpacity style={this.state.pauseStyle} onPress={this.setPause.bind(this)}>
