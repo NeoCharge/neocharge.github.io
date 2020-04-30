@@ -8,6 +8,8 @@ import * as SecureStore from 'expo-secure-store';
 import DeviceSelection from '../components/DeviceSelection';
 import RNPickerSelect from 'react-native-picker-select';
 
+let AppConfig = require('../app.json');
+
 class SettingsScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -76,6 +78,9 @@ class SettingsScreen extends React.Component {
           <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
           </View>
         </View>
+
+        {/* Version */}
+        <Text style={{ ...styles.versionText, marginRight: 20 }}>v {AppConfig.expo.version}</Text>
 
         {/* SignOut Button */}
         <View style={styles.logoutContainer}>
@@ -164,6 +169,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 15,
+  },
+  versionText: {
+    fontSize: 14,
+    color: 'grey',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 15,
+    textAlign : 'right'
   },
   userProfileText: {
     fontSize: 20,
