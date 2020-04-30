@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import { API, Auth } from 'aws-amplify';
 
@@ -81,13 +81,17 @@ export default class Dashboard extends React.Component {
             });    
         console.log("charge rate response: " + chargeRate)
        
-        //To do: add logic to detect what tab (primary or secondary) user is on
-        // Then display charge rate accordingly
-        // may be easier to change lambda function to handle that logic
+       // lambda function returns what device is charging
+       // rate will be displayed accordingly
         if (chargeRate) {
-            this.setState({ chargeStyle: chargeRate["PriChargeRate"]})
+            if (chargeRate["CurDevice"] == 1) {
+                this.setState({ chargeStyle: chargeRate["PriChargeRate"]})
+            }
+            else if (chargeRate["CurDevice"] == 2) {
+                this.setState({ chargeStyle: chargeRate["SecChargeRate"]})
+            }
         } else {
-            console.log("Error, no primary device charge rate")
+            console.log("Error, no device charge rate detected.")
         }
     }
 
