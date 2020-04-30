@@ -70,6 +70,13 @@ class SetupScreen extends React.Component {
       console.log("secondaryDevice: " + this.state.secondaryDevice);
       console.log("deviceID: " + this.state.deviceID);
 
+      // check that user has filled out all fields
+      if(this.state.deviceID == '' || this.state.timeZone == '' || 
+        this.state.primaryDevice == '' || this.state.secondaryDevice == '') {
+          console.log("user left at least one field blank");
+          alert("Please fill out every field.");
+          return;
+      }
 
       let requestBody = {
         "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
@@ -84,7 +91,8 @@ class SetupScreen extends React.Component {
       console.log(this.state.pushToken);
       console.log(typeof this.state.pushToken);
 
-      let devID = "XSD-934859734-TTYZ";
+      // TODO is there a reason we should still leave this here for testing? -josh
+      //let devID = "XSD-934859734-TTYZ";
 
       let hasValidID = await hasValidDeviceID(this.state.deviceID);
 
