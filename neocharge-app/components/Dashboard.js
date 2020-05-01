@@ -85,13 +85,16 @@ export default class Dashboard extends React.Component {
        // rate will be displayed accordingly
         if (chargeRate) {
             if (chargeRate["CurDevice"] == 1) {
-                this.setState({ chargeStyle: chargeRate["PriChargeRate"]})
+                this.setState({ chargeStyle: chargeRate["PriChargeRate"]});
             }
             else if (chargeRate["CurDevice"] == 2) {
-                this.setState({ chargeStyle: chargeRate["SecChargeRate"]})
+                this.setState({ chargeStyle: chargeRate["SecChargeRate"]});
+            }
+            else {
+                this.setState({ chargeStyle: 0});
             }
         } else {
-            console.log("Error, no ChargeRate response.")
+            console.log("Error, did not receive a ChargeRate.");
         }
     }
 
