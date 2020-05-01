@@ -15,8 +15,13 @@ class SettingsScreen extends React.Component {
     super(props)
     this.state = {
       isVisible: false,
+      userEmail: "",
     }
   }
+  async componentDidMount() {
+    this.setState({ userEmail: await SecureStore.getItemAsync("secure_email")});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -25,7 +30,7 @@ class SettingsScreen extends React.Component {
         <Text style={{ ...styles.headersText, marginLeft: 40 }}>Account</Text>
         <View style={styles.backgroundScheduleBox}>
           <Image style={{ marginLeft: 10, width: 55, height: 55 }} source={require('../assets/female-icon.png')} />
-          <Text style={styles.userProfileText}>Jane Doe</Text>
+          <Text style={styles.userProfileText}>{this.state.userEmail}</Text>
         </View>
 
         {/* Push Notification Options */}
