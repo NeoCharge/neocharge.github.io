@@ -94,7 +94,7 @@ export default class Dashboard extends React.Component {
                 this.setState({ chargeStyle: 0});
             }
         } else {
-            console.log("Error, did not receive a ChargeRate.");
+            console.log("Error, no ChargeRate response.");
         }
     }
 
