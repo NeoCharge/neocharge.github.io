@@ -9,6 +9,7 @@ const DELAY = 5000;
 const NONE = 0;
 const PRIMARY = 1;
 const SECONDARY = 2;
+const BOTH = 3;
 
 export default class DeviceDisplay extends React.Component {
     constructor(props) {
@@ -47,20 +48,15 @@ export default class DeviceDisplay extends React.Component {
 
         let primDev;
         let secDev;
-        let priChargeRate;
-        let secChargeRate;
 
-        console.log("making device display request")
+        // console.log("making device display request")
         await API.get("LambdaProxy", "/chargerate", jsonObj)
             .then(
                 response => {
                     if (response != null) {
-                        console.log(response)
                         this.setState({ port: response["CurDevice"] })
                         primDev = response["PrimDev"]
-                        priChargeRate = response["PriChargeRate"]
                         secDev = response["SecDev"]
-                        secChargeRate = response["SecChargeRate"]
                     } else {
                         console.log("No device currently charging");
                     }
@@ -77,12 +73,17 @@ export default class DeviceDisplay extends React.Component {
             this.setState({ device: secDev })
             this.setState({ secondaryHighlight: Colors.faded })
             this.setState({ primaryHighlight: Colors.primary })
+        } else if (this.state.port === BOTH) {
+            this.setState({ device: 'Both' })
+            this.setState({ primaryHighlight: Colors.faded })
+            this.setState({ secondaryHighlight: Colors.faded })
         } else {
             this.setState({ primaryHighlight: Colors.primary })
             this.setState({ secondaryHighlight: Colors.primary })
         }
 
-        if (Devices.images[this.state.device] === undefined) {
+        // If device name does not have an associated picture, or both devices are charging, show NeoCharge Logo
+        if (Devices.images[this.state.device] === undefined || Devices.images[this.state.device] === 'Both') {
             this.setState({ image: Devices.images["Logo"] })
         } else {
             // Find image based on the curDevice name, must match constant in devices.js
