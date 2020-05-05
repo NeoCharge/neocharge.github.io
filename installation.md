@@ -9,7 +9,7 @@ Begin by first installing the TestFlight IOS app onto your mobile device. To sta
 
 
 ### Android Users: 
-You can download our alpha release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-d289d5ed38fd4c44a81a107b64a59fcc-signed.apk). (TODO this apk crashes when navigating to the charge history screen on android; replace it once that is fixed)
+You can download our alpha release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-d289d5ed38fd4c44a81a107b64a59fcc-signed.apk) (v 1.2). (TODO this apk crashes when navigating to the charge history screen on android; replace it once that is fixed)
 
 If you are downloading on a computer, please transfer the file over to your phone. After doing so, navigate to the file within your phone's file system and tap it to begin installation.
 
