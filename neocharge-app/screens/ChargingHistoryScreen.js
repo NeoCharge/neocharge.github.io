@@ -1,6 +1,6 @@
 import React from 'react';
 import GraphComponent from "../components/GraphComponent";
-import { Alert, View, StyleSheet, TextInput, Text, Button } from 'react-native';
+import { Alert, View, StyleSheet, TextInput, Text, Button, TouchableOpacity } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
@@ -94,7 +94,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
-        this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear});
+        this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
         console.log(this.state.priWeekData);
         console.log(this.state.secWeekData);
@@ -109,21 +109,39 @@ export default class ChargingHistoryScreen extends React.Component {
         nums.unshift(...nums.splice(nums.length - k));
     };
 
+    weekHandler() {
+        this.setState({weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground});
+    }
+
+    monthHandler() {
+        this.setState({weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground});
+    }
+
+    yearHandler() {
+        this.setState({weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1});
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.tabs}>
-                    <View style={{ ...styles.tab, backgroundColor: this.state.weekHighlight }}>
-                        <Text style={styles.tabText}>Week</Text>
-                    </View>
+                    <TouchableOpacity onPress={this.weekHandler.bind(this)}>
+                        <View style={{ ...styles.tab, backgroundColor: this.state.weekHighlight }}>
+                            <Text style={styles.tabText}>Week</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                    <View style={{ ...styles.tab, backgroundColor: this.state.monthHighlight }}>
-                        <Text style={styles.tabText}>Month</Text>
-                    </View>
+                    <TouchableOpacity onPress={this.monthHandler.bind(this)}>
+                        <View style={{ ...styles.tab, backgroundColor: this.state.monthHighlight }}>
+                            <Text style={styles.tabText}>Month</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                    <View style={{ ...styles.tab, backgroundColor: this.state.yearHighlight }}>
-                        <Text style={styles.tabText}>Year</Text>
-                    </View>
+                    <TouchableOpacity onPress={this.yearHandler.bind(this)}>
+                        <View style={{ ...styles.tab, backgroundColor: this.state.yearHighlight }}>
+                            <Text style={styles.tabText}>Year</Text>
+                        </View>
+                    </TouchableOpacity>
 
                 </View>
 
