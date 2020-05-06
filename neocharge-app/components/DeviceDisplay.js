@@ -50,12 +50,12 @@ export default class DeviceDisplay extends React.Component {
         let priChargeRate;
         let secChargeRate;
 
-        console.log("making device display request")
+        //console.log("making device display request")
         await API.get("LambdaProxy", "/chargerate", jsonObj)
             .then(
                 response => {
                     if (response != null) {
-                        console.log(response)
+                        //console.log(response)
                         this.setState({ port: response["CurDevice"] })
                         primDev = response["PrimDev"]
                         priChargeRate = response["PriChargeRate"]

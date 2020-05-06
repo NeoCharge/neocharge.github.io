@@ -79,7 +79,7 @@ export default class Dashboard extends React.Component {
             .catch(error => {
                 console.log(error.response)
             });    
-        console.log("charge rate response: " + chargeRate)
+        //console.log("charge rate response: " + chargeRate)
        
        // lambda function returns what device is charging
        // rate will be displayed accordingly

@@ -4,189 +4,130 @@ import { Alert, View, StyleSheet, TextInput, Text, Button } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
+import WeekGraph from '../components/WeekGraph';
 
-export default class HomeScreen extends React.Component {
+export default class ChargingHistoryScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            TextInputValue: '',
-            jsonDeviceLogsTimes: [],
-            jsonDeviceLogsDates: [],
-            graphData: [],
-            graphType: '',
             userEmail: '',
-            userHasData: true
+            priMonthData: new Array(31).fill(0),
+            priYearData: new Array(12).fill(0),
+            priWeekData: new Array(7).fill(0),
+            secMonthData: new Array(31).fill(0),
+            secYearData: new Array(12).fill(0),
+            secWeekData: new Array(7).fill(0),
+            weekHighlight: Colors.accent1,
+            monthHighlight: Colors.tabBackground,
+            yearHighlight: Colors.tabBackground
 
         }
     }
 
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
-        API.get("LambdaProxy", "/chargeHistory",
-            {
-                "queryStringParameters": {
-                    "email": this.state.userEmail
-                }
-            })
-            .then(
-                response => {
-                    if (response != null) {
-                        this.setState({ jsonDeviceLogsTimes: response["times"], jsonDeviceLogsDates: response["dates"] });
-                        this.setState({ graphData: response["times"], graphType: 'times' });
-                    } else {
-                        console.log("couldn't find any logs for this user");
-                        this.setState({ userHasData: false });
-                    }
-                }
-            ).catch(error => {
-                console.log(error.response)
-            });
-    }
 
-    dayListener = () => {
-        const data = this.state.jsonDeviceLogsTimes
-        const newData = []
-
-        data.forEach(obj => {
-            const todayString = new Date().toISOString().split('T')[0]
-            const today = Date.parse(todayString)
-            const date = Date.parse(obj.startTime.substring(0, 10))
-            if (date == today) {
-                newData.push(obj)
+        let query = {
+            "queryStringParameters": {
+                "email": this.state.userEmail
             }
-        }
-        )
+        };
 
-        if (newData.length == 0) {
-            Alert.alert("Your vehicle hasn't been charged today.")
-        }
-
-        this.setState({ graphData: newData, graphType: 'times' })
-    }
-
-    weekListener = () => {
-        const data = this.state.jsonDeviceLogsDates
-        const newData = []
+        const path = "/chargehistorytemp";
+        console.log("charge logs below:")
+        const response = await API.get("LambdaProxy", path, query).catch(error => { console.log(error.response) });
+        console.log(response);
+        console.log(response);
+        console.log(typeof response);
+        const todayString = new Date().toISOString().split('T')[0]
         const oneDay = 1000 * 60 * 60 * 24;
         const oneWeek = oneDay * 7;
+        const today = Date.parse(todayString);
+        const todayObj = new Date();
+        const thisYear = todayObj.getFullYear();
+        const thisMonth = todayObj.getMonth();
 
-        data.forEach(obj => {
-            const todayString = new Date().toISOString().split('T')[0]
-            const today = Date.parse(todayString)
-            const date = Date.parse(obj.startTime.substring(0, 10))
-            if (date >= (today - oneWeek) && date <= today) {
-                newData.push(obj)
+        // intialize these so we can put parsed data in them
+        // and set state after parsing data
+        let priMonth = new Array(31).fill(0);
+        let priYear = new Array(12).fill(0);
+        let priWeek = new Array(7).fill(0);
+        let secMonth = new Array(31).fill(0);
+        let secYear = new Array(12).fill(0);
+        let secWeek = new Array(7).fill(0);
+
+
+        if (response != null) {
+            response.forEach(obj => {
+                const date = Date.parse(obj.startTime.substring(0, 10))
+                const dateObj = new Date(obj.startTime.substring(0, 10));
+                const year = dateObj.getFullYear();
+
+                console.log(obj);
+                let dateCheck = today - date;
+
+                //if charge happened in the last week (including today),
+                //then add it to the week data lists
+                if (dateCheck < oneWeek) {
+                    priWeek[dateObj.getDay()] = obj.priPower;
+                    secWeek[dateObj.getDay()] = obj.secPower;
+                }
+
+                let month = dateObj.getMonth()
+                //if charge happened in the last month,
+                //then add it to the month data lists
+                if (month == thisMonth) {
+                    priMonth[dateObj.getDate()] = dateObj.priPower;
+                    secMonth[dateObj.getDate()] = dateObj.secPower;
+                }
+
+                //if charge happened in the last year,
+                //then increase the tally of that months charge totals
+                if (year == thisYear) {
+                    priYear[month] = priYear[month] + obj.priPower;
+                    secYear[month] = secYear[month] + obj.secPower;
+                }
+
             }
+            )
         }
-        )
 
-        this.setState({ graphData: newData, graphType: 'dates' })
+        this.rotate(priWeek, 7 - (new Date().getDay()));
+        this.rotate(secWeek, 7 - (new Date().getDay()));
+        this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear});
+        this.forceUpdate();
+        console.log(this.state.priWeekData);
+        console.log(this.state.secWeekData);
+
     }
 
-    monthListener = () => {
-        const data = this.state.jsonDeviceLogsDates
-        const newData = []
-
-        data.forEach(obj => {
-            const today = new Date()
-            const todaysMonth = today.getMonth()
-            const todaysYear = today.getFullYear()
-            const dateMonth = new Date(obj.startTime).getMonth()
-            const dateYear = new Date(obj.startTime).getFullYear()
-            if (todaysMonth == dateMonth && todaysYear == dateYear) {
-                newData.push(obj)
-            }
-        }
-        )
-
-        this.setState({ graphData: newData, graphType: 'dates' })
-    }
-
-    yearListener = () => {
-        const data = this.state.jsonDeviceLogsDates
-        const newData = []
-
-        data.forEach(obj => {
-            const today = new Date()
-            const year = today.getFullYear()
-            const date = new Date(obj.startTime).getFullYear()
-            if (date == year) {
-                newData.push(obj)
-            }
-        }
-        )
-
-        this.setState({ graphData: newData, graphType: 'dates' })
-    }
-
-    // Adding header title, color and font weight
-    static navigationOptions = {
-        title: "Charge History",
-        headerStyle: {
-            backgroundColor: Colors.accent2
-        },
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-            fontWeight: "bold"
-        }
+    //rotate the array so that 0 index is charge rate from a week ago,
+    //and index 6 is charge rate from today
+    //if its Tuesday for example, the week graph should display the days in this order...
+    //Wed   Thurs   Fri     Sat     Sun     Mon     Tues
+    rotate(nums, k) {
+        nums.unshift(...nums.splice(nums.length - k));
     };
-
-    renderMessage() {
-        if (this.state.userHasData) {
-            return null;
-        } else {
-            return (<View>
-                <Text style={styles.noChargeText}>After your first charge, your charging history will appear here!</Text>
-            </View>);
-        }
-    }
 
     render() {
         return (
             <View style={styles.container}>
-
-                {this.renderMessage()}
-
-                <View style={styles.graph}>
-                    <GraphComponent
-                        data={this.state.graphData}
-                        graphType={this.state.graphType}
-                    />
-                </View>
-
-                <View style={styles.timeButtons}>
-                    <View styles={styles.button}>
-                        <Button
-                            onPress={this.dayListener}
-                            title='1D'
-                            color={Colors.secondary}
-                        />
+                <View style={styles.tabs}>
+                    <View style={{ ...styles.tab, backgroundColor: this.state.weekHighlight }}>
+                        <Text style={styles.tabText}>Week</Text>
                     </View>
 
-                    <View>
-                        <Button
-                            onPress={this.weekListener}
-                            title='1W'
-                            color={Colors.secondary}
-                        />
-                    </View>
-                    <View>
-                        <Button
-                            onPress={this.monthListener}
-                            title='1M'
-                            color={Colors.secondary}
-                        />
+                    <View style={{ ...styles.tab, backgroundColor: this.state.monthHighlight }}>
+                        <Text style={styles.tabText}>Month</Text>
                     </View>
 
-                    <View>
-                        <Button
-                            onPress={this.yearListener}
-                            title='1Y'
-                            color={Colors.secondary}
-                        />
+                    <View style={{ ...styles.tab, backgroundColor: this.state.yearHighlight }}>
+                        <Text style={styles.tabText}>Year</Text>
                     </View>
 
                 </View>
+
+                <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />
             </View>
         );
     }
@@ -194,10 +135,22 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 4,
+        backgroundColor: Colors.primary,
+        flexDirection: 'column'
+    },
+    tabs: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: Colors.primary
+        justifyContent: 'space-evenly',
+        width: '100%',
+        marginTop: 15
+    },
+    tab: {
+        padding: 15,
+        borderRadius: 5
+    },
+    tabText: {
+        fontSize: 13,
     },
     graph: {
         flex: 1,
