@@ -19,7 +19,11 @@ export default class ChargingHistoryScreen extends React.Component {
             secWeekData: new Array(7).fill(0),
             weekHighlight: Colors.accent1,
             monthHighlight: Colors.tabBackground,
-            yearHighlight: Colors.tabBackground
+            yearHighlight: Colors.tabBackground,
+            weekHeaderStr: "",
+            monthHeaderStr: "",
+            yearHeaderStr: "",
+            graphHeaderText: ""
 
         }
     }
@@ -46,6 +50,17 @@ export default class ChargingHistoryScreen extends React.Component {
         const todayObj = new Date();
         const thisYear = todayObj.getFullYear();
         const thisMonth = todayObj.getMonth();
+
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        this.setWeekHeaderStr(todayObj, monthNames);
+        this.setMonthHeaderStr(todayObj, monthNames);
+        this.state.yearHeaderStr = thisYear.toString();
+        this.state.graphHeaderText = this.state.weekHeaderStr;
+
+
 
         // intialize these so we can put parsed data in them
         // and set state after parsing data
@@ -101,6 +116,43 @@ export default class ChargingHistoryScreen extends React.Component {
 
     }
 
+    leapyear(year) {
+        return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
+    }
+
+    setWeekHeaderStr(todayObj, monthNames) {
+        const thisYear = todayObj.getFullYear();
+        var monthLengths;
+        if (this.leapyear(thisYear)) {
+            monthLengths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        } else {
+            monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        }
+        const thisMonth = todayObj.getMonth();
+        const thisMonthStr = monthNames[thisMonth];
+        const thisDate = todayObj.getDate();
+
+        //check if beginning of week was in last month
+        let firstDate = thisDate - 6;
+        if (firstDate < 0) {
+            let lastMonth = thisMonth > 0 ? thisMonth - 1 : 11;
+            let lastMonthStr = monthNames[lastMonth];
+            firstDate = monthLengths[thisMonth-1] + firstDate;
+            this.state.weekHeaderStr = lastMonthStr.concat(" ", firstDate, " - ", thisMonthStr, " ", thisDate);
+        } else {
+            this.state.weekHeaderStr = thisMonthStr.concat(" ", firstDate, " - ", thisMonthStr, " ", thisDate);
+        }
+
+    }
+
+    setMonthHeaderStr(todayObj, monthNames) {
+        this.state.monthHeaderStr = monthNames[todayObj.getMonth()].concat(" ", todayObj.getFullYear());
+    }
+
+    setYearHeaderStr(todayObj) {
+
+    }
+
     //rotate the array so that 0 index is charge rate from a week ago,
     //and index 6 is charge rate from today
     //if its Tuesday for example, the week graph should display the days in this order...
@@ -110,15 +162,15 @@ export default class ChargingHistoryScreen extends React.Component {
     };
 
     weekHandler() {
-        this.setState({weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground});
+        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr });
     }
 
     monthHandler() {
-        this.setState({weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground});
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr });
     }
 
     yearHandler() {
-        this.setState({weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1});
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1, graphHeaderText: this.state.yearHeaderStr });
     }
 
     render() {
@@ -143,6 +195,10 @@ export default class ChargingHistoryScreen extends React.Component {
                         </View>
                     </TouchableOpacity>
 
+                </View>
+
+                <View style={{ paddingLeft: 10, paddingTop: 20 }}>
+                    <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
                 </View>
 
                 <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />
@@ -199,6 +255,11 @@ const styles = StyleSheet.create({
         marginHorizontal: '20%',
         marginTop: '15%',
         color: Colors.secondary
+    },
+    graphHeaderText: {
+        fontSize: 25,
+        color: Colors.secondary,
+        fontWeight: 'bold'
     }
 
 });
