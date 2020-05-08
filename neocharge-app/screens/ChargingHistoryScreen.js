@@ -5,6 +5,7 @@ import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
 import WeekGraph from '../components/WeekGraph';
+import MonthGraph from '../components/MonthGraph';
 
 export default class ChargingHistoryScreen extends React.Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class ChargingHistoryScreen extends React.Component {
             weekHeaderStr: "",
             monthHeaderStr: "",
             yearHeaderStr: "",
-            graphHeaderText: ""
+            graphHeaderText: "",
+            displayGraph: null
 
         }
     }
@@ -39,11 +41,11 @@ export default class ChargingHistoryScreen extends React.Component {
         };
 
         const path = "/chargehistorytemp";
-        console.log("charge logs below:")
+        //console.log("charge logs below:")
         const response = await API.get("LambdaProxy", path, query).catch(error => { console.log(error.response) });
-        console.log(response);
-        console.log(response);
-        console.log(typeof response);
+        //console.log(response);
+        //console.log(response);
+        //console.log(typeof response);
         const todayString = new Date().toISOString().split('T')[0]
         const oneDay = 1000 * 60 * 60 * 24;
         const oneWeek = oneDay * 7;
@@ -72,6 +74,7 @@ export default class ChargingHistoryScreen extends React.Component {
         let secYear = new Array(12).fill(0);
         let secWeek = new Array(7).fill(0);
 
+        console.log("Current month is ", thisMonth);
 
         if (response != null) {
             response.forEach(obj => {
@@ -79,7 +82,7 @@ export default class ChargingHistoryScreen extends React.Component {
                 const dateObj = new Date(obj.startTime.substring(0, 10));
                 const year = dateObj.getFullYear();
 
-                console.log(obj);
+                //console.log(obj);
                 let dateCheck = today - date;
 
                 //if charge happened in the last week (including today),
@@ -90,11 +93,12 @@ export default class ChargingHistoryScreen extends React.Component {
                 }
 
                 let month = dateObj.getMonth()
+                console.log("Month of this obj is ", month.toString());
                 //if charge happened in the last month,
                 //then add it to the month data lists
                 if (month == thisMonth) {
-                    priMonth[dateObj.getDate()] = dateObj.priPower;
-                    secMonth[dateObj.getDate()] = dateObj.secPower;
+                    priMonth[dateObj.getDate()] = obj.priPower;
+                    secMonth[dateObj.getDate()] = obj.secPower;
                 }
 
                 //if charge happened in the last year,
@@ -110,10 +114,11 @@ export default class ChargingHistoryScreen extends React.Component {
 
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
+        this.state.displayGraph = <WeekGraph primary={priWeek} secondary={secWeek}/>
         this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
-        console.log(this.state.priWeekData);
-        console.log(this.state.secWeekData);
+        console.log(this.state.priMonthData);
+        console.log(this.state.secMonthData);
 
     }
 
@@ -163,11 +168,11 @@ export default class ChargingHistoryScreen extends React.Component {
     };
 
     weekHandler() {
-        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr });
+        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData}/> });
     }
 
     monthHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr });
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph:  <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} />});
     }
 
     yearHandler() {
@@ -202,7 +207,7 @@ export default class ChargingHistoryScreen extends React.Component {
                     <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
                 </View>
 
-                <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />
+                {this.state.displayGraph}
             </View>
         );
     }
