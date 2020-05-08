@@ -164,11 +164,11 @@ export default class WeekGraph extends React.PureComponent {
         const width = Dimensions.get('window').width
 
         return (
-            <View style={{ width: "100%", alignSelf: 'stretch' }}>
-                <View style={{ height: 300, width: "100%", flexDirection: "row", paddingRight: '5%', alignItems: "center", alignSelf: 'stretch' }}>
+            <View style={{ width: "100%", alignSelf: 'stretch'}}>
+                <View style={{ height: 250, width: "100%", flexDirection: "row", paddingRight: '5%', alignItems: "center", alignSelf: 'stretch' }}>
 
                     <BarChart
-                        style={{ height: 300, width: "100%", paddingRight: 10, alignSelf: 'stretch' }}
+                        style={{ height: 250, width: "100%", paddingRight: 10, alignSelf: 'stretch' }}
                         data={barData}
                         yAccessor={({ item }) => item.value}
                         contentInset={contentInset}
@@ -199,7 +199,7 @@ export default class WeekGraph extends React.PureComponent {
                     <XAxis
                         data={labeledPriData}
                         scale={scale.scaleBand}
-                        formatLabel={(value, index) => index}
+                        //formatLabel={(value, index) => index}
                         labelStyle={{ color: 'black' }}
                         spacingInner={0.45}
                         spacingOuter={0.30}

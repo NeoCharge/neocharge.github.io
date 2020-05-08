@@ -6,6 +6,7 @@ import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
 import WeekGraph from '../components/WeekGraph';
 import MonthGraph from '../components/MonthGraph';
+import PowerPieChart from '../components/PowerPieChart';
 
 export default class ChargingHistoryScreen extends React.Component {
     constructor(props) {
@@ -25,7 +26,8 @@ export default class ChargingHistoryScreen extends React.Component {
             monthHeaderStr: "",
             yearHeaderStr: "",
             graphHeaderText: "",
-            displayGraph: null
+            displayGraph: null,
+            displayPieChart: null
 
         }
     }
@@ -114,7 +116,8 @@ export default class ChargingHistoryScreen extends React.Component {
 
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
-        this.state.displayGraph = <WeekGraph primary={priWeek} secondary={secWeek}/>
+        this.state.displayGraph = <WeekGraph primary={priWeek} secondary={secWeek} />
+        this.state.displayPieChart = <PowerPieChart />
         this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
         console.log(this.state.priMonthData);
@@ -143,7 +146,7 @@ export default class ChargingHistoryScreen extends React.Component {
         if (firstDate < 0) {
             let lastMonth = thisMonth > 0 ? thisMonth - 1 : 11;
             let lastMonthStr = monthNames[lastMonth];
-            firstDate = monthLengths[thisMonth-1] + firstDate;
+            firstDate = monthLengths[thisMonth - 1] + firstDate;
             this.state.weekHeaderStr = lastMonthStr.concat(" ", firstDate, " - ", thisMonthStr, " ", thisDate);
         } else {
             this.state.weekHeaderStr = thisMonthStr.concat(" ", firstDate, " - ", thisMonthStr, " ", thisDate);
@@ -168,11 +171,11 @@ export default class ChargingHistoryScreen extends React.Component {
     };
 
     weekHandler() {
-        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData}/> });
+        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} /> });
     }
 
     monthHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph:  <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} />});
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph: <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} /> });
     }
 
     yearHandler() {
@@ -203,11 +206,19 @@ export default class ChargingHistoryScreen extends React.Component {
 
                 </View>
 
-                <View style={{ paddingLeft: 10, paddingTop: 20 }}>
-                    <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
+                <View style={{ flexDirection: 'columnn' }}>
+                    <View style={{ paddingLeft: 10, paddingTop: 30 }}>
+                        <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
+                    </View>
+                    <View>
+                        {this.state.displayGraph}
+                    </View>
+                    <View style={{paddingBottom: 30}}>
+                        {this.state.displayPieChart}
+                    </View>
                 </View>
 
-                {this.state.displayGraph}
+
             </View>
         );
     }
@@ -220,18 +231,18 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary,
         flexDirection: 'column',
         width: width,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     },
     tabs: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
         width: '100%',
-        marginTop: 15
+        marginTop: 10
     },
     tab: {
         padding: 15,
-        borderRadius: 5
+        borderRadius: 5,
     },
     tabText: {
         fontSize: 13,
