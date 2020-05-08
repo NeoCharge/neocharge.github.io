@@ -1,6 +1,6 @@
 import React from 'react';
 import GraphComponent from "../components/GraphComponent";
-import { Alert, View, StyleSheet, TextInput, Text, Button, TouchableOpacity } from 'react-native';
+import { Alert, View, StyleSheet, TextInput, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
@@ -27,6 +27,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
         }
     }
+
 
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
@@ -83,7 +84,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
                 //if charge happened in the last week (including today),
                 //then add it to the week data lists
-                if (dateCheck < oneWeek) {
+                if (dateCheck <= oneWeek) {
                     priWeek[dateObj.getDay()] = obj.priPower;
                     secWeek[dateObj.getDay()] = obj.secPower;
                 }
@@ -207,10 +208,14 @@ export default class ChargingHistoryScreen extends React.Component {
     }
 }
 
+const width = Dimensions.get('window').width
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primary,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: width,
+        alignSelf: 'stretch'
     },
     tabs: {
         flexDirection: 'row',

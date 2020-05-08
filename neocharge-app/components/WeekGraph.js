@@ -1,9 +1,9 @@
 
 import React from 'react'
 import { BarChart, XAxis, Grid, YAxis } from 'react-native-svg-charts'
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import * as scale from 'd3-scale'
-import { Svg, Rect, Line, G, Text } from 'react-native-svg';
+import { Svg, Rect, Line, G, Text, Defs, LinearGradient, Stop} from 'react-native-svg';
 import Colors from '../assets/colors';
 
 export default class WeekGraph extends React.PureComponent {
@@ -96,14 +96,14 @@ export default class WeekGraph extends React.PureComponent {
                 data: labeledPriData,
                 svg: {
                     fill: Colors.secondary,
-                    x: -3 //gives seperation within bar group
+                    x: +3, //gives seperation within bar group
                 },
             },
             {
                 data: labeledSecData,
                 svg: {
-                    fill: Colors.accent1,
-                    x: +3 //gives seperation within bar group
+                    fill: 'url(#gradient)',
+                    x: +8, //gives seperation within bar group
                 }
             },
         ]
@@ -145,6 +145,15 @@ export default class WeekGraph extends React.PureComponent {
 
         );
 
+        const Gradient = () => (
+            <Defs key={'gradient'}>
+                <LinearGradient spreadMethod={"pad"} id={"gradient"} x1={"0%"} y1={"70%"} x2={"70%"} y2={"0%"}>
+                    <Stop offset={"0%"} stopColor={"#11645c"} stopOpacity={"1"} />
+                    <Stop offset={"100%"} stopColor={Colors.accent1} stopOpacity={"1"} />
+                </LinearGradient>
+            </Defs>
+        )
+
 
 
 
@@ -152,24 +161,29 @@ export default class WeekGraph extends React.PureComponent {
         const yAxis = [0, 2, 4, 6, 8, 10].map((value) => ({ value }));
         const contentInset = { top: 30, bottom: 15 };
         const xAxisHeight = 30;
+        const width = Dimensions.get('window').width
 
         return (
-            <View>
-                <View style={{ height: 300, width: "100%", flexDirection: "row", paddingHorizontal: 40, alignItems: "center" }}>
+            <View style={{ width: "100%", alignSelf: 'stretch' }}>
+                <View style={{ height: 300, width: "100%", flexDirection: "row", paddingRight: '5%', alignItems: "center", alignSelf: 'stretch' }}>
 
                     <BarChart
-                        style={{ height: 300, width: "100%", paddingRight: 10 }}
+                        style={{ height: 300, width: "100%", paddingRight: 10, alignSelf: 'stretch' }}
                         data={barData}
                         yAccessor={({ item }) => item.value}
                         contentInset={contentInset}
                         {...this.props}
-                        spacingInner={0.8}
-                        grid
+                        // svg={{color: "white"}}
+                        spacingInner={0.45}
+                        spacingOuter={0.30}
+                        gridMin={0}
+                        //grid
                         // svg={{rx:"20"}} tried to make edges round but doesn't work
                         yMax={10}
                     >
                         {/* <CustomBars bandwidth={10} /> */}
                         <CustomGrid belowChart={true} />
+                        <Gradient/>
                     </BarChart>
                     <YAxis
                         data={yAxis}
@@ -181,15 +195,16 @@ export default class WeekGraph extends React.PureComponent {
                         numberOfTicks={5}
                     />
                 </View>
-                <View style={{ paddingLeft: 15, paddingRight: 30 }}>
+                <View style={{ width: '100%', alignSelf: 'stretch', paddingRight:18}}>
                     <XAxis
                         data={labeledPriData}
                         scale={scale.scaleBand}
                         formatLabel={(value, index) => index}
                         labelStyle={{ color: 'black' }}
-                        spacingInner={0}
+                        spacingInner={0.45}
+                        spacingOuter={0.30}
                         svg={{ fill: Colors.secondary }}
-                        style={{ marginHorizontal: 10, height: xAxisHeight }}
+                        style={{ height: xAxisHeight, width: '100%', alignSelf: 'stretch' }}
                         formatLabel={(_, index) => labeledPriData[index].label}
                     />
                 </View>
