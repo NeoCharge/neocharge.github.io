@@ -16,3 +16,5 @@ All of the major features that will be implemented into the NeoCharge app will f
 - Users will also have the option to start a charging session right away
 
 ### [Try our alpha release now](installation.md)!
+
+<strong>Important Note:<\strong> Please read the Application Walkthrough on the Installation page before using the app. It will provide the Device ID you must use when you setup your account.
