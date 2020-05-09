@@ -6,6 +6,7 @@ import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
 import WeekGraph from '../components/WeekGraph';
 import MonthGraph from '../components/MonthGraph';
+import YearGraph from '../components/YearGraph';
 import PowerPieChart from '../components/PowerPieChart';
 
 export default class ChargingHistoryScreen extends React.Component {
@@ -19,6 +20,12 @@ export default class ChargingHistoryScreen extends React.Component {
             secMonthData: new Array(31).fill(0),
             secYearData: new Array(12).fill(0),
             secWeekData: new Array(7).fill(0),
+            weekPriTotal: 0,
+            weekSecTotal: 0,
+            monthPriTotal: 0,
+            monthSecTotal: 0,
+            yearPriTotal: 0,
+            yearSecTotal: 0,
             weekHighlight: Colors.accent1,
             monthHighlight: Colors.tabBackground,
             yearHighlight: Colors.tabBackground,
@@ -32,6 +39,17 @@ export default class ChargingHistoryScreen extends React.Component {
         }
     }
 
+    // Adding header title, color and font weight
+    static navigationOptions = {
+        title: "Schedule",
+        headerStyle: {
+            backgroundColor: Colors.accent2
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+            fontWeight: "bold"
+        }
+    };
 
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
@@ -92,6 +110,8 @@ export default class ChargingHistoryScreen extends React.Component {
                 if (dateCheck <= oneWeek) {
                     priWeek[dateObj.getDay()] = obj.priPower;
                     secWeek[dateObj.getDay()] = obj.secPower;
+                    this.state.weekPriTotal += obj.priPower;
+                    this.state.weekSecTotal += obj.secPower;
                 }
 
                 let month = dateObj.getMonth()
@@ -101,6 +121,8 @@ export default class ChargingHistoryScreen extends React.Component {
                 if (month == thisMonth) {
                     priMonth[dateObj.getDate()] = obj.priPower;
                     secMonth[dateObj.getDate()] = obj.secPower;
+                    this.state.monthPriTotal += obj.priPower;
+                    this.state.monthSecTotal += obj.secPower;
                 }
 
                 //if charge happened in the last year,
@@ -108,16 +130,21 @@ export default class ChargingHistoryScreen extends React.Component {
                 if (year == thisYear) {
                     priYear[month] = priYear[month] + obj.priPower;
                     secYear[month] = secYear[month] + obj.secPower;
+                    this.state.yearPriTotal += obj.priPower;
+                    this.state.yearSecTotal += obj.secPower;
                 }
 
             }
             )
         }
 
+        console.log("week pri total " + this.state.weekPriTotal.toString());
+        console.log("week sec total " + this.state.weekSecTotal.toString());
+
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
         this.state.displayGraph = <WeekGraph primary={priWeek} secondary={secWeek} />
-        this.state.displayPieChart = <PowerPieChart />
+        this.state.displayPieChart = <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} />
         this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
         console.log(this.state.priMonthData);
@@ -171,15 +198,15 @@ export default class ChargingHistoryScreen extends React.Component {
     };
 
     weekHandler() {
-        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} /> });
+        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />, displayPieChart: <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} /> });
     }
 
     monthHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph: <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} /> });
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph: <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} />, displayPieChart: <PowerPieChart priTotal={this.state.monthPriTotal} secTotal={this.state.monthSecTotal} type={"Month"} /> });
     }
 
     yearHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1, graphHeaderText: this.state.yearHeaderStr });
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1, graphHeaderText: this.state.yearHeaderStr, displayGraph: <YearGraph primary={this.state.priYearData} secondary={this.state.secYearData} />, displayPieChart: <PowerPieChart priTotal={this.state.yearPriTotal} secTotal={this.state.yearSecTotal} type={"Year"} /> });
     }
 
     render() {
@@ -213,7 +240,7 @@ export default class ChargingHistoryScreen extends React.Component {
                     <View>
                         {this.state.displayGraph}
                     </View>
-                    <View style={{paddingBottom: 30}}>
+                    <View style={{ paddingBottom: 30 }}>
                         {this.state.displayPieChart}
                     </View>
                 </View>
