@@ -66,37 +66,15 @@ export default class YearGraph extends React.PureComponent {
 
         console.log(barData);
 
-        const CustomGrid = ({ x, y, data, ticks }) => (
+        const CustomGrid = ({ x, y, values, ticks}) => (
             <G>
                 {// Horizontal grid
-                    ticks.map(function (tick, index) {
-                        if (index % 2 == 0) {
-                            return (<Line key={tick} x1={"0%"} x2={"100%"} y1={y(tick)} y2={y(tick)} stroke={"grey"} />);
-                        }
+                    values.map(function (value, index) {
+                        console.log(value);
+                        return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
                     })
                 }
             </G>
-        );
-
-        const CustomBars = ({ x, y, bandwidth, data }) => (
-
-
-            data.map((value, index) =>
-                <G>
-                    <Rect
-                        x={x(index)}
-                        y={y(value) - 5} // Subtract Height / 2 to make half of the Rect above the bar
-                        rx={5} // Set to Height / 2
-                        ry={5} // Set to Height / 2
-                        width={bandwidth}
-                        height={10} // Height of the Rect
-                        fill={'#ff0000'}
-
-                    />
-                </G>
-            )
-
-
         );
 
         const Gradient = () => (
@@ -111,8 +89,8 @@ export default class YearGraph extends React.PureComponent {
 
 
 
-
-        const yAxis = [0, 2, 4, 6, 8, 10].map((value) => ({ value }));
+        const yValues = [0, 50, 100, 150, 200, 250, 300];
+        const yAxis = yValues.map((value) => ({ value }));
         const contentInset = { top: 30, bottom: 15 };
         const xAxisHeight = 30;
         const width = Dimensions.get('window').width
@@ -133,10 +111,10 @@ export default class YearGraph extends React.PureComponent {
                         gridMin={0}
                         //grid
                         // svg={{rx:"20"}} tried to make edges round but doesn't work
-                        yMax={10}
+                        yMax={300}
                     >
                         {/* <CustomBars bandwidth={10} /> */}
-                        <CustomGrid belowChart={true} />
+                        <CustomGrid belowChart={true} values={yValues} />
                         <Gradient />
                     </BarChart>
                     <YAxis
@@ -144,7 +122,7 @@ export default class YearGraph extends React.PureComponent {
                         yAccessor={({ item }) => item.value}
                         //style={{ marginBottom: xAxisHeight }}
                         contentInset={contentInset}
-                        svg={{ fontSize: 10, fill: Colors.secondary, paddingHorizontal: 20 }}
+                        svg={{ fontSize: 10, fill: Colors.secondary, paddingHorizontal: 20, height: 250 }}
                         formatLabel={(value) => value}
                         numberOfTicks={5}
                     />

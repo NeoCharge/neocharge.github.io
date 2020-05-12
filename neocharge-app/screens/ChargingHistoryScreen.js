@@ -41,9 +41,9 @@ export default class ChargingHistoryScreen extends React.Component {
 
     // Adding header title, color and font weight
     static navigationOptions = {
-        title: "Schedule",
+        title: "Charge History",
         headerStyle: {
-            backgroundColor: Colors.accent2
+            backgroundColor: Colors.primary
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
@@ -107,7 +107,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
                 //if charge happened in the last week (including today),
                 //then add it to the week data lists
-                if (dateCheck <= oneWeek) {
+                if (dateCheck < oneWeek) {
                     priWeek[dateObj.getDay()] = obj.priPower;
                     secWeek[dateObj.getDay()] = obj.secPower;
                     this.state.weekPriTotal += obj.priPower;
@@ -147,8 +147,8 @@ export default class ChargingHistoryScreen extends React.Component {
         this.state.displayPieChart = <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} />
         this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
-        console.log(this.state.priMonthData);
-        console.log(this.state.secMonthData);
+        console.log(this.state.priWeekData);
+        console.log(this.state.secWeekData);
 
     }
 
@@ -252,12 +252,14 @@ export default class ChargingHistoryScreen extends React.Component {
 }
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primary,
         flexDirection: 'column',
         width: width,
+        height: height,
         alignSelf: 'stretch',
     },
     tabs: {

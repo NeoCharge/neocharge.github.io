@@ -10,7 +10,7 @@ export default class WeekGraph extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        console.log("logging props");
+        console.log("logging props"); //BUG - if i don't include this print statement, then the primary and secondary values become undefined...
         console.log(this.props);
         this.state = {
             primary: this.props.primary.map((value) => ({ value })),
@@ -60,11 +60,6 @@ export default class WeekGraph extends React.PureComponent {
             j++;
         }
         return labels;
-    }
-
-    getYAxisLabels() {
-        const labels = [];
-
     }
 
     getLabeledData(data, labels) {
