@@ -3,10 +3,6 @@ import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
 import AppNavigator from './navigation/AppNavigator';
-import GreetingScreen from './screens/GreetingScreen';
-import SetupScreen from './screens/SetupScreen';
-import SchedulingHomeScreen from './screens/SchedulingHomeScreen';
-import ChargingHistoryScreen from './screens/ChargingHistoryScreen';
 
 Amplify.configure(aws_exports);
 
@@ -14,20 +10,17 @@ Amplify.configure(aws_exports);
 console.reportErrorsAsExceptions = false;
 
 export default function App() {
+  Expo.Font.loadAsync({
+    'RedHatDisplay-Regular': require('./assets/fonts/RedHatDisplay-Regular.ttf'),
+    'RedHatDisplay-Bold': require('./assets/fonts/RedHatDisplay-Bold.ttf'),
+  });
+
   return (
     <View style={styles.container}>
       <AppNavigator />
     </View>
   );
 }
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <ChargingHistoryScreen />
-//     </View>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {

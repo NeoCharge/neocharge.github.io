@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import HomeOption from '../components/HomeOption';
 import Dashboard from '../components/Dashboard';
 import BannerIcon from '../components/BannerIcon';
 import DeviceDisplay from '../components/DeviceDisplay';
 import Colors from '../assets/colors';
+import ChargingHistory from '../assets/ChargingHistory.svg';
+import ScheduleCharge from '../assets/ScheduleCharge.svg';
+import SmartSettings from '../assets/SmartSettings.svg';
+import Notifications from '../assets/Notifications.svg';
+
+const iconSize = 40;
 
 export default class HomeScreen extends React.Component {
     // Adding header title, color and font weight
@@ -28,26 +34,26 @@ export default class HomeScreen extends React.Component {
                 <DeviceDisplay />
                 <Dashboard />
 
-                <View style={styles.subcontainer2}>
+                <View style={styles.subcontainer}>
                     <HomeOption nav={this.props.navigation}
                         screenName={'ChargingHistory'}
-                        img={require('../assets/history-icon.png')}
-                        name='CHARGING HISTORY' />
+                        img={<ChargingHistory width={iconSize} height={iconSize} />}
+                        name='Charging History' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'SchedulingHome'}
-                        img={require('../assets/schedule-icon.png')}
-                        name='SCHEDULE CHARGE' />
+                        img={<ScheduleCharge width={iconSize} height={iconSize} />}
+                        name='Schedule Charge' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'Settings'}
-                        img={require('../assets/smart-settings-icon.png')}
-                        name='SMART SETTINGS' />
+                        img={<SmartSettings width={iconSize} height={iconSize} />}
+                        name='Smart Settings' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'Notifications'}
-                        img={require('../assets/notification-icon.png')}
-                        name='NOTIFICATIONS' />
+                        img={<Notifications width={iconSize} height={iconSize} />}
+                        name='Notifications' />
                 </View>
             </View >
         );
@@ -57,7 +63,7 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 10,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.primary
@@ -76,25 +82,11 @@ const styles = StyleSheet.create({
     title: {
         backgroundColor: Colors.secondary
     },
-    subcontainer1: {
-        flex: 3,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%'
-    },
-    subcontainer2: {
-        flex: 3,
+    subcontainer: {
+        flex: 6,
         flexDirection: 'column',
         paddingBottom: 20,
     },
-    // image: {
-    //     flex: 1,
-    //     alignSelf: 'stretch',
-    //     height: undefined,
-    //     width: undefined,
-    //     margin: 25
-    // },
     text: {
         color: Colors.secondary,
         fontSize: 20
