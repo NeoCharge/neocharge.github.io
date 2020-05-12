@@ -81,6 +81,7 @@ def lambda_handler(event, context):
         with connection.cursor() as cur:
             cur.execute('SET SQL_SAFE_UPDATES = 0;')
             cur.execute('Update Users set Pause=%s where Email="%s";' %((not is_cur_paused), email))
+            cur.execute('SET SQL_SAFE_UPDATES = 1;')
 
     return {
         'statusCode': 200,
