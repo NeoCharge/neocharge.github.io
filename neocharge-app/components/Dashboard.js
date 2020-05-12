@@ -125,15 +125,6 @@ export default class Dashboard extends React.Component {
 
     //TODO: put logic of actual pausing/connection to backend in here
     async setPause() {
-        if (this.state.pauseStyle == styles.pauseOn) {
-            this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
-            console.log("unpaused");
-        } else {
-            //TODO: find out what might be a good way to indicate textually to the user that the 
-            //charge is paused, i.e. changed the text below to "RESUME"????
-            this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
-            console.log("paused");
-        }
 
         let requestBody = {
             "userEmail": this.state.userEmail
@@ -143,6 +134,17 @@ export default class Dashboard extends React.Component {
         };
         const path = "/pausecharge";
         await API.put("LambdaProxy", path, jsonObj)
+            .then((data) => {
+                console.log("got back from pause charge !!!!!")
+                if(body.data.msg_success && body.data.changedTo) {
+                    this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
+                    console.log("paused");
+                } else if (body.data.msg_success && (! body.data.changedTo)) {
+                    this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
+                    console.log("unpaused");
+                }
+                console.log(data.body.changedTo)
+            })
             .catch(error => {
                 console.log(error.response)
             });
