@@ -135,7 +135,6 @@ export default class Dashboard extends React.Component {
         const path = "/pausecharge";
         await API.put("LambdaProxy", path, jsonObj)
             .then((data) => {
-                console.log("got back from pause charge !!!!!")
                 if(body.data.msg_success && body.data.changedTo) {
                     this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
                     console.log("paused");
