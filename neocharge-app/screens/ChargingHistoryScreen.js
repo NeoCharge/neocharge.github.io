@@ -1,6 +1,6 @@
 import React from 'react';
 import GraphComponent from "../components/GraphComponent";
-import { Alert, View, StyleSheet, TextInput, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, View, StyleSheet, TextInput, Text, Button, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { API } from 'aws-amplify';
 import Colors from '../assets/colors';
 import * as SecureStore from 'expo-secure-store';
@@ -8,6 +8,10 @@ import WeekGraph from '../components/WeekGraph';
 import MonthGraph from '../components/MonthGraph';
 import YearGraph from '../components/YearGraph';
 import PowerPieChart from '../components/PowerPieChart';
+import PlainCarIcon from '../assets/Plain-Car-Icon.svg';
+import PlainApplianceIcon from '../assets/Plain-Appliance-Icon.svg';
+import ApplianceWithRing from '../assets/Appliance-with-Ring.js';
+import CarIcon from '../assets/CarIcon.js';
 
 export default class ChargingHistoryScreen extends React.Component {
     constructor(props) {
@@ -211,7 +215,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={styles.tabs}>
                     <TouchableOpacity onPress={this.weekHandler.bind(this)}>
                         <View style={{ ...styles.tab, backgroundColor: this.state.weekHighlight }}>
@@ -233,20 +237,27 @@ export default class ChargingHistoryScreen extends React.Component {
 
                 </View>
 
-                <View style={{ flexDirection: 'columnn' }}>
-                    <View style={{ paddingLeft: 10, paddingTop: 30 }}>
-                        <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
-                    </View>
-                    <View>
-                        {this.state.displayGraph}
-                    </View>
-                    <View style={{ paddingBottom: 30 }}>
-                        {this.state.displayPieChart}
-                    </View>
+                {/* <View style={{ flexDirection: 'columnn', alignItems: 'center', justifyContent: 'center' }}> */}
+                <View style={{ paddingLeft: 10, paddingTop: 30 }}>
+                    <Text style={styles.graphHeaderText}>{this.state.graphHeaderText}</Text>
+                </View>
+                <View>
+                    {this.state.displayGraph}
                 </View>
 
 
-            </View>
+
+
+
+
+                {this.state.displayPieChart}
+
+
+
+                {/* </View> */}
+
+
+            </ScrollView >
         );
     }
 }
@@ -267,7 +278,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         width: '100%',
-        marginTop: 10
+        marginTop: 10,
     },
     tab: {
         padding: 15,
@@ -310,6 +321,16 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: Colors.secondary,
         fontWeight: 'bold'
+    },
+    imageContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingLeft: 20
+    },
+    imageStyle: {
+        width: 50,
+        height: 50
+
     }
 
 });
