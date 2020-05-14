@@ -106,7 +106,8 @@ class SetupScreen extends React.Component {
          })
         .catch(error => {
           console.log(error.code);
-          alert("Something went wrong adding user to database.");
+          alert("Something went wrong setting up account.\n" +
+                "Please send an email to thejuicerzcapstone@gmail.com if this problem persists.");
         });
       }
     }
