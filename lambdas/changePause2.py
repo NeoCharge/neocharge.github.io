@@ -20,8 +20,8 @@ PAUSE_ACK = 102
 RESUME_CHARGE = 3
 RESUME_ACK = 103
 
-RETRY_DELAY = 1
-MAX_RETRIES = 5
+RETRY_DELAY = 2
+MAX_RETRIES = 2
 
 
 
@@ -53,6 +53,7 @@ class ChangePause :
         client.loop_start()
         retry_ctr = 0 
         while not self.msg_success and retry_ctr < MAX_RETRIES: 
+            print("retrying")
             client.publish(topic, msg)
             time.sleep(RETRY_DELAY)
             retry_ctr+=1
@@ -62,7 +63,7 @@ class ChangePause :
         with self.connection.cursor() as cur:
             cur.execute('select DevId, Pause from Users where Email="%s";' %self.user_email)
             result = cur.fetchall()[0]
-            #until more test devices are available 
+            print(result)
             #self.uuid = result[0]
             self.uuid = "PB2-1"
             is_cur_paused = result[1]
@@ -99,5 +100,5 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'headers': { 'Content-Type': 'json' },
-        'body': {"success" : p.msg_success, "paused" :(p.sent_msg == PAUSE_CHARGE)}
+        'body': {"success" : p.msg_success, "changedToPause" :(p.sent_msg == PAUSE_CHARGE)}
     }

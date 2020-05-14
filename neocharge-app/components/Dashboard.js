@@ -122,8 +122,6 @@ export default class Dashboard extends React.Component {
         const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
         console.log("smartcharge: " + apiResponse);
     }
-
-    //TODO: put logic of actual pausing/connection to backend in here
     async setPause() {
 
         let requestBody = {
@@ -132,17 +130,28 @@ export default class Dashboard extends React.Component {
         let jsonObj = {
             body: requestBody
         };
+
+        console.log("pause pressed.")
+
         const path = "/pausecharge";
         await API.put("LambdaProxy", path, jsonObj)
             .then((data) => {
-                if(body.data.msg_success && body.data.changedTo) {
+                console.log("in herea")
+                console.log(data)
+                console.log("the answer is : ", data.body.success)
+                console.log("the answer is : ", data.body.paused)
+                if(data.body.success && data.body.paused) {
+                    console.log("resume!")
                     this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
                     console.log("paused");
-                } else if (body.data.msg_success && (! body.data.changedTo)) {
+                } else if (data.body.success && (! data.body.paused)) {
+                    console.log("paused!")
                     this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
                     console.log("unpaused");
+                } else {
+                    console.log("please halp")
                 }
-                console.log(data.body.changedTo)
+                console.log(data.body.paused)
             })
             .catch(error => {
                 console.log(error.response)
