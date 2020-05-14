@@ -47,9 +47,11 @@ class SetupScreen extends React.Component {
   };
 
   setDeviceIDHandler(device) {
-    this.setState({ deviceID: device });
+    this.setState({ deviceID: device.toUpperCase() });
   }
 
+  // TODO is this function necessary? there is another "hasValidDeviceID()" that is being used
+  // that takes in the deviceID as a parameter. -josh
   async hasValidDeviceID() {
     let jsonObj = {
       "deviceID": this.state.deviceID
@@ -78,34 +80,35 @@ class SetupScreen extends React.Component {
           return;
       }
 
-      let requestBody = {
-        "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
-        "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
-        "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
-      };
-      let jsonObj = {
-        body: requestBody
-      }
-      const path = "/user";
-
       console.log(this.state.pushToken);
       console.log(typeof this.state.pushToken);
 
       // TODO is there a reason we should still leave this here for testing? -josh
       //let devID = "XSD-934859734-TTYZ";
 
-      let hasValidID = await hasValidDeviceID(this.state.deviceID);
+      let hasValidID = await validDeviceIDCheck(this.state.deviceID);
 
-      if (!hasValidID) {
-        console.log("entered non valid id");
-        alert("Must enter a valid device ID.");
-        return;
+      if (hasValidID) {
+        let requestBody = {
+          "userEmail": this.state.userEmail, "timeZone": this.state.timeZone,
+          "primaryDevice": this.state.primaryDevice, "secondaryDevice": this.state.secondaryDevice,
+          "deviceID": this.state.deviceID, "pushToken": this.state.pushToken
+        };
+        let jsonObj = {
+          "body": requestBody
+        }
+        const path = "/user";
+        const apiResponse = await API.put("LambdaProxy", path, jsonObj) //replace the desired API name
+        .then(() => {
+          console.log(apiResponse);
+          this.state.hasLoggedData = true;
+          this.props.navigation.navigate('App');
+         })
+        .catch(error => {
+          console.log(error.code);
+          alert("Something went wrong adding user to database.");
+        });
       }
-
-      const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
-      console.log(apiResponse);
-      this.state.hasLoggedData = true;
-      this.props.navigation.navigate('App');
     }
   };
 
@@ -156,7 +159,10 @@ async function registerForPushNotificationsAsync(userEmail) {
 
 };
 
-async function hasValidDeviceID(deviceID) {
+/*
+// Returns true if the deviceID exists in our database.
+// Returns false if it does not.
+async function validDeviceIDCheck(deviceID) {
   const path = "/deviceid"; // you can specify the path
 
   console.log("path is " + path);
@@ -171,6 +177,41 @@ async function hasValidDeviceID(deviceID) {
 
   console.log("api response: " + valid);
   return valid;
+}
+*/
+
+// Returns true if the deviceID exists in our database and is available.
+// Returns false if the deviceID does not exist or is already
+// in use by another account.
+async function validDeviceIDCheck(deviceID) {
+  const path = "/deviceid"; // you can specify the path
+  console.log("path is " + path);
+  let result = await API.patch("LambdaProxy", path,
+    {
+      "queryStringParameters": {
+        "deviceID": deviceID
+      }
+    }).catch(error => { 
+      console.log(error.response) 
+      alert("Something went wrong while verifying device ID.")
+      return false;
+    });
+    console.log("response type: " + (typeof result));
+    console.log("api response: " + result);
+
+  if (Object.keys(result).length === 0) {
+    console.log("entered non valid id");
+    alert("Must enter a valid device ID.");
+    return false;
+  }
+  /* TODO NOTICE: uncomment this once we are done with Alpha Testers all using 'mydevice'!!
+  if (result.inUse == 1) {
+    console.log("entered deviceID is already in use");
+    alert("Entered device ID is already in use by another account.");
+    return false;
+  }
+  */
+  return true;
 }
 
 async function logPushNotifcationToken(token, userEmail) {
