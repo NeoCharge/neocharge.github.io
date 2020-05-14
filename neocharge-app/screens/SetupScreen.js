@@ -180,6 +180,11 @@ async function validDeviceIDCheck(deviceID) {
 }
 */
 
+// TODO NOTICE: I am using the 'patch' method as a way of avoiding making changes to
+// the production environment Alpha Testers are using. Before our next deployment, we
+// need to copy and paste the code of verifyDeviceID-JUIC208.py into verifyDeviceID.py
+// and delete the /deviceid patch resource and call API.get() instead.
+//
 // Returns true if the deviceID exists in our database and is available.
 // Returns false if the deviceID does not exist or is already
 // in use by another account.
