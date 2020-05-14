@@ -128,6 +128,9 @@ export default class ChargingHistoryScreen extends React.Component {
                     this.state.monthPriTotal += obj.priPower;
                     this.state.monthSecTotal += obj.secPower;
                 }
+            ).catch(error => {
+                console.log(error.response)
+            });
 
                 //if charge happened in the last year,
                 //then increase the tally of that months charge totals

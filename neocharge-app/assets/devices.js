@@ -5,7 +5,7 @@ import Appliance from './ApplianceIcon.svg';
 import NoOutputRing from './NoOutputRing.svg';
 import DualCar from './DualCarIcon.svg';
 
-const kWidth = Dimensions.get('screen').width * .8
+const kWidth = Dimensions.get('screen').width * .80
 const kHeight = Dimensions.get('screen').height * .2
 
 export default {
