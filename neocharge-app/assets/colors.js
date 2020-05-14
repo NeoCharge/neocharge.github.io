@@ -3,6 +3,7 @@ export default {
     secondary: '#F1F2F2',
     accent1: '#00A696',
     accent2: '#FEBE26',
+    red: 'red',
     appleBlue: '#363636',
     faded: '#adadad'
 };

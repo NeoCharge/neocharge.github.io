@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { Dimensions, View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from "../assets/colors";
 import Arrow from '../assets/Arrow.svg';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
 
 export default class HomeOption extends React.Component {
     render() {
@@ -28,7 +31,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'RedHatDisplay-Regular',
         color: Colors.secondary,
-        fontSize: 25
+        fontSize: (swidth * 0.06)
     },
     select: {
         flex: 1,
