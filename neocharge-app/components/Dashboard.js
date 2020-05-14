@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { Alert, View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
@@ -131,27 +131,16 @@ export default class Dashboard extends React.Component {
             body: requestBody
         };
 
-        console.log("pause pressed.")
-
         const path = "/pausecharge";
         await API.put("LambdaProxy", path, jsonObj)
             .then((data) => {
-                console.log("in herea")
-                console.log(data)
-                console.log("the answer is : ", data.body.success)
-                console.log("the answer is : ", data.body.paused)
                 if(data.body.success && data.body.paused) {
-                    console.log("resume!")
                     this.setState({ pauseStyle: styles.pauseOn, pauseText: "RESUME" })
-                    console.log("paused");
                 } else if (data.body.success && (! data.body.paused)) {
-                    console.log("paused!")
                     this.setState({ pauseStyle: styles.pauseOff, pauseText: "PAUSE" })
-                    console.log("unpaused");
                 } else {
-                    console.log("please halp")
+                    Alert.alert("Device Unreachable", "This message will be sent to your NeoCharge device when it is next online.")
                 }
-                console.log(data.body.paused)
             })
             .catch(error => {
                 console.log(error.response)
