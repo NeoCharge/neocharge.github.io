@@ -67,7 +67,7 @@ class ChangeSchedule :
         msg = "{{\"UUID\":\"{}\",\"msg\":{},\"hr_msg\":\"{}\",\"rev\":{},\"time\":{},\"enable\":{},\"startHour\":{},\"startMinute\":{},\"endHour\":{},\"endMinute\":{},\"timezone\":\"{}\"}}"
         sql_msg = "{{'UUID':'{}','msg':{},'hr_msg':'{}','rev':{},'time':{},'enable':{},'startHour':{},'startMinute':{},'endHour':{},'endMinute':{},'timezone':'{}'}}"
 
-        msg = msg.format(self.uuid, SCHEDULE_UPDATE, "SCHEDULE_UPDATE", fw, round(time.time()), "true", startTime, 0, endTime, 0, timezone)
+        msg = msg.format(self.uuid, SCHEDULE_UPDATE, "SCHEDULE_UPDATE", fw, round(time.time()), "True", startTime, 0, endTime, 0, timezone)
 
         self.send_message(self.uuid,msg)
 
