@@ -1,20 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Switch, Button } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
 import { API } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
 
 class NotificationSelectionScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      // Dummy email currently being used. 
-      // Needs to be changed to the email that user inputted on previous screens
-      userEmail: 'test@calpoly.edu',
-      primaryDeviceSwitch: false,
-      secondaryDeviceSwitch: false,
-      chargeInterruptSwitch: false
+      userEmail: "",
+      primaryDeviceSwitch: "",
+      secondaryDeviceSwitch: "",
+      chargeInterruptSwitch: ""
     }
     this.primaryDeviceToggle = this.primaryDeviceToggle.bind(this);
     this.secondaryDeviceToggle = this.secondaryDeviceToggle.bind(this);
@@ -22,17 +19,70 @@ class NotificationSelectionScreen extends React.Component {
     this.onlogInfo = this.onlogInfo.bind(this);
   }
 
+  // retrieving user email
+  async componentDidMount() {
+    this.setState({ userEmail: await SecureStore.getItemAsync("secure_email")});
 
-  primaryDeviceToggle(value) {
-    this.setState({ primaryDeviceSwitch: value });
+    let query = {
+      "queryStringParameters": {
+          "userEmail": this.state.userEmail
+      }};
+
+    // get notification preferences from database
+    let primaryNotif;
+    let secondaryNotif;
+    let chargeInterruptNotif;
+
+    console.log("making notification settings get request")
+        await API.get("LambdaProxy", "/settings", query)            
+          .then(
+          response => {
+              if (response != null) {
+                  console.log(response)
+                    primaryNotif = response["NotifyPri"];
+                    secondaryNotif = response["NotifySec"];
+                    chargeInterruptNotif = response["NotifySec"];
+
+                    this.setState({ primaryDeviceSwitch: primaryNotif});
+                    this.setState({ secondaryDeviceSwitch: secondaryNotif});
+                    this.setState({ chargeInterruptSwitch: chargeInterruptNotif});
+
+                    // change to true/false values
+                    if (primaryNotif == "1" || primaryNotif == "true")
+                      primaryNotif = "true"
+                    else
+                      primaryNotif = "false"
+
+                    if (secondaryNotif == "1" || secondaryNotif == "true")
+                      secondaryNotif = "true"
+                    else
+                      secondaryNotif = "false"
+
+                    if (chargeInterruptNotif == "1" || chargeInterruptNotif == "true")
+                      chargeInterruptNotif = "true"
+                    else
+                      chargeInterruptNotif = "false"
+
+              } else {
+                  console.log("No device currently charging");
+              }
+          }
+      ).catch(error => {
+          console.log(error.response)
+      });
+
+  }
+
+  primaryDeviceToggle(primaryNotif) {
+    this.setState({ primaryDeviceSwitch: primaryNotif});
   };
 
-  secondaryDeviceToggle(value) {
-    this.setState({ secondaryDeviceSwitch: value })
+  secondaryDeviceToggle(secondaryNotif) {
+    this.setState({ secondaryDeviceSwitch: secondaryNotif})
   };
 
-  chargeInterruptToggle(value) {
-    this.setState({ chargeInterruptSwitch: value })
+  chargeInterruptToggle(chargeInterruptNotif) {
+    this.setState({ chargeInterruptSwitch: chargeInterruptNotif})
   };
 
   //onValueChange of the switch this function will be called
@@ -43,16 +93,17 @@ class NotificationSelectionScreen extends React.Component {
     console.log("Charge Interruptions Switch: " + this.state.chargeInterruptSwitch);
 
     let requestBody = {
-      "email": this.state.userEmail,
-      "primarydevice": this.state.primaryDeviceSwitch.toString(),
-      "secondardevice": this.state.secondaryDeviceSwitch.toString(),
-      "chargeinterruptions": this.state.chargeInterruptSwitch.toString()
+      "Email": this.state.userEmail,
+      "PrimaryDevice": this.state.primaryDeviceSwitch,
+      "SecondaryDevice": this.state.secondaryDeviceSwitch,
+      "ChargeInterruptions": this.state.chargeInterruptSwitch
     };
+    
     let jsonObj = {
       body: requestBody
     }
     const path = "/settings"; // path from root of API
-    const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
+    const apiResponse = await API.put("LambdaProxy", path, jsonObj).catch(error => {console.log(error.response)}); //replace the desired API name
     console.log(apiResponse);
   };
 
@@ -93,15 +144,6 @@ class NotificationSelectionScreen extends React.Component {
             value={this.state.chargeInterruptSwitch} />
         </View >
 
-        {/* <View style={styles.backgroundScheduleBox}>
-            <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
-            <Text style={{...styles.optionText, paddingRight: 90}}>Remind me to plug in </Text>
-            <Switch
-              style={styles.switch}
-              onValueChange={this.chargeInterruptToggle}
-              value={this.state.chargeInterruptSwitch} />
-          </View > */}
-
         <View style={styles.logoutContainer}>
           <View style={styles.logoutButtonContainer}>
             <Button onPress={this.onlogInfo}
@@ -115,13 +157,6 @@ class NotificationSelectionScreen extends React.Component {
     );
   }
 }
-
-
-// for navigation to other screens
-// const AppStackNavigator = createStackNavigator({
-//   Schedule: { screen: NotificationSelectionScreen }
-// });
-// const Apps = createAppContainer(AppStackNavigator);
 
 // styling elements
 const styles = StyleSheet.create({
