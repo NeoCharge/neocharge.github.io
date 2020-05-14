@@ -100,7 +100,7 @@ class ChangePause :
                     cur.execute('Update PendingMessages set Pause = "%s" where uid = "%s"' %(sql_msg, self.uuid))
                 else : 
                     print(msg)
-                    cur.execute('Insert into PendingMessages Values("%s", null, "%s", null)' %(self.uuid,sql_msg))
+                    cur.execute('Insert into PendingMessages Values("%s","%s", null, null)' %(self.uuid,sql_msg))
             self.connection.commit()
 
 
