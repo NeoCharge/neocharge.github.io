@@ -91,6 +91,12 @@ def lambda_handler(event, context):
                 'timeZone': timeZone,
                 'pushToken': pushToken
             })
+        # mark the device ID as inUse
+        cur.execute("set sql_safe_updates = 0;")
+        cur.execute("""
+            update ValidDeviceIds set inUse = 1 where deviceID = %(deviceID)s;
+        """, {'deviceID': deviceID})
+        cur.execute("set sql_safe_updates = 1;")
         connection.commit()
     logger="success"
     return {
