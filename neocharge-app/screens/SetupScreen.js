@@ -106,7 +106,7 @@ class SetupScreen extends React.Component {
          })
         .catch(error => {
           console.log(error.code);
-          alert("Something went wrong setting up account.\n" +
+          alert("Something went wrong while setting up your account.\n" +
                 "Please send an email to thejuicerzcapstone@gmail.com if this problem persists.");
         });
       }
