@@ -1,12 +1,9 @@
 import React from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import HomeOption from '../components/HomeOption';
-import Dashboard from '../components/Dashboard';
 import SmartChargeButton from '../components/SmartChargeButton';
 import PauseButton from '../components/PauseButton';
-
-import BannerIcon from '../components/BannerIcon';
-import DeviceDisplay from '../components/DeviceDisplay';
+import Dashboard from '../components/Dashboard';
 import Colors from '../assets/colors';
 import ChargingHistory from '../assets/ChargingHistory.svg';
 import ScheduleCharge from '../assets/ScheduleCharge.svg';
@@ -21,25 +18,24 @@ const iconSize = sheight * 0.045;
 export default class HomeScreen extends React.Component {
     // Adding header title, color and font weight
     static navigationOptions = {
-        title: "Home",
-        headerLeft: <BannerIcon />,
         headerStyle: {
-            backgroundColor: Colors.accent2
+            backgroundColor: Colors.primary,
+            borderBottomWidth: 0,
+            height: 0
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
             fontWeight: "bold"
         }
-    };
+    }
 
     render() {
-
         return (
             <View style={styles.container}>
 
-                <DeviceDisplay />
                 <Dashboard />
 
+                {/*TODO: Change what each button does based on which tab is showing */}
                 <View style={styles.buttons}>
                     <SmartChargeButton />
                     <PauseButton />
@@ -66,31 +62,28 @@ export default class HomeScreen extends React.Component {
                         img={<Notifications width={iconSize} height={iconSize} />}
                         name='Notifications' />
                 </View>
-            </View >
+
+            </View>
         );
     }
 }
 
-
 const styles = StyleSheet.create({
     container: {
-        flex: 17,
+        flex: 14,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.primary
     },
-    title: {
-        backgroundColor: Colors.secondary
-    },
     subcontainer: {
-        flex: 5,
+        flex: 3,
         flexDirection: 'column',
         paddingBottom: 20,
     },
     buttons: {
-        flex: 2,
+        flex: 1,
         flexDirection: 'row',
-        // alignItems: 'center',
+        alignItems: 'center',
         justifyContent: 'center',
     }
 });

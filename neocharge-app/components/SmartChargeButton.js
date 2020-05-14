@@ -19,7 +19,6 @@ export default class Dashboard extends React.Component {
 
     async componentDidMount() {
         this.state.userEmail = await SecureStore.getItemAsync("secure_email");
-        console.log("email on dashboard: " + this.state.userEmail);
 
         let query = {
             "queryStringParameters": {
@@ -46,14 +45,11 @@ export default class Dashboard extends React.Component {
     }
 
     async setSmartCharge() {
-        if (this.state.smartChargeStyle == styles.smartChargeOn) {
+        if (this.state.smartChargeStyle == styles.on) {
             this.setState({ smartChargeStyle: styles.off })
         } else {
             this.setState({ smartChargeStyle: styles.on })
         }
-
-        console.log(this.state.userEmail);
-        console.log(typeof this.state.userEmail);
 
         let requestBody = {
             "userEmail": this.state.userEmail
@@ -61,6 +57,7 @@ export default class Dashboard extends React.Component {
         let jsonObj = {
             body: requestBody
         };
+
         const path = "/smartcharge";
         const apiResponse = await API.put("LambdaProxy", path, jsonObj); //replace the desired API name
         console.log("smartcharge: " + apiResponse);
@@ -94,7 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 15,
         backgroundColor: Colors.accent1,
-        borderRadius: 5,
+        borderRadius: 30,
         width: (.80 * swidth / 2)
     },
     off: {

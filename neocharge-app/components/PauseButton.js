@@ -8,7 +8,7 @@ import { API } from 'aws-amplify';
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
 
-const kPauseText = "Stop Charge";
+const kPauseText = "Stop Charging";
 const kChargeText = "Charge Now";
 
 export default class Dashboard extends React.Component {
@@ -49,7 +49,7 @@ export default class Dashboard extends React.Component {
 
     //TODO: put logic of actual pausing/connection to backend in here
     async setPause() {
-        if (this.state.pauseStyle == styles.pauseOn) {
+        if (this.state.pauseStyle == styles.on) {
             this.setState({ pauseStyle: styles.off, pauseText: kPauseText })
             console.log("unpaused");
         } else {
@@ -99,16 +99,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 15,
-        backgroundColor: Colors.accent1,
+        backgroundColor: Colors.faded,
         borderRadius: 5,
-        width: (.80 * swidth / 2)
+        width: (swidth * .4)
     },
     off: {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 15,
         backgroundColor: Colors.red,
-        borderRadius: 5,
-        width: (.80 * swidth / 2)
+        borderRadius: 30,
+        width: (swidth * .4)
     }
 });
