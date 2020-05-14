@@ -5,6 +5,7 @@ export default {
     accent2: '#FEBE26',
     red: 'red',
     appleBlue: '#363636',
+    appleRed: '#FF453A',
     faded: '#adadad',
     tabBackground: "#D9DDDC"
 };
