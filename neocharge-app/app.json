@@ -30,6 +30,15 @@
     "android": {
       "package": "com.NeoCharge.NeoCharge",
       "versionCode": 1
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "js",
+        "jsx",
+        "svg",
+        "svgx"
+      ]
     }
   }
 }

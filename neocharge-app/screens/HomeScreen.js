@@ -1,102 +1,89 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import HomeOption from '../components/HomeOption';
+import SmartChargeButton from '../components/SmartChargeButton';
+import PauseButton from '../components/PauseButton';
 import Dashboard from '../components/Dashboard';
-import BannerIcon from '../components/BannerIcon';
-import DeviceDisplay from '../components/DeviceDisplay';
 import Colors from '../assets/colors';
+import ChargingHistory from '../assets/ChargingHistory.svg';
+import ScheduleCharge from '../assets/ScheduleCharge.svg';
+import SmartSettings from '../assets/SmartSettings.svg';
+import Notifications from '../assets/Notifications.svg';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
+
+const iconSize = sheight * 0.045;
 
 export default class HomeScreen extends React.Component {
     // Adding header title, color and font weight
     static navigationOptions = {
-        title: "Home",
-        headerLeft: <BannerIcon />,
         headerStyle: {
-            backgroundColor: Colors.accent2
+            backgroundColor: Colors.primary,
+            borderBottomWidth: 0,
+            height: 0
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
             fontWeight: "bold"
         }
-    };
+    }
 
     render() {
-
         return (
             <View style={styles.container}>
 
-                <DeviceDisplay />
                 <Dashboard />
 
-                <View style={styles.subcontainer2}>
+                {/*TODO: Change what each button does based on which tab is showing */}
+                <View style={styles.buttons}>
+                    <SmartChargeButton />
+                    <PauseButton />
+                </View>
+
+                <View style={styles.subcontainer}>
                     <HomeOption nav={this.props.navigation}
                         screenName={'ChargingHistory'}
-                        img={require('../assets/history-icon.png')}
-                        name='CHARGING HISTORY' />
+                        img={<ChargingHistory width={iconSize} height={iconSize} />}
+                        name='Charging History' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'SchedulingHome'}
-                        img={require('../assets/schedule-icon.png')}
-                        name='SCHEDULE CHARGE' />
+                        img={<ScheduleCharge width={iconSize} height={iconSize} />}
+                        name='Schedule Charge' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'Settings'}
-                        img={require('../assets/smart-settings-icon.png')}
-                        name='SMART SETTINGS' />
+                        img={<SmartSettings width={iconSize} height={iconSize} />}
+                        name='Smart Settings' />
 
                     <HomeOption nav={this.props.navigation}
                         screenName={'Notifications'}
-                        img={require('../assets/notification-icon.png')}
-                        name='NOTIFICATIONS' />
+                        img={<Notifications width={iconSize} height={iconSize} />}
+                        name='Notifications' />
                 </View>
-            </View >
+
+            </View>
         );
     }
 }
 
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 14,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.primary
     },
-    tabs: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        width: '100%',
-        marginTop: 15
-    },
-    tab: {
-        padding: 15,
-        borderRadius: 5
-    },
-    title: {
-        backgroundColor: Colors.secondary
-    },
-    subcontainer1: {
-        flex: 3,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%'
-    },
-    subcontainer2: {
+    subcontainer: {
         flex: 3,
         flexDirection: 'column',
         paddingBottom: 20,
     },
-    // image: {
-    //     flex: 1,
-    //     alignSelf: 'stretch',
-    //     height: undefined,
-    //     width: undefined,
-    //     margin: 25
-    // },
-    text: {
-        color: Colors.secondary,
-        fontSize: 20
+    buttons: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
