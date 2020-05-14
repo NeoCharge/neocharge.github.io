@@ -4,5 +4,6 @@ export default {
     accent1: '#00A897',
     accent2: '#FEBE26',
     appleBlue: '#363636',
+    appleRed: '#FF453A',
     faded: '#adadad'
 };
