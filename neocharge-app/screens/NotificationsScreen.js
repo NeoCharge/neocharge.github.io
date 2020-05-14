@@ -9,9 +9,9 @@ class NotificationSelectionScreen extends React.Component {
     super(props)
     this.state = {
       userEmail: "",
-      primaryDeviceSwitch: false,
-      secondaryDeviceSwitch: false,
-      chargeInterruptSwitch: false
+      primaryDeviceSwitch: "",
+      secondaryDeviceSwitch: "",
+      chargeInterruptSwitch: ""
     }
     this.primaryDeviceToggle = this.primaryDeviceToggle.bind(this);
     this.secondaryDeviceToggle = this.secondaryDeviceToggle.bind(this);
@@ -22,18 +22,67 @@ class NotificationSelectionScreen extends React.Component {
   // retrieving user email
   async componentDidMount() {
     this.setState({ userEmail: await SecureStore.getItemAsync("secure_email")});
+
+    let query = {
+      "queryStringParameters": {
+          "userEmail": this.state.userEmail
+      }};
+
+    // get notification preferences from database
+    let primaryNotif;
+    let secondaryNotif;
+    let chargeInterruptNotif;
+
+    console.log("making notification settings get request")
+        await API.get("LambdaProxy", "/settings", query)            
+          .then(
+          response => {
+              if (response != null) {
+                  console.log(response)
+                    primaryNotif = response["NotifyPri"];
+                    secondaryNotif = response["NotifySec"];
+                    chargeInterruptNotif = response["NotifySec"];
+
+                    this.setState({ primaryDeviceSwitch: primaryNotif});
+                    this.setState({ secondaryDeviceSwitch: secondaryNotif});
+                    this.setState({ chargeInterruptSwitch: chargeInterruptNotif});
+
+                    // change to true/false values
+                    if (primaryNotif == "1" || primaryNotif == "true")
+                      primaryNotif = "true"
+                    else
+                      primaryNotif = "false"
+
+                    if (secondaryNotif == "1" || secondaryNotif == "true")
+                      secondaryNotif = "true"
+                    else
+                      secondaryNotif = "false"
+
+                    if (chargeInterruptNotif == "1" || chargeInterruptNotif == "true")
+                      chargeInterruptNotif = "true"
+                    else
+                      chargeInterruptNotif = "false"
+
+              } else {
+                  console.log("No device currently charging");
+              }
+          }
+      ).catch(error => {
+          console.log(error.response)
+      });
+
   }
 
-  primaryDeviceToggle(value) {
-    this.setState({ primaryDeviceSwitch: value });
+  primaryDeviceToggle(primaryNotif) {
+    this.setState({ primaryDeviceSwitch: primaryNotif});
   };
 
-  secondaryDeviceToggle(value) {
-    this.setState({ secondaryDeviceSwitch: value })
+  secondaryDeviceToggle(secondaryNotif) {
+    this.setState({ secondaryDeviceSwitch: secondaryNotif})
   };
 
-  chargeInterruptToggle(value) {
-    this.setState({ chargeInterruptSwitch: value })
+  chargeInterruptToggle(chargeInterruptNotif) {
+    this.setState({ chargeInterruptSwitch: chargeInterruptNotif})
   };
 
   //onValueChange of the switch this function will be called
