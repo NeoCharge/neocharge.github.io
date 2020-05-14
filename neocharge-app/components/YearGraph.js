@@ -49,7 +49,7 @@ export default class YearGraph extends React.PureComponent {
             {
                 data: labeledPriData,
                 svg: {
-                    fill: Colors.secondary,
+                    fill: 'url(#gradient2)',
                     x: +3, //gives seperation within bar group
                 },
             },
@@ -86,6 +86,16 @@ export default class YearGraph extends React.PureComponent {
             </Defs>
         )
 
+        const Gradient2 = () => (
+            <Defs key={'gradient2'}>
+                <LinearGradient spreadMethod={"pad"} id={"gradient2"} x1={"0%"} y1={"70%"} x2={"70%"} y2={"0%"}>
+                    <Stop offset={"0%"} stopColor={"#aeaeae"} stopOpacity={"1"} />
+                    <Stop offset={"100%"} stopColor={Colors.secondary} stopOpacity={"1"} />
+                </LinearGradient>
+            </Defs>
+
+        )
+
 
 
 
@@ -116,6 +126,7 @@ export default class YearGraph extends React.PureComponent {
                         {/* <CustomBars bandwidth={10} /> */}
                         <CustomGrid belowChart={true} values={yValues} />
                         <Gradient />
+                        <Gradient2 />
                     </BarChart>
                     <YAxis
                         data={yAxis}

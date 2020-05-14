@@ -26,12 +26,14 @@ export default class PowerPieChart extends React.PureComponent {
 
     render() {
 
-        const { labelWidth, priTotal, secTotal, type } = this.state;
+        const { priTotal, secTotal, type } = this.state;
 
-        console.log(priTotal);
-        console.log(secTotal);
+        console.log("priTotal: " + priTotal.toString());
+        console.log("secTotal: " + secTotal.toString());
         const total = priTotal + secTotal;
         const displayTotal = type == "Year" ? (total / 1000).toFixed(1) + "K" : total.toString();
+        const dispalyPriTotal = type == "Year" ? (priTotal / 1000).toFixed(1) + "K" : parseFloat(priTotal).toFixed(1).toString();
+        const dispalySecTotal = type == "Year" ? (secTotal / 1000).toFixed(1) + "K" : parseFloat(secTotal).toFixed(1).toString();
 
         console.log(total);
 
@@ -44,6 +46,16 @@ export default class PowerPieChart extends React.PureComponent {
             </Defs>
         )
 
+        const Gradient2 = () => (
+            <Defs key={'gradient2'}>
+                <LinearGradient spreadMethod={"pad"} id={"gradient2"} x1={"0%"} y1={"70%"} x2={"70%"} y2={"0%"}>
+                    <Stop offset={"0%"} stopColor={"#aeaeae"} stopOpacity={"1"} />
+                    <Stop offset={"100%"} stopColor={Colors.secondary} stopOpacity={"1"} />
+                </LinearGradient>
+            </Defs>
+
+        )
+
         const data = [
             {
                 key: 1,
@@ -53,7 +65,7 @@ export default class PowerPieChart extends React.PureComponent {
             {
                 key: 2,
                 amount: priTotal,
-                svg: { fill: Colors.secondary }
+                svg: { fill: 'url(#gradient2)' }
             }
         ];
 
@@ -70,7 +82,7 @@ export default class PowerPieChart extends React.PureComponent {
                             source={require('../assets/Appliance-Out-Of-Use.png')}
                             resizeMode='contain' />
                         <Text style={styles.imageTotalTextLeft}>
-                            {this.state.priTotal}kWh
+                            {dispalyPriTotal}kWh
                         </Text>
                         <Text style={styles.imageLabelText}>
                             Primary
@@ -78,12 +90,12 @@ export default class PowerPieChart extends React.PureComponent {
                     </View>
                 </View>
                 <PieChart
-                    style={{ borderRadius:200, justifyContent: 'center', flex:2.5, paddingBottom: 40 }}
+                    style={{ borderRadius:150, justifyContent: 'center', flex:2, paddingBottom: 40 }}
                     valueAccessor={({ item }) => item.amount}
                     data={data}
                     spacing={0}
                     outerRadius={"90%"}
-                    innerRadius={"83%"}
+                    innerRadius={"81%"}
                 >
                     <SvgText
                         style={{
@@ -121,6 +133,7 @@ export default class PowerPieChart extends React.PureComponent {
                         {`${label2}`}
                     </SvgText>
                     <Gradient />
+                    <Gradient2/>
                 </PieChart>
                 <View style={styles.rightImageContainer}>
                     <View style={{ paddingBottom: 40, alignItems: 'center' }}>
@@ -129,7 +142,7 @@ export default class PowerPieChart extends React.PureComponent {
                             source={require('../assets/Car-Green-Gradient.png')}
                             resizeMode='contain' />
                         <Text style={styles.imageTotalTextRight}>
-                            {this.state.secTotal}kWh
+                            {dispalySecTotal}kWh
                         </Text>
                         <Text style={styles.imageLabelText}>
                             Secondary

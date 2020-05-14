@@ -90,7 +90,7 @@ export default class MonthGraph extends React.PureComponent {
             {
                 data: this.state.primary,
                 svg: {
-                    fill: Colors.secondary,
+                    fill: 'url(#gradient2)',
                     x: -1, //gives seperation within bar group
                 },
             },
@@ -119,26 +119,6 @@ export default class MonthGraph extends React.PureComponent {
             </G>
         );
 
-        const CustomBars = ({ x, y, bandwidth, data }) => (
-
-
-            data.map((value, index) =>
-                <G>
-                    <Rect
-                        x={x(index)}
-                        y={y(value) - 5} // Subtract Height / 2 to make half of the Rect above the bar
-                        rx={5} // Set to Height / 2
-                        ry={5} // Set to Height / 2
-                        width={bandwidth}
-                        height={10} // Height of the Rect
-                        fill={'#ff0000'}
-
-                    />
-                </G>
-            )
-
-
-        );
 
         const Gradient = () => (
             <Defs key={'gradient'}>
@@ -149,6 +129,15 @@ export default class MonthGraph extends React.PureComponent {
             </Defs>
         )
 
+        const Gradient2 = () => (
+            <Defs key={'gradient2'}>
+                <LinearGradient spreadMethod={"pad"} id={"gradient2"} x1={"0%"} y1={"70%"} x2={"70%"} y2={"0%"}>
+                    <Stop offset={"0%"} stopColor={"#aeaeae"} stopOpacity={"1"} />
+                    <Stop offset={"100%"} stopColor={Colors.secondary} stopOpacity={"1"} />
+                </LinearGradient>
+            </Defs>
+
+        )
 
         const todayObj = new Date();
         const thisMonth = todayObj.getMonth();
@@ -184,6 +173,7 @@ export default class MonthGraph extends React.PureComponent {
                         {/* <CustomBars bandwidth={10} /> */}
                         <CustomGrid belowChart={true} />
                         <Gradient/>
+                        <Gradient2 />
                     </BarChart>
                     <YAxis
                         data={yAxis}
