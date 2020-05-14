@@ -64,24 +64,27 @@ class ChangePause :
             result = cur.fetchall()[0]
             #until more test devices are available 
             #self.uuid = result[0]
-            self.uuid = "PB2-1"
+            self.uuid = "PB2-12"
             is_cur_paused = result[1]
 
         if is_cur_paused == None:
             is_cur_paused = 0
             
         msg = "{{\"UUID\":\"{}\",\"msg\":{},\"hr_msg\":\"{}\",\"rev\":{},\"time\":{}{}"
+        #incompatible db format requires single quotes
+        sql_msg = "{{'UUID':'{}','msg':{},'hr_msg':'{}','rev':{},'time':{}{}"
 
         if is_cur_paused: 
             self.sent_msg = RESUME_CHARGE
             msg = msg.format(self.uuid, RESUME_CHARGE, "RESUME_CHARGE", fw, round(time.time()), '}')
+            sql_msg = sql_msg.format(self.uuid, RESUME_CHARGE, "RESUME_CHARGE", fw, round(time.time()), '}')
         else: 
             self.sent_msg = PAUSE_CHARGE
             msg = msg.format(self.uuid, PAUSE_CHARGE, "PAUSE_CHARGE", fw, round(time.time()), '}')
+            sql_msg = sql_msg.format(self.uuid, PAUSE_CHARGE, "PAUSE_CHARGE", fw, round(time.time()), '}')
 
         self.send_message(self.uuid,msg)
         
-
         if self.msg_success : 
             with self.connection.cursor() as cur:
                 cur.execute('SET SQL_SAFE_UPDATES = 0;')
@@ -89,6 +92,17 @@ class ChangePause :
                     {'setPause' : (not is_cur_paused), 'userEmail': self.user_email, })
                 cur.execute('SET SQL_SAFE_UPDATES = 1;')
             self.connection.commit()
+        else: 
+            with self.connection.cursor() as cur:
+                cur.execute('select count(*) from PendingMessages where UID="%s"' %self.uuid)
+                result = cur.fetchone()
+                if(result[0] > 0) :
+                    cur.execute('Update PendingMessages set Pause = "%s" where uid = "%s"' %(sql_msg, self.uuid))
+                else : 
+                    print(msg)
+                    cur.execute('Insert into PendingMessages Values("%s", null, "%s", null)' %(self.uuid,sql_msg))
+            self.connection.commit()
+
 
 def lambda_handler(event, context):
     body = event['body']
