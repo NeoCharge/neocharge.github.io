@@ -1,6 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { Dimensions, View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from "../assets/colors";
+import Arrow from '../assets/Arrow.svg';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
 
 export default class HomeOption extends React.Component {
     render() {
@@ -8,13 +12,16 @@ export default class HomeOption extends React.Component {
             <TouchableOpacity style={styles.select} activeOpacity={0.5}
                 onPress={() => this.props.nav.navigate(this.props.screenName)}>
                 <View style={styles.icon}>
-                    <Image
-                        source={this.props.img}
-                        style={styles.image}
-                        resizeMode='contain'
-                    />
+                    {this.props.img}
                 </View>
-                <Text style={styles.text}> {this.props.name} </Text>
+
+                <View style={styles.title}>
+                    <Text style={styles.text}> {this.props.name} </Text>
+                </View>
+
+                <View style={styles.icon}>
+                    <Arrow width={15} height={15} />
+                </View>
             </TouchableOpacity>
         );
     }
@@ -22,22 +29,24 @@ export default class HomeOption extends React.Component {
 
 const styles = StyleSheet.create({
     text: {
+        fontFamily: 'RedHatDisplay-Regular',
         color: Colors.secondary,
-        fontSize: 20
+        fontSize: (swidth * 0.06)
     },
     select: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    image: {
-        flex: 1,
-        alignSelf: 'stretch',
-        height: undefined,
-        width: undefined,
+        justifyContent: 'space-evenly',
+        width: '100%'
     },
     icon: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        width: '50%'
     }
 });

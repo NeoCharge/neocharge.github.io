@@ -41,6 +41,9 @@ export default class HomeScreen extends React.Component {
             ).catch(error => {
                 console.log(error.response)
             });
+
+        console.log("after Lambda, gd: " + this.state.graphData)
+        console.log("after Lambda, dates: " + this.state.jsonDeviceLogsDates)
     }
 
     dayListener = () => {
