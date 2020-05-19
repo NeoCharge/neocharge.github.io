@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Colors from '../assets/colors.js';
-import { Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import DeviceSelection from '../components/DeviceSelection';
 import RNPickerSelect from 'react-native-picker-select';
@@ -97,6 +97,16 @@ class SettingsScreen extends React.Component {
           </View>
         </View>
 
+        {/* Delete Account */}
+        <View style={styles.deleteAccountContainer}>
+          <View style={styles.deleteAccountButtonContainer}>
+            <Button
+              onPress={() => this.confirmDeleteAccount()}
+              title="Delete Account Data"
+            />
+          </View>
+        </View>
+
       </View>
     );
   }
@@ -112,6 +122,39 @@ class SettingsScreen extends React.Component {
           style: 'cancel',
         },
         { text: 'OK', onPress: () => this.SignOut() },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  async confirmDeleteAccount() {
+    Alert.alert(
+      'Delete Account Data',
+      'Are you sure you want to delete your account data?\n\n' +
+      'This will free your device so it can be linked to another account.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log("canceled sign out"),
+          style: 'cancel',
+        },
+        { text: 'Yes', onPress: () => this.areYouSure() },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  async areYouSure() {
+    Alert.alert(
+      'Are you sure?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log("canceled sign out"),
+          style: 'cancel',
+        },
+        { text: 'Yes', onPress: () => this.DeleteAccount() },
       ],
       { cancelable: false },
     );
@@ -135,6 +178,25 @@ class SettingsScreen extends React.Component {
       console.log("catching error: " + err);
     }
   }
+
+  async DeleteAccount() {
+    console.log("ACCOUNT IS BEING DELETED");
+    let path = "/user"
+    let jsonObj = {
+      "queryStringParameters": {
+          "userEmail": this.state.userEmail
+      }};
+    await API.del("LambdaProxy", path, jsonObj)
+    .then(response => {
+        console.log(response)
+        this.SignOut()
+    })
+    .catch(error => { 
+      console.log("Something went wrong while deleting user...")
+      console.log(error.response) 
+    });
+  }
+
 }
 export default SettingsScreen;
 
@@ -222,6 +284,37 @@ const styles = StyleSheet.create({
     height: 30
   },
   logoutContainer: {
-    marginBottom: 30
-  }
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  logoutButtonContainer: {
+    backgroundColor: Colors.appleBlue,
+    position: 'absolute',
+    justifyContent: 'center',
+    height: 10,
+    borderColor: '#51a0d5',
+    borderWidth: 1,
+    bottom: '50%',
+    width: '90%',
+    borderRadius: 10
+  },
+  deleteAccountContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  deleteAccountButtonContainer: {
+    backgroundColor: Colors.appleBlue,
+    position: 'absolute',
+    justifyContent: 'center',
+    height: 40,
+    borderColor: '#51a0d5',
+    borderWidth: 1,
+    bottom: '50%',
+    width: '90%',
+    borderRadius: 10
+  },
 });

@@ -21,12 +21,19 @@ def lambda_handler(event, context):
     item_count = 0
     
     with connection.cursor() as cur:
-        cur.execute('select count(*) as Total from ValidDeviceIds where deviceId = "' + deviceID + '";')
-        numDevices = int(cur.fetchall()[0][0])
+        cur.execute("""
+            select deviceId, inUse
+            from ValidDeviceIds 
+            where deviceId = %(deviceID)s;
+        """, {"deviceID": deviceID})
         connection.commit()
-    result=(numDevices > 0)
+        table = {}
+        if cur.rowcount > 0:
+            result = cur.fetchall()[0]
+            table["deviceID"] = result[0]
+            table["inUse"] = result[1]
     return {
         'statusCode': 200,
         'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps(result)
+        'body': json.dumps(table)
     }
