@@ -47,17 +47,7 @@ export default class Dashboard extends React.Component {
         }
     }
 
-    //TODO: put logic of actual pausing/connection to backend in here
     async setPause() {
-        if (this.state.pauseStyle == styles.on) {
-            this.setState({ pauseStyle: styles.off, pauseText: kPauseText })
-            console.log("unpaused");
-        } else {
-            //TODO: find out what might be a good way to indicate textually to the user that the 
-            //charge is paused, i.e. changed the text below to "RESUME"????
-            this.setState({ pauseStyle: styles.on, pauseText: kChargeText })
-            console.log("paused");
-        }
 
         let requestBody = {
             "userEmail": this.state.userEmail
@@ -65,12 +55,23 @@ export default class Dashboard extends React.Component {
         let jsonObj = {
             body: requestBody
         };
+
         const path = "/pausecharge";
         await API.put("LambdaProxy", path, jsonObj)
+            .then((data) => {
+                if(data.body.success && data.body.paused) {
+                    this.setState({ pauseStyle: styles.on, pauseText: kChargeText })
+                } else if (data.body.success && (! data.body.paused)) {
+                    this.setState({ pauseStyle: styles.off, pauseText: kPauseText })
+                } else {
+                    Alert.alert("Device Unreachable", "This message will be sent to your NeoCharge device when it is next online.")
+                }
+            })
             .catch(error => {
                 console.log(error.response)
             });
-    }
+        }
+
 
     render() {
         return (

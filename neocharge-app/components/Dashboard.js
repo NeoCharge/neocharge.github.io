@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, StyleSheet, Text, Image } from 'react-native';
+import { Alert, Dimensions, View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
 import Devices from '../assets/devices';
 import { API } from 'aws-amplify';
