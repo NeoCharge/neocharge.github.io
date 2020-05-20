@@ -111,6 +111,10 @@ export default class ChargingHistoryScreen extends React.Component {
 
                 //if charge happened in the last week (including today),
                 //then add it to the week data lists
+                if (dateObj.getDate() == 11) {
+                    console.log("11th!!");
+                    console.log(dateCheck)
+                }
                 if (dateCheck < oneWeek) {
                     priWeek[dateObj.getDay()] = obj.priPower;
                     secWeek[dateObj.getDay()] = obj.secPower;
