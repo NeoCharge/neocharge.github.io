@@ -73,7 +73,6 @@ export default class ChargingHistoryScreen extends React.Component {
         const todayString = new Date().toISOString().split('T')[0]
         const oneDay = 1000 * 60 * 60 * 24;
         const oneWeek = oneDay * 7;
-        const today = Date.parse(todayString);
         const todayObj = new Date();
         const thisYear = todayObj.getFullYear();
         const thisMonth = todayObj.getMonth();
@@ -102,19 +101,15 @@ export default class ChargingHistoryScreen extends React.Component {
 
         if (response != null) {
             response.forEach(obj => {
-                const date = Date.parse(obj.startTime.substring(0, 10))
-                const dateObj = new Date(obj.startTime.substring(0, 10));
+                const dateObj = new Date(obj.startTime);
                 const year = dateObj.getFullYear();
+                let dateCheck = todayObj - dateObj;
 
-                //console.log(obj);
-                let dateCheck = today - date;
+                // console.log("date check!")
+                // console.log(dateCheck)
 
                 //if charge happened in the last week (including today),
                 //then add it to the week data lists
-                if (dateObj.getDate() == 11) {
-                    console.log("11th!!");
-                    console.log(dateCheck)
-                }
                 if (dateCheck < oneWeek) {
                     priWeek[dateObj.getDay()] = obj.priPower;
                     secWeek[dateObj.getDay()] = obj.secPower;
@@ -145,8 +140,8 @@ export default class ChargingHistoryScreen extends React.Component {
             )
         }
 
-        console.log("week pri total " + this.state.weekPriTotal.toString());
-        console.log("week sec total " + this.state.weekSecTotal.toString());
+        console.log("month data");
+        console.log(priMonth)
 
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
