@@ -3,7 +3,7 @@ import React from 'react'
 import { BarChart, XAxis, Grid, YAxis } from 'react-native-svg-charts'
 import { View, Dimensions } from 'react-native'
 import * as scale from 'd3-scale'
-import { Svg, Rect, Line, G, Text, Defs, LinearGradient, Stop} from 'react-native-svg';
+import { Svg, Rect, Line, G, Text, Defs, LinearGradient, Stop } from 'react-native-svg';
 import Colors from '../assets/colors';
 
 export default class MonthGraph extends React.PureComponent {
@@ -15,7 +15,31 @@ export default class MonthGraph extends React.PureComponent {
         this.state = {
             primary: this.props.primary.map((value) => ({ value })),
             secondary: this.props.secondary.map((value) => ({ value })),
+            max: 0,
+            scale: []
         }
+    }
+
+    getScale(primary, secondary) {
+        var tempMax = 0;
+        primary.forEach(x => { if (x.value > tempMax) { tempMax = x.value } });
+        secondary.forEach(x => { if (x.value > tempMax) { tempMax = x.value } });
+
+        //get next highest multiple of 5
+        this.state.max = Math.ceil(tempMax / 5) * 5;
+        if (tempMax <= 10) {
+            return [0, 2, 4, 6, 8, 10];
+        } else {
+            var i;
+            var j = 0;
+            const increment = this.state.max / 5;
+            var l = [];
+            for (i = 0; i <= this.state.max; i += increment) {
+                l[j++] = i
+            }
+            return l;
+        }
+
     }
 
     componentDidUpdate(prevProps) {
@@ -64,11 +88,19 @@ export default class MonthGraph extends React.PureComponent {
         const CustomGrid = ({ x, y, data, ticks }) => (
             <G>
                 {// Horizontal grid
-                    ticks.map(function (tick, index) {
-                        if (index % 2 == 0) {
-                            return (<Line key={tick} x1={"0%"} x2={"100%"} y1={y(tick)} y2={y(tick)} stroke={"grey"} />);
+                    // ticks.map(function (tick, index) {
+                    //     if (index % 2 == 0) {
+                    //         return (<Line key={tick} x1={"0%"} x2={"100%"} y1={y(tick)} y2={y(tick)} stroke={"grey"} />);
+                    //     }
+                    // })
+
+                    this.state.scale.map(
+                        function(value) {
+                            console.log("here are ticks");
+                            console.log(ticks);
+                            return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
                         }
-                    })
+                    )
                 }
             </G>
         );
@@ -93,6 +125,10 @@ export default class MonthGraph extends React.PureComponent {
 
         )
 
+        this.state.scale = this.getScale(this.state.primary, this.state.secondary);
+        console.log("scale is... ");
+        console.log(this.state.scale);
+
         const todayObj = new Date();
         const thisMonth = todayObj.getMonth();
 
@@ -100,7 +136,7 @@ export default class MonthGraph extends React.PureComponent {
             "July", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
         const monthStr = monthAbrevs[thisMonth];
-        const yAxis = [0, 2, 4, 6, 8, 10].map((value) => ({ value }));
+        const yAxis = this.state.scale.map((value) => ({ value }));
         const xAxis = ["01 ".concat(monthStr), "07 ".concat(monthStr), "14 ".concat(monthStr), "21 ".concat(monthStr), "28 ".concat(monthStr)].map((value) => ({ value }));
         const contentInset = { top: 30, bottom: 15 };
         const xAxisHeight = 30;
@@ -120,26 +156,30 @@ export default class MonthGraph extends React.PureComponent {
                         spacingInner={.7}
                         spacingOuter={0.3}
                         gridMin={0}
+                        numberOfTicks={6}
                         //grid
                         // svg={{rx:"20"}} tried to make edges round but doesn't work
-                        yMax={10}
+                        yMax={this.state.max}
                     >
                         {/* <CustomBars bandwidth={10} /> */}
                         <CustomGrid belowChart={true} />
-                        <Gradient/>
+                        <Gradient />
                         <Gradient2 />
                     </BarChart>
                     <YAxis
-                        data={yAxis}
+                        scale={scale.scaleBand}
+                        data={yAxis.reverse()}
                         yAccessor={({ item }) => item.value}
+                        spacingInner={1}
                         //style={{ marginBottom: xAxisHeight }}
                         contentInset={contentInset}
                         svg={{ fontSize: 10, fill: Colors.secondary, paddingHorizontal: 20 }}
-                        formatLabel={(value) => value}
-                        numberOfTicks={5}
+                        //formatLabel={(value) => value}
+                        numberOfTicks={6}
+                        yMax = {this.state.max}
                     />
                 </View>
-                <View style={{ width: '100%', alignSelf: 'stretch', paddingRight:18}}>
+                <View style={{ width: '100%', alignSelf: 'stretch', paddingRight: 18 }}>
                     <XAxis
                         data={xAxis}
                         scale={scale.scaleBand}
