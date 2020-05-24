@@ -12,6 +12,7 @@ import PlainCarIcon from '../assets/Plain-Car-Icon.svg';
 import PlainApplianceIcon from '../assets/Plain-Appliance-Icon.svg';
 import ApplianceWithRing from '../assets/Appliance-with-Ring.js';
 import CarIcon from '../assets/CarIcon.js';
+import SessionsTable from '../components/SessionsTable';
 
 export default class ChargingHistoryScreen extends React.Component {
     constructor(props) {
@@ -252,7 +253,7 @@ export default class ChargingHistoryScreen extends React.Component {
 
 
 
-                {/* </View> */}
+                <SessionsTable/>
 
 
             </ScrollView >
