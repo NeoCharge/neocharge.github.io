@@ -15,6 +15,8 @@ export default class YearGraph extends React.PureComponent {
         this.state = {
             primary: this.props.primary.map((value) => ({ value })),
             secondary: this.props.secondary.map((value) => ({ value })),
+            max: 0,
+            scale: []
         }
     }
 
@@ -22,6 +24,30 @@ export default class YearGraph extends React.PureComponent {
         if (prevProps.primary !== this.props.primary || prevProps.secondary !== this.props.secondary) {
             this.setState({ primary: this.props.primary.map((value) => ({ value })), secondary: this.props.secondary.map((value) => ({ value })) });
         }
+    }
+
+    getScale(primary, secondary) {
+        var tempMax = 0;
+        primary.forEach(x => { if (x.value > tempMax) { tempMax = x.value } });
+        secondary.forEach(x => { if (x.value > tempMax) { tempMax = x.value } });
+
+        //get next highest multiple of 100
+        this.state.max = Math.ceil(tempMax / 100) * 100;
+        if (tempMax <= 100) {
+            return [0, 20, 40, 60, 80, 100];
+        } else {
+            var i;
+            var j = 0;
+            //we are going to have 6 horizontal gride lines (including 0), so get
+            //multiples of (max/5) for nonzero scale labels
+            const increment = this.state.max / 5;
+            var l = [];
+            for (i = 0; i <= this.state.max; i += increment) {
+                l[j++] = i
+            }
+            return l;
+        }
+
     }
 
     getLabeledData(data, labels) {
@@ -69,10 +95,18 @@ export default class YearGraph extends React.PureComponent {
         const CustomGrid = ({ x, y, values, ticks}) => (
             <G>
                 {// Horizontal grid
-                    values.map(function (value, index) {
-                        console.log(value);
-                        return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
-                    })
+                    // values.map(function (value, index) {
+                    //     console.log(value);
+                    //     return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
+                    // })
+
+                    this.state.scale.map(
+                        function(value) {
+                            console.log("here are ticks");
+                            console.log(ticks);
+                            return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
+                        }
+                    )
                 }
             </G>
         );
@@ -96,11 +130,12 @@ export default class YearGraph extends React.PureComponent {
 
         )
 
+        this.state.scale = this.getScale(this.state.primary, this.state.secondary);
+        console.log("scale is... ");
+        console.log(this.state.scale);
 
 
-
-        const yValues = [0, 50, 100, 150, 200, 250, 300];
-        const yAxis = yValues.map((value) => ({ value }));
+        const yAxis = this.state.scale.map((value) => ({ value }));
         const contentInset = { top: 30, bottom: 15 };
         const xAxisHeight = 30;
         const width = Dimensions.get('window').width
@@ -119,23 +154,27 @@ export default class YearGraph extends React.PureComponent {
                         spacingInner={0.45}
                         spacingOuter={0.30}
                         gridMin={0}
+                        numberOfTicks={6}
                         //grid
                         // svg={{rx:"20"}} tried to make edges round but doesn't work
-                        yMax={300}
+                        yMax={this.state.max}
                     >
                         {/* <CustomBars bandwidth={10} /> */}
-                        <CustomGrid belowChart={true} values={yValues} />
+                        <CustomGrid belowChart={true} values={this.state.scale} />
                         <Gradient />
                         <Gradient2 />
                     </BarChart>
                     <YAxis
-                        data={yAxis}
+                        data={yAxis.reverse()}
+                        scale={scale.scaleBand}
+                        spacingInner={1}
                         yAccessor={({ item }) => item.value}
                         //style={{ marginBottom: xAxisHeight }}
                         contentInset={contentInset}
                         svg={{ fontSize: 10, fill: Colors.secondary, paddingHorizontal: 20, height: 250 }}
                         formatLabel={(value) => value}
-                        numberOfTicks={5}
+                        numberOfTicks={6}
+                        yMax={this.state.max}
                     />
                 </View>
                 <View style={{ width: '100%', alignSelf: 'stretch', paddingRight: 18 }}>
