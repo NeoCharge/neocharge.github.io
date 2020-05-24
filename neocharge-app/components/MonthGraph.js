@@ -24,44 +24,6 @@ export default class MonthGraph extends React.PureComponent {
         }
     }
 
-    // getDayName(dayVal) {
-    //     switch (dayVal) {
-    //         case 0:
-    //             return "Sun";
-    //         case 1:
-    //             return "Mon";
-    //         case 2:
-    //             return "Tues";
-    //         case 3:
-    //             return "Wed";
-    //         case 4:
-    //             return "Thurs";
-    //         case 5:
-    //             return "Fri";
-    //         case 6:
-    //             return "Sat";
-    //     }
-    // }
-
-    // getXAxisLabels() {
-    //     let day = new Date().getDay();
-    //     let labels = [];
-    //     var j = 0;
-    //     var i;
-    //     console.log(day);
-    //     for (i = day + 1; i < 7; i++) {
-    //         labels[j] = this.getDayName(i);
-    //         console.log(this.getDayName(i));
-    //         j++;
-    //     }
-    //     for (i = 0; i <= day; i++) {
-    //         labels[j] = this.getDayName(i);
-    //         console.log(this.getDayName(i));
-    //         j++;
-    //     }
-    //     return labels;
-    // }
-
     getLabeledData(data, labels) {
         const labeledData = []
         var i;
@@ -77,14 +39,6 @@ export default class MonthGraph extends React.PureComponent {
     }
 
     render() {
-
-        // const svgVal = <Svg height="100" width="1" fill={Colors.secondary}>
-        //     <Line fill={Colors.secondary} />
-        // </Svg>
-
-        //const labels = this.getXAxisLabels();
-        //const labeledPriData = this.getLabeledData(this.state.primary, labels);
-        //const labeledSecData = this.getLabeledData(this.state.secondary, labels);
 
         const barData = [
             {

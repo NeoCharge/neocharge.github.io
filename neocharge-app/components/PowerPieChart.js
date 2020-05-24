@@ -31,7 +31,7 @@ export default class PowerPieChart extends React.PureComponent {
         console.log("priTotal: " + priTotal.toString());
         console.log("secTotal: " + secTotal.toString());
         const total = priTotal + secTotal;
-        const displayTotal = type == "Year" ? (total / 1000).toFixed(1) + "K" : total.toString();
+        const displayTotal = type == "Year" ? (total / 1000).toFixed(1) + "K" : total.toFixed(1).toString();
         const dispalyPriTotal = type == "Year" ? (priTotal / 1000).toFixed(1) + "K" : parseFloat(priTotal).toFixed(1).toString();
         const dispalySecTotal = type == "Year" ? (secTotal / 1000).toFixed(1) + "K" : parseFloat(secTotal).toFixed(1).toString();
 
