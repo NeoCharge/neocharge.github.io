@@ -32,31 +32,31 @@ class QRScreen extends React.Component {
       return <Text>No access to camera</Text>;
     }
     return (
-        
-        <View style = {styles.container}>
-        <Text style = {styles.instructionTxt}> Line up the QR code on your unit with this square </Text>
-        <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned} 
-            style={styles.QRScreen}
-            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}> 
 
-            <View style = {styles.borderBox}/> 
-            
-            </BarCodeScanner>
-        
-       
+      <View style={styles.container}>
+        <Text style={styles.instructionTxt}> Line up the QR code on your unit with this square </Text>
+        <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+          style={styles.QRScreen}
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}>
+
+          <View style={styles.borderBox} />
+
+        </BarCodeScanner>
+
+
         {/* Manual Button */}
-        <View style = {styles.buttonContainer}>   
-            <Button
-            onPress={() => this.props.navigation.navigate('SignUp')}
-            title = "Enter serial number manually"/>
-            
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={() => this.props.navigation.navigate('ConfigPrimary')}
+            title="Enter serial number manually" />
+
         </View>
 
 
         {scanned && (
           <Button title={'Tap to Scan Again'}
             onPress={() => this.setState({ scanned: false })}
-            
+
           />
         )}
       </View>
@@ -73,47 +73,47 @@ class QRScreen extends React.Component {
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
     //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    this.props.navigation.navigate('SignIn')
+    this.props.navigation.navigate('ConfigPrimary')
   };
 }
 
 
-  export default QRScreen;
+export default QRScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: Colors.primary,
-        flexDirection: 'column',
-        paddingTop: '30%',
-        alignItems: 'center',
-        height: '100%',
-        borderWidth: 5
-      },
-      buttonContainer: {
-        flex: 1,
-        marginTop: '10%',
-        width: '100%',
-        height: '100%'
-      },
-      QRScreen: {
-        width: '80%',
-        height: "55%",
-        borderRadius: 15
-      },
-      instructionTxt: {
-        color: 'white',
-        fontSize: 20,
-        width: '70%',
-        alignItems: 'center',
-        marginBottom: '10%',
-        textAlign: "center"
-      },
-      borderBox: {
-        borderColor: '#1a7552',
-        borderWidth: 5,
-        flex: 1,
-        borderRadius: 4
-      }
+  container: {
+    backgroundColor: Colors.primary,
+    flexDirection: 'column',
+    paddingTop: '30%',
+    alignItems: 'center',
+    height: '100%',
+    borderWidth: 5
+  },
+  buttonContainer: {
+    flex: 1,
+    marginTop: '10%',
+    width: '100%',
+    height: '100%'
+  },
+  QRScreen: {
+    width: '80%',
+    height: "55%",
+    borderRadius: 15
+  },
+  instructionTxt: {
+    color: 'white',
+    fontSize: 20,
+    width: '70%',
+    alignItems: 'center',
+    marginBottom: '10%',
+    textAlign: "center"
+  },
+  borderBox: {
+    borderColor: '#1a7552',
+    borderWidth: 5,
+    flex: 1,
+    borderRadius: 4
+  }
 });
 
 

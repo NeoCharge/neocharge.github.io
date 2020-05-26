@@ -28,7 +28,9 @@ const AuthStack = createSwitchNavigator(
         AuthLoading: AuthLoadingScreen,
         SignUp: SignUpScreen,
         SignIn: SignInScreen,
-        Verify: VerificationScreen
+        Verify: VerificationScreen,
+        // Setup: SetupStack,
+        Setup: SetupScreen
     }
 );
 
@@ -36,9 +38,8 @@ export default createAppContainer(
     createSwitchNavigator(
         {
             Auth: AuthStack,
-            Setup: SetupStack,
+            // Setup: SetupStack,
             App: TabNavigator,
-
         },
         {
             initialRouteName: 'Auth'

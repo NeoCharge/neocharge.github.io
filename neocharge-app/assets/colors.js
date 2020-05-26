@@ -6,6 +6,6 @@ export default {
     red: 'red',
     appleBlue: '#363636',
     appleRed: '#FF453A',
-    faded: '#adadad',
+    faded: '#383838',
     tabBackground: "#D9DDDC"
 };
