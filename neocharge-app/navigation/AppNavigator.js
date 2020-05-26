@@ -29,8 +29,7 @@ const AuthStack = createSwitchNavigator(
         SignUp: SignUpScreen,
         SignIn: SignInScreen,
         Verify: VerificationScreen,
-        // Setup: SetupStack,
-        Setup: SetupScreen
+        Setup: SetupStack
     }
 );
 
