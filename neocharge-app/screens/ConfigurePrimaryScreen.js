@@ -1,12 +1,15 @@
 import React from 'react';
+import * as SecureStore from 'expo-secure-store';
 import { Dimensions, View, StyleSheet, Text, Button } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Colors from '../assets/colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Arrow from '../assets/Arrow.svg';
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
 
-const iconSize = sheight * 0.045;
+const iconSize = sheight * 0.025;
 
 export default class ConfigurePrimaryScreen extends React.Component {
 
@@ -14,6 +17,7 @@ export default class ConfigurePrimaryScreen extends React.Component {
         headerStyle: {
             backgroundColor: Colors.primary,
         },
+        headerBackTitle: 'Configure Primary', // Title of back button for the next page
         headerTintColor: "#fff",
         headerTitleStyle: {
             fontWeight: "bold",
@@ -22,26 +26,43 @@ export default class ConfigurePrimaryScreen extends React.Component {
 
     }
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            primaryDevice: '',
+            make: ''
+        }
+    }
+
+    async pushData() {
+        let userEmail = await SecureStore.getItemAsync("secure_email")
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Primary</Text>
-                <Text style={styles.title}>Device</Text>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Primary{'\n'}Device</Text>
+                </View>
 
                 <View style={styles.pickers}>
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
-                        placeholder={{ label: 'Select', value: null }}
+                        onValueChange={(value) => this.setState({ primaryDevice: value })}
+                        placeholder={{ label: 'Select', value: null, color: 'grey' }}
                         items={[
                             { label: 'Appliance', value: 'Appliance' },
                             { label: 'Electric Vehicle', value: 'Electric Vehicle' },
                         ]}
                         style={pickerSelectStyles}
+                        useNativeAndroidPickerStyle={false}
+                        Icon={() => {
+                            return <Arrow height={iconSize} width={iconSize} />;
+                        }}
                     />
 
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
-                        placeholder={{ label: 'Make', value: null }}
+                        onValueChange={(value) => this.setState({ make: value })}
+                        placeholder={{ label: 'Make', value: null, color: 'grey' }}
                         items={[
                             { label: 'BMW', value: 'BMW' },
                             { label: 'Chevrolet', value: 'Chevrolet' },
@@ -53,13 +74,19 @@ export default class ConfigurePrimaryScreen extends React.Component {
                             { label: 'Volkswagen', value: 'Volkswagen' },
                         ]}
                         style={pickerSelectStyles}
+                        useNativeAndroidPickerStyle={false}
+                        Icon={() => {
+                            return <Arrow height={iconSize} width={iconSize} />;
+                        }}
                     />
-
-
                 </View>
 
-                <Button title="Confirm"
-                    onPress={() => this.props.navigation.navigate('ConfigSecondary')} />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() => this.props.navigation.navigate('ConfigSecondary')}>
+                        <Text style={styles.title}>Confirm</Text>
+                    </TouchableOpacity>
+                </View>
 
             </View >
         );
@@ -68,27 +95,36 @@ export default class ConfigurePrimaryScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 7,
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: Colors.primary
     },
-    subcontainer: {
-        flex: 3,
-        flexDirection: 'column',
-        paddingBottom: 20,
+    titleContainer: {
+        flex: 1,
+        alignSelf: 'flex-start',
+        paddingLeft: (swidth * .05),
+        paddingTop: (swidth * .05)
     },
     title: {
         fontFamily: 'RedHatDisplay-Bold',
         fontSize: 24,
         color: Colors.secondary,
-        paddingLeft: (swidth * .05),
-        alignSelf: 'flex-start'
     },
     pickers: {
-        flex: 1,
+        flex: 6,
         alignItems: 'center',
-        width: swidth * .9
+        justifyContent: 'flex-start'
+    },
+    buttonContainer: {
+        flex: 2,
+        justifyContent: 'center'
+    },
+    button: {
+        backgroundColor: Colors.accent1,
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 25,
     }
 });
 
@@ -96,26 +132,37 @@ const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         fontFamily: 'RedHatDisplay-Regular',
         fontSize: 16,
+        backgroundColor: Colors.faded,
         paddingVertical: 12,
         paddingHorizontal: 15,
+        marginBottom: 10,
         borderWidth: 1,
         borderColor: Colors.faded,
         borderRadius: 25,
-        backgroundColor: Colors.faded,
-        color: Colors.accent2,
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
         color: Colors.accent1,
         paddingRight: 30, // to ensure the text is never behind the icon
+        width: swidth * .9
+    },
+    inputAndroid: {
+        fontFamily: 'RedHatDisplay-Bold',
+        fontSize: 16,
+        backgroundColor: Colors.faded,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        marginBottom: 10,
+        borderWidth: 0.5,
+        borderColor: Colors.faded,
+        borderRadius: 25,
+        color: Colors.accent1,
+        paddingRight: 30, // to ensure the text is never behind the icon
+        width: swidth * .9
     },
     placeholder: {
         color: Colors.accent1
+    },
+    iconContainer: {
+        right: 15,
+        top: 12,
+        transform: [{ rotate: '90deg' }]
     }
 });
