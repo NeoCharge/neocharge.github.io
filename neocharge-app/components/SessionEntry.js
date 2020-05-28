@@ -71,7 +71,7 @@ export default class SessionEntry extends React.PureComponent {
     }
 
     formatDate(date) {
-        var arr = [date.getMonth().toString(), date.getDate().toString(), date.getFullYear().toString().substring(2, 4)];
+        var arr = [(date.getMonth()+1).toString(), date.getDate().toString(), date.getFullYear().toString().substring(2, 4)];
         return arr.join(".");
     }
 

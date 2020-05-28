@@ -15,8 +15,8 @@ export default class SessionsTable extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.primary !== this.props.primary || prevProps.secondary !== this.props.secondary) {
-            this.setState({ primary: this.props.primary.map((value) => ({ value })), secondary: this.props.secondary.map((value) => ({ value })) });
+        if (prevProps.data !== this.props.data || prevProps.type !== this.props.type) {
+            this.setState({ data: this.props.data, type: this.props.type });
         }
     }
 
@@ -38,7 +38,7 @@ export default class SessionsTable extends React.PureComponent {
 
             if (value.secPower != null && value.secPower > 0) {
                 var session = {
-                    power: Math.round(value.priPower, 1),
+                    power: Math.round(value.secPower, 1),
                     type: "secondary",
                     date: new Date(value.startTime),
                     length: value.duration
@@ -55,7 +55,7 @@ export default class SessionsTable extends React.PureComponent {
                     <Text style={styles.graphHeaderText}>Sessions</Text>
                 </View>
 
-                {rows}
+                {rows.reverse()}
 
             </View>
         )
