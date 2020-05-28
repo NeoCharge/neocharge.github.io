@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     color: Colors.accent1,
 },
   QRScreen: {
-    width: '80%',
+    width: '75%',
     height: "50%"
   },
   instructionTxt: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: '70%',
     alignItems: 'center',
-    marginBottom: '10%',
+    marginBottom: '12%',
     textAlign: "center",
     fontFamily: 'RedHatDisplay-Regular',
   },
