@@ -1,16 +1,28 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
-import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Colors from '../assets/colors.js';
-import HomeOption from '../components/HomeOption';
-import OnboardingInput from '../components/OnboardingInput';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class QRScreen extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    scanned: false,
+  static navigationOptions = {
+    headerStyle: {
+        backgroundColor: Colors.primary
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold",
+        fontFamily: 'RedHatDisplay-Regular'
+    },
+  }
+
+  // TODO: Set up state to hold values
+  constructor(props) {
+    super(props);
+    this.state = { 
+      hasCameraPermission: null,
+      scanned: false, };
   };
 
   async componentDidMount() {
@@ -46,12 +58,11 @@ class QRScreen extends React.Component {
 
         {/* Manual Button */}
         <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => this.props.navigation.navigate('ConfigPrimary')}
-            title="Enter serial number manually" />
-
+          <TouchableOpacity style={styles.button}
+            onPress={() => this.props.navigation.navigate('DeviceId')}>
+            <Text style={styles.title}>Enter serial number manually</Text>
+            </TouchableOpacity>
         </View>
-
 
         {scanned && (
           <Button title={'Tap to Scan Again'}
@@ -70,13 +81,17 @@ class QRScreen extends React.Component {
     //this.props.navigation.navigate('Auth');
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
+  handleBarCodeScanned = ({ type, data}) => {
     this.setState({ scanned: true });
-    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    this.props.navigation.navigate('ConfigPrimary')
+    alert( `Bar code type: ${type} \n Data: ${data}`,
+          [{
+            text: 'OK', 
+            onPress: () => {navigation.navigate('ConfigTimeZone')}
+          }],
+          {cancelable: false })
+    this.props.navigation.navigate('ConfigTimeZone')
   };
 }
-
 
 export default QRScreen;
 
@@ -84,21 +99,24 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.primary,
     flexDirection: 'column',
-    paddingTop: '30%',
+    paddingTop: '20%',
     alignItems: 'center',
     height: '100%',
-    borderWidth: 5
   },
   buttonContainer: {
-    flex: 1,
-    marginTop: '10%',
-    width: '100%',
-    height: '100%'
+    marginTop: 40,
+    fontFamily: 'RedHatDisplay-Regular',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  title: {
+    fontFamily: 'RedHatDisplay-Regular',
+    fontSize: 18,
+    color: Colors.accent1,
+},
   QRScreen: {
     width: '80%',
-    height: "55%",
-    borderRadius: 15
+    height: "50%"
   },
   instructionTxt: {
     color: 'white',
@@ -106,13 +124,13 @@ const styles = StyleSheet.create({
     width: '70%',
     alignItems: 'center',
     marginBottom: '10%',
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: 'RedHatDisplay-Regular',
   },
   borderBox: {
-    borderColor: '#1a7552',
-    borderWidth: 5,
+    borderColor: Colors.accent1,
+    borderWidth: 3,
     flex: 1,
-    borderRadius: 4
   }
 });
 
