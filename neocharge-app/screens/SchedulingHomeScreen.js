@@ -6,7 +6,6 @@ import Colors from '../assets/colors.js';
 import * as SecureStore from 'expo-secure-store';
 import MultiSlider from 'react-native-multi-slider';
 import { API, Auth } from 'aws-amplify';
-import Slider from 'react-native-slider';
 
 class SchedulingHomeScreen extends React.Component {
 
