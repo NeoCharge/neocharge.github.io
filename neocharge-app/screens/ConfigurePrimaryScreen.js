@@ -5,15 +5,16 @@ import RNPickerSelect from 'react-native-picker-select';
 import Colors from '../assets/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Arrow from '../assets/Arrow.svg';
+import QuestionMark from '../assets/question-mark.svg'
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
-
 const iconSize = sheight * 0.025;
 
 export default class ConfigurePrimaryScreen extends React.Component {
 
     static navigationOptions = {
+        headerRight: <QuestionMark/>,
         headerStyle: {
             backgroundColor: Colors.primary,
         },
@@ -23,7 +24,6 @@ export default class ConfigurePrimaryScreen extends React.Component {
             fontWeight: "bold",
             fontFamily: 'RedHatDisplay-Regular'
         },
-
     }
 
     constructor(props) {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     buttonContainer: {
-        flex: 2,
+        flex: 4,
         justifyContent: 'center'
     },
     button: {
@@ -130,12 +130,12 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        fontFamily: 'RedHatDisplay-Regular',
+        fontFamily: 'RedHatDisplay-Bold',
         fontSize: 16,
         backgroundColor: Colors.faded,
         paddingVertical: 12,
         paddingHorizontal: 15,
-        marginBottom: 10,
+        marginBottom: 50,
         borderWidth: 1,
         borderColor: Colors.faded,
         borderRadius: 25,
