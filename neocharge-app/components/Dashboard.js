@@ -1,12 +1,12 @@
 import React from 'react';
-import { Alert, Dimensions, View, StyleSheet, Text, Image } from 'react-native';
-import Colors from '../assets/colors';
-import Devices from '../assets/devices';
-import { API } from 'aws-amplify';
-import * as SecureStore from 'expo-secure-store';
-import Battery from '../assets/Battery.svg';
+import { Dimensions, View, StyleSheet, Text } from 'react-native';
 import { Svg, Line } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Colors from '../assets/colors';
+import { API } from 'aws-amplify';
+import * as SecureStore from 'expo-secure-store';
+import Appliance from './Appliance.js'
+import Car from './Car.js'
 
 const DELAY = 5000;
 const NONE = 0;
@@ -34,8 +34,8 @@ export default class Dashboard extends React.Component {
             secChargeRate: 0,
             pStatus: notCharging,
             sStatus: notCharging,
-            pImage: Devices.images["Logo"],
-            sImage: Devices.images["Logo"],
+            pDevice: 'Logo', // names for image, default is NeoChargeLogo
+            sDevice: 'Logo',
             tabPressed: NONE
         }
     }
@@ -45,7 +45,8 @@ export default class Dashboard extends React.Component {
 
         // TODO: optimize this, the only difference is that this first request updates which tab is pressed
         // Default tab that is pressed is the side that is charging
-        await this.getFirstRequest();
+        await this.getRequest();
+        this.defaultTab();
 
         // Set interval to poll database for most recent change
         this.interval = setInterval(async () => {
@@ -57,72 +58,28 @@ export default class Dashboard extends React.Component {
         clearInterval(this.interval);
     }
 
-    async getFirstRequest() {
-        const jsonObj = {
-            "queryStringParameters": {
-                "userEmail": this.state.userEmail
-            }
-        };
-
-        let primDev;
-        let secDev;
-
-        // console.log("making device display request")
-        await API.get("LambdaProxy", "/chargerate", jsonObj)
-            .then(
-                response => {
-                    if (response != null) {
-                        this.setState({ port: response["CurDevice"] })
-                        this.setState({ primChargeRate: response["PriChargeRate"] })
-                        this.setState({ secChargeRate: response["SecChargeRate"] })
-                        primDev = response["PrimDev"]
-                        secDev = response["SecDev"]
-                    } else {
-                        console.log("No device currently charging");
-                    }
-                }
-            ).catch(error => {
-                console.log(error.response)
-            });
-
+    async defaultTab() {
         if (this.state.port === PRIMARY) {
             this.setState({
-                pStatus: charging,
-                sStatus: notCharging,
-                device: primDev,
                 primaryHighlight: Colors.accent1,
                 secondaryHighlight: Colors.primary,
                 tabPressed: PRIMARY
             })
         } else if (this.state.port === SECONDARY) {
             this.setState({
-                pStatus: notCharging,
-                sStatus: charging,
-                device: secDev,
                 secondaryHighlight: Colors.accent1,
                 primaryHighlight: Colors.primary,
                 tabPressed: SECONDARY
             })
         } else if (this.state.port === BOTH) {
             // TODO: What happens to the tabs if both ports are charging?
-            // this.setState({ status: dualCharging })
-            // this.setState({ device: 'Both' })
-            // this.setState({ primaryHighlight: Colors.accent1 })
-            // this.setState({ secondaryHighlight: Colors.accent1 })
-        } else {
+        } else { // Secondary is the default tab
             this.setState({
-                pStatus: notCharging,
-                sStatus: notCharging,
                 primaryHighlight: Colors.primary,
-                secondaryHighlight: Colors.primary,
-                tabPressed: NONE
+                secondaryHighlight: Colors.accent1,
+                tabPressed: SECONDARY
             })
         }
-
-        this.setState({
-            pImage: Devices.images[primDev],
-            sImage: Devices.images[secDev]
-        })
     }
 
     async getRequest() {
@@ -140,11 +97,13 @@ export default class Dashboard extends React.Component {
             .then(
                 response => {
                     if (response != null) {
-                        this.setState({ port: response["CurDevice"] })
-                        this.setState({ primChargeRate: response["PriChargeRate"] })
-                        this.setState({ secChargeRate: response["SecChargeRate"] })
-                        primDev = response["PrimDev"]
-                        secDev = response["SecDev"]
+                        this.setState({
+                            port: response["CurDevice"],
+                            primChargeRate: response["PriChargeRate"],
+                            secChargeRate: response["SecChargeRate"],
+                            pDevice: response["PrimDev"],
+                            sDevice: response['SecDev']
+                        })
                     } else {
                         console.log("No device currently charging");
                     }
@@ -167,56 +126,11 @@ export default class Dashboard extends React.Component {
             })
         } else if (this.state.port === BOTH) {
             // TODO: What happens to the tabs if both ports are charging?
-            // this.setState({ status: dualCharging })
-            // this.setState({ device: 'Both' })
-            // this.setState({ primaryHighlight: Colors.accent1 })
-            // this.setState({ secondaryHighlight: Colors.accent1 })
         } else {
             this.setState({
                 pStatus: notCharging,
                 sStatus: notCharging
             })
-        }
-
-        this.setState({
-            pImage: Devices.images[primDev],
-            sImage: Devices.images[secDev]
-        })
-
-        // // If device name does not have an associated picture, show NeoCharge Logo
-        // if (Devices.images[this.state.device] === undefined) {
-        //     this.setState({ image: Devices.images["Logo"] })
-        // } 
-
-        // else if (this.state.device == 'Both') {
-        //     this.setState({ image: Devices.images["Dual"] })
-        // } 
-
-        // else {
-        //     // Find image based on the curDevice name, must match constant in devices.js
-        //     this.setState({ image: Devices.images[this.state.device] })
-        // }
-    }
-
-    showChargingStats() {
-        if (this.state.tabPressed == PRIMARY) {
-            return <View style={{ ...styles.subcontainer1, flex: 8 }}>
-                <View style={styles.car}>
-                    {this.state.pImage}
-                </View>
-
-                <Text style={styles.chargeStatus}>{this.state.pStatus}</Text>
-            </View>
-        } else if (this.state.tabPressed == SECONDARY) {
-            return <View style={styles.subcontainer1}>
-                <View style={styles.car}>
-                    {this.state.sImage}
-                </View>
-
-                <Text style={styles.chargeStatus}>{this.state.sStatus}</Text>
-            </View>
-        } else {
-            return null
         }
 
     }
@@ -237,6 +151,15 @@ export default class Dashboard extends React.Component {
         }
     }
 
+    showTab() {
+        if (this.state.tabPressed == PRIMARY) {
+            return <Appliance imgName={this.state.pDevice} status={this.state.pStatus} />
+        } else if (this.state.tabPressed == SECONDARY) {
+            return <Car imgName={this.state.sDevice} status={this.state.sStatus} />
+        } else {
+            return <Car imgName={this.state.sDevice} status={this.state.sStatus} />
+        }
+    }
 
     render() {
 
@@ -254,43 +177,26 @@ export default class Dashboard extends React.Component {
                                 <Line x1="0" y1="0" x2='100%' y2="0" stroke={Colors.secondary} strokeWidth="5" />
                             }
                         </Svg>
+
                         <Text style={styles.tabText}>{this.state.primChargeRate} kW</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this.changeTab.bind(this, SECONDARY)}
                         style={{ ...styles.tab, backgroundColor: this.state.secondaryHighlight }}>
                         <Text style={styles.tabText}>Secondary</Text>
+
+                        {/* Line only shows if it is charging */}
                         <Svg height='2' width='100%' style={styles.line} >
                             {this.state.secChargeRate > 0 &&
                                 <Line x1="0" y1="0" x2='100%' y2="0" stroke={Colors.secondary} strokeWidth="5" />
                             }
                         </Svg>
+
                         <Text style={styles.tabText}>{this.state.secChargeRate} kW</Text>
                     </TouchableOpacity>
                 </View>
 
-                {this.showChargingStats()}
-
-                {this.state.tabPressed == SECONDARY &&
-                    /* TODO: Make battery clickable, and stats reflect actual numbers */
-                    <View style={styles.subcontainer2}>
-                        <View style={styles.battery}>
-                            <Battery width={swidth / 2} height={swidth * .2} />
-                        </View>
-
-                        <View style={styles.stats}>
-                            <View style={styles.time}>
-                                <Text style={styles.stattext}>2 hrs</Text>
-                                <Text style={styles.text}>remaining</Text>
-                            </View>
-
-                            <View style={styles.mileage}>
-                                <Text style={styles.stattext}>120 mi</Text>
-                                <Text style={styles.text}>range</Text>
-                            </View>
-                        </View>
-                    </View>
-                }
+                {this.showTab()}
 
             </View >
         );
@@ -326,66 +232,5 @@ const styles = StyleSheet.create({
     },
     line: {
         marginVertical: 5
-    },
-    subcontainer1: {
-        flex: 4,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-    },
-    car: {
-        width: '100%',
-        height: '75%',
-        marginTop: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden'
-    },
-
-    chargeStatus: {
-        fontFamily: 'RedHatDisplay-Bold',
-        letterSpacing: 2, // only works on iOS
-        color: Colors.secondary,
-        fontSize: 25,
-        paddingVertical: 10
-    },
-
-    subcontainer2: {
-        flex: 4,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    battery: {
-        flex: 2,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    stats: {
-        flex: 2,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        width: swidth
-    },
-    time: {
-        alignItems: 'flex-end',
-        width: (swidth * .4)
-    },
-    mileage: {
-        alignItems: 'flex-start',
-        width: (swidth * .4)
-    },
-    stattext: {
-        fontFamily: 'RedHatDisplay-Bold',
-        color: Colors.secondary,
-        fontSize: (swidth * 0.072),
-    },
-    text: {
-        fontFamily: 'RedHatDisplay-Regular',
-        color: Colors.secondary,
-        fontSize: 25,
-        lineHeight: (swidth * 0.06)
-    },
+    }
 });

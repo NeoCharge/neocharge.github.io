@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, StyleSheet, Text, Image } from 'react-native';
+import { Alert, Dimensions, View, StyleSheet, Text, Image } from 'react-native';
 import Colors from '../assets/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
@@ -8,14 +8,15 @@ import { API } from 'aws-amplify';
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
 
-const kPauseText = "Stop Charging";
-const kChargeText = "Charge Now";
+const kPauseText = 'Stop Charging';
+const kChargeText = 'Charge Now';
+const kWaitingText = 'Working...';
 
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            userEmail: "",
+            userEmail: '',
             pauseStyle: styles.off,
             pauseText: kPauseText
         }
@@ -57,20 +58,29 @@ export default class Dashboard extends React.Component {
         };
 
         const path = "/pausecharge";
+
+        const curStyle = this.state.pauseStyle;
+        const curText = this.state.pauseText;
+
+        this.setState({ pauseStyle: styles.inProgress, pauseText: kWaitingText })
+
         await API.put("LambdaProxy", path, jsonObj)
             .then((data) => {
-                if(data.body.success && data.body.paused) {
+                if (data.body.success && data.body.paused) {
                     this.setState({ pauseStyle: styles.on, pauseText: kChargeText })
-                } else if (data.body.success && (! data.body.paused)) {
+                } else if (data.body.success && (!data.body.paused)) {
                     this.setState({ pauseStyle: styles.off, pauseText: kPauseText })
                 } else {
+                    this.setState({ pauseStyle: curStyle, pauseText: curText })
                     Alert.alert("Device Unreachable", "This message will be sent to your NeoCharge device when it is next online.")
                 }
             })
             .catch(error => {
-                console.log(error.response)
+                Alert.alert("Device Unreachable", "This message will be sent to your NeoCharge device when it is next online.")
+                this.setState({ pauseStyle: curStyle, pauseText: curText })
+                console.log("Pause Button Error: " + error.response)
             });
-        }
+    }
 
 
     render() {
@@ -109,6 +119,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 15,
         backgroundColor: Colors.red,
+        borderRadius: 30,
+        width: (swidth * .4)
+    },
+    inProgress: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15,
+        backgroundColor: Colors.accent2,
         borderRadius: 30,
         width: (swidth * .4)
     }
