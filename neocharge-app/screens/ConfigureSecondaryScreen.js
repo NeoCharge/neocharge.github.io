@@ -43,7 +43,7 @@ export default class ConfigureSecondaryScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Secondary{'\n'} Device</Text>
+                    <Text style={styles.title}>Secondary Device</Text>
                 </View>
 
                 <View style={styles.pickers}>
@@ -141,7 +141,7 @@ export default class ConfigureSecondaryScreen extends React.Component {
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => this.props.navigation.navigate('Home')}>
+                        onPress={() => this.props.navigation.navigate('PushNotification')}>
                         <Text style={styles.title}>Confirm</Text>
                     </TouchableOpacity>
                 </View>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     sliderTitle: {
         fontFamily: 'RedHatDisplay-Bold',
         fontSize: 14,
-        color: Colors.accent1
+        color: Colors.accent1,
     },
     titleContainer: {
         flex: 1,
@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     buttonContainer: {
-        flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom: 60
     },
     button: {
         backgroundColor: Colors.accent1,
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         paddingLeft: (swidth * .05),
         paddingTop: (swidth * .05),
+        marginTop: 60
     },
     textCon: {
         fontFamily: 'RedHatDisplay-Bold',
