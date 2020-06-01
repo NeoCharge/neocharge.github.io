@@ -72,15 +72,12 @@ export default class WeekGraph extends React.PureComponent {
         let labels = [];
         var j = 0;
         var i;
-        console.log(day);
         for (i = day + 1; i < 7; i++) {
             labels[j] = this.getDayName(i);
-            console.log(this.getDayName(i));
             j++;
         }
         for (i = 0; i <= day; i++) {
             labels[j] = this.getDayName(i);
-            console.log(this.getDayName(i));
             j++;
         }
         return labels;
@@ -96,7 +93,6 @@ export default class WeekGraph extends React.PureComponent {
     }
 
     yAccessor(item) {
-        console.log(item);
         return item.value;
     }
 
@@ -126,10 +122,6 @@ export default class WeekGraph extends React.PureComponent {
                 }
             },
         ]
-
-
-
-        console.log(barData);
 
         const CustomGrid = ({ x, y, data, ticks }) => (
             <G>

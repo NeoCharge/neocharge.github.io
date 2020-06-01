@@ -39,7 +39,11 @@ export default class ChargingHistoryScreen extends React.Component {
             yearHeaderStr: "",
             graphHeaderText: "",
             displayGraph: null,
-            displayPieChart: null
+            displayPieChart: null,
+            displaySessions: null,
+            rawWeekData: [],
+            rawMonthData: [],
+            rawYearData: []
 
         }
     }
@@ -66,11 +70,8 @@ export default class ChargingHistoryScreen extends React.Component {
         };
 
         const path = "/chargehistorytemp";
-        //console.log("charge logs below:")
         const response = await API.get("LambdaProxy", path, query).catch(error => { console.log(error.response) });
-        //console.log(response);
-        //console.log(response);
-        //console.log(typeof response);
+        console.log(response);
         const todayString = new Date().toISOString().split('T')[0]
         const oneDay = 1000 * 60 * 60 * 24;
         const oneWeek = oneDay * 7;
@@ -98,16 +99,11 @@ export default class ChargingHistoryScreen extends React.Component {
         let secYear = new Array(12).fill(0);
         let secWeek = new Array(7).fill(0);
 
-        console.log("Current month is ", thisMonth);
-
         if (response != null) {
             response.forEach(obj => {
                 const dateObj = new Date(obj.startTime);
                 const year = dateObj.getFullYear();
                 let dateCheck = todayObj - dateObj;
-
-                // console.log("date check!")
-                // console.log(dateCheck)
 
                 //if charge happened in the last week (including today),
                 //then add it to the week data lists
@@ -116,10 +112,10 @@ export default class ChargingHistoryScreen extends React.Component {
                     secWeek[dateObj.getDay()] = obj.secPower;
                     this.state.weekPriTotal += obj.priPower;
                     this.state.weekSecTotal += obj.secPower;
+                    this.state.rawWeekData.push(obj);
                 }
 
                 let month = dateObj.getMonth()
-                console.log("Month of this obj is ", month.toString());
                 //if charge happened in the last month,
                 //then add it to the month data lists
                 if (month == thisMonth) {
@@ -127,6 +123,7 @@ export default class ChargingHistoryScreen extends React.Component {
                     secMonth[dateObj.getDate()] = obj.secPower;
                     this.state.monthPriTotal += obj.priPower;
                     this.state.monthSecTotal += obj.secPower;
+                    this.state.rawMonthData.push(obj);
                 }
                 //if charge happened in the last year,
                 //then increase the tally of that months charge totals
@@ -135,23 +132,20 @@ export default class ChargingHistoryScreen extends React.Component {
                     secYear[month] = secYear[month] + obj.secPower;
                     this.state.yearPriTotal += obj.priPower;
                     this.state.yearSecTotal += obj.secPower;
+                    this.state.rawYearData.push(obj);
                 }
 
             }
             )
         }
 
-        console.log("month data");
-        console.log(priMonth)
-
         this.rotate(priWeek, 7 - (new Date().getDay()));
         this.rotate(secWeek, 7 - (new Date().getDay()));
         this.state.displayGraph = <WeekGraph primary={priWeek} secondary={secWeek} />
         this.state.displayPieChart = <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} />
+        this.state.displaySessions = <SessionsTable data={this.state.rawWeekData} />
         this.setState({ priMonthData: priMonth, secMonthData: secMonth, priWeekData: priWeek, secWeekData: secWeek, priYearData: priYear, secYearData: secYear });
         this.forceUpdate();
-        console.log(this.state.priWeekData);
-        console.log(this.state.secWeekData);
 
     }
 
@@ -201,15 +195,27 @@ export default class ChargingHistoryScreen extends React.Component {
     };
 
     weekHandler() {
-        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />, displayPieChart: <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} /> });
+        this.setState({ weekHighlight: Colors.accent1, monthHighlight: Colors.tabBackground, 
+            yearHighlight: Colors.tabBackground, graphHeaderText: this.state.weekHeaderStr, 
+            displayGraph: <WeekGraph primary={this.state.priWeekData} secondary={this.state.secWeekData} />, 
+            displayPieChart: <PowerPieChart priTotal={this.state.weekPriTotal} secTotal={this.state.weekSecTotal} type={"Week"} />, 
+            displaySessions: <SessionsTable data={this.state.rawWeekData} /> });
     }
 
     monthHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, displayGraph: <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} />, displayPieChart: <PowerPieChart priTotal={this.state.monthPriTotal} secTotal={this.state.monthSecTotal} type={"Month"} /> });
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.accent1, 
+            yearHighlight: Colors.tabBackground, graphHeaderText: this.state.monthHeaderStr, 
+            displayGraph: <MonthGraph primary={this.state.priMonthData} secondary={this.state.secMonthData} />, 
+            displayPieChart: <PowerPieChart priTotal={this.state.monthPriTotal} secTotal={this.state.monthSecTotal} type={"Month"} />, 
+            displaySessions: <SessionsTable data={this.state.rawMonthData} /> });
     }
 
     yearHandler() {
-        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, yearHighlight: Colors.accent1, graphHeaderText: this.state.yearHeaderStr, displayGraph: <YearGraph primary={this.state.priYearData} secondary={this.state.secYearData} />, displayPieChart: <PowerPieChart priTotal={this.state.yearPriTotal} secTotal={this.state.yearSecTotal} type={"Year"} /> });
+        this.setState({ weekHighlight: Colors.tabBackground, monthHighlight: Colors.tabBackground, 
+            yearHighlight: Colors.accent1, graphHeaderText: this.state.yearHeaderStr, 
+            displayGraph: <YearGraph primary={this.state.priYearData} secondary={this.state.secYearData} />, 
+            displayPieChart: <PowerPieChart priTotal={this.state.yearPriTotal} secTotal={this.state.yearSecTotal} type={"Year"} />, 
+            displaySessions: <SessionsTable data={this.state.rawYearData} /> });
     }
 
     render() {
@@ -252,8 +258,7 @@ export default class ChargingHistoryScreen extends React.Component {
                 {this.state.displayPieChart}
 
 
-
-                <SessionsTable/>
+                {this.state.displaySessions}
 
 
             </ScrollView >
