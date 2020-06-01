@@ -10,6 +10,8 @@ import PushNotifInitScreen from "../screens/PushNotifInitScreen";
 import ConfigurePrimaryScreen from '../screens/ConfigurePrimaryScreen';
 import ConfigureSecondaryScreen from '../screens/ConfigureSecondaryScreen';
 import QRScreen from '../screens/QRScreen';
+import ConfigureTimeZoneScreen from '../screens/ConfigureTimeZoneScreen'
+import DeviceIdScreen from '../screens/DeviceIdScreen';
 
 // Disable all error popups for Demo
 console.disableYellowBox = true;
@@ -18,6 +20,8 @@ console.disableYellowBox = true;
 const SetupStack = createStackNavigator(
     {
         QRCode: QRScreen,
+        DeviceId: DeviceIdScreen,
+        ConfigTimeZone: ConfigureTimeZoneScreen,
         ConfigPrimary: ConfigurePrimaryScreen,
         ConfigSecondary: ConfigureSecondaryScreen
     }
@@ -28,7 +32,8 @@ const AuthStack = createSwitchNavigator(
         AuthLoading: AuthLoadingScreen,
         SignUp: SignUpScreen,
         SignIn: SignInScreen,
-        Verify: VerificationScreen
+        Verify: VerificationScreen,
+        Setup: SetupStack
     }
 );
 
@@ -36,9 +41,8 @@ export default createAppContainer(
     createSwitchNavigator(
         {
             Auth: AuthStack,
-            Setup: SetupStack,
+            // Setup: SetupStack,
             App: TabNavigator,
-
         },
         {
             initialRouteName: 'Auth'

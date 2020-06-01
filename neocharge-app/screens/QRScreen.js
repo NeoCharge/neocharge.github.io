@@ -1,16 +1,28 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
-import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Colors from '../assets/colors.js';
-import HomeOption from '../components/HomeOption';
-import OnboardingInput from '../components/OnboardingInput';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class QRScreen extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    scanned: false,
+  static navigationOptions = {
+    headerStyle: {
+        backgroundColor: Colors.primary
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold",
+        fontFamily: 'RedHatDisplay-Regular'
+    },
+  }
+
+  // TODO: Set up state to hold values
+  constructor(props) {
+    super(props);
+    this.state = { 
+      hasCameraPermission: null,
+      scanned: false, };
   };
 
   async componentDidMount() {
@@ -32,31 +44,30 @@ class QRScreen extends React.Component {
       return <Text>No access to camera</Text>;
     }
     return (
-        
-        <View style = {styles.container}>
-        <Text style = {styles.instructionTxt}> Line up the QR code on your unit with this square </Text>
-        <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned} 
-            style={styles.QRScreen}
-            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}> 
 
-            <View style = {styles.borderBox}/> 
-            
-            </BarCodeScanner>
-        
-       
+      <View style={styles.container}>
+        <Text style={styles.instructionTxt}> Line up the QR code on your unit with this square </Text>
+        <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+          style={styles.QRScreen}
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}>
+
+          <View style={styles.borderBox} />
+
+        </BarCodeScanner>
+
+
         {/* Manual Button */}
-        <View style = {styles.buttonContainer}>   
-            <Button
-            onPress={() => this.props.navigation.navigate('SignUp')}
-            title = "Enter serial number manually"/>
-            
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}
+            onPress={() => this.props.navigation.navigate('DeviceId')}>
+            <Text style={styles.title}>Enter serial number manually</Text>
+            </TouchableOpacity>
         </View>
-
 
         {scanned && (
           <Button title={'Tap to Scan Again'}
             onPress={() => this.setState({ scanned: false })}
-            
+
           />
         )}
       </View>
@@ -70,50 +81,57 @@ class QRScreen extends React.Component {
     //this.props.navigation.navigate('Auth');
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
+  handleBarCodeScanned = ({ type, data}) => {
     this.setState({ scanned: true });
-    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    this.props.navigation.navigate('SignIn')
+    alert( `Bar code type: ${type} \n Data: ${data}`,
+          [{
+            text: 'OK', 
+            onPress: () => {navigation.navigate('ConfigTimeZone')}
+          }],
+          {cancelable: false })
+    this.props.navigation.navigate('ConfigTimeZone')
   };
 }
 
-
-  export default QRScreen;
+export default QRScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: Colors.primary,
-        flexDirection: 'column',
-        paddingTop: '30%',
-        alignItems: 'center',
-        height: '100%',
-        borderWidth: 5
-      },
-      buttonContainer: {
-        flex: 1,
-        marginTop: '10%',
-        width: '100%',
-        height: '100%'
-      },
-      QRScreen: {
-        width: '80%',
-        height: "55%",
-        borderRadius: 15
-      },
-      instructionTxt: {
-        color: 'white',
-        fontSize: 20,
-        width: '70%',
-        alignItems: 'center',
-        marginBottom: '10%',
-        textAlign: "center"
-      },
-      borderBox: {
-        borderColor: '#1a7552',
-        borderWidth: 5,
-        flex: 1,
-        borderRadius: 4
-      }
+  container: {
+    backgroundColor: Colors.primary,
+    flexDirection: 'column',
+    paddingTop: '20%',
+    alignItems: 'center',
+    height: '100%',
+  },
+  buttonContainer: {
+    marginTop: 40,
+    fontFamily: 'RedHatDisplay-Regular',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: 'RedHatDisplay-Regular',
+    fontSize: 18,
+    color: Colors.accent1,
+},
+  QRScreen: {
+    width: '75%',
+    height: "50%"
+  },
+  instructionTxt: {
+    color: 'white',
+    fontSize: 20,
+    width: '70%',
+    alignItems: 'center',
+    marginBottom: '12%',
+    textAlign: "center",
+    fontFamily: 'RedHatDisplay-Regular',
+  },
+  borderBox: {
+    borderColor: Colors.accent1,
+    borderWidth: 3,
+    flex: 1,
+  }
 });
 
 

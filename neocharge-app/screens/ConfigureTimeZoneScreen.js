@@ -1,6 +1,5 @@
 import React from 'react';
-import * as SecureStore from 'expo-secure-store';
-import { Dimensions, View, StyleSheet, Text, Button } from 'react-native';
+import {Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Colors from '../assets/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -11,47 +10,46 @@ const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
 const iconSize = sheight * 0.025;
 
-export default class ConfigurePrimaryScreen extends React.Component {
+export default class ConfigureTimeZoneScreen extends React.Component {
+    // TODO: Set up state to hold values
+    constructor(props) {
+        super(props);
+        this.state = { 
+            text: '',
+        };
+      }
+    
 
     static navigationOptions = {
         headerRight: <QuestionMark/>,
         headerStyle: {
-            backgroundColor: Colors.primary,
+            backgroundColor: Colors.primary
         },
-        headerBackTitle: 'Configure Primary', // Title of back button for the next page
         headerTintColor: "#fff",
         headerTitleStyle: {
             fontWeight: "bold",
             fontFamily: 'RedHatDisplay-Regular'
         },
     }
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            primaryDevice: '',
-            make: ''
-        }
-    }
-
-    async pushData() {
-        let userEmail = await SecureStore.getItemAsync("secure_email")
-    }
+    
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Primary{'\n'}Device</Text>
+                    <Text style={styles.title}>Select Your Locale</Text>
                 </View>
 
                 <View style={styles.pickers}>
                     <RNPickerSelect
-                        onValueChange={(value) => this.setState({ primaryDevice: value })}
-                        placeholder={{ label: 'Select', value: null, color: 'grey' }}
+                        onValueChange={(value) => console.log(value)}
+                        placeholder={{ label: 'Time Zone', value: null, color: 'grey' }}
                         items={[
-                            { label: 'Appliance', value: 'Appliance' },
-                            { label: 'Electric Vehicle', value: 'Electric Vehicle' },
+                            { label: 'Pacific Standard Time (UTC-8)', value: 'Pacific Standard Time (UTC-8)' },
+                            { label: 'Mountain Standard Time (UTC-7)', value: 'Mountain Standard Time (UTC-7)' },
+                            { label: 'Central Standard Time (UTC-6)', value: 'Mountain Standard Time (UTC-6)' },
+                            { label: 'Eastern Standard Time (UTC-5)', value: 'Eastern Standard Time (UTC-5)' },
+                            { label: 'Atlantic Standard Time (UTC-4)', value: 'Atlantic Standard Time (UTC-4)' },
                         ]}
                         style={pickerSelectStyles}
                         useNativeAndroidPickerStyle={false}
@@ -61,17 +59,12 @@ export default class ConfigurePrimaryScreen extends React.Component {
                     />
 
                     <RNPickerSelect
-                        onValueChange={(value) => this.setState({ make: value })}
-                        placeholder={{ label: 'Make', value: null, color: 'grey' }}
+                        onValueChange={(value) => console.log(value)}
+                        placeholder={{ label: 'Utility Provider', value: null, color: 'grey' }}
                         items={[
-                            { label: 'BMW', value: 'BMW' },
-                            { label: 'Chevrolet', value: 'Chevrolet' },
-                            { label: 'Ford', value: 'Ford' },
-                            { label: 'KIA', value: 'KIA' },
-                            { label: 'Mercedes', value: 'Mercedes' },
-                            { label: 'Nissan', value: 'Nissan' },
-                            { label: 'Tesla', value: 'Tesla' },
-                            { label: 'Volkswagen', value: 'Volkswagen' },
+                            { label: 'Pacific Gas and Electric Company (PG&E)', value: 'Pacific Gas and Electric Company (PG&E)' },
+                            { label: 'SoCalGas', value: 'SoCalGas' },
+                            { label: 'Southern California Gas Company', value: 'Southern California Gas Company' },
                         ]}
                         style={pickerSelectStyles}
                         useNativeAndroidPickerStyle={false}
@@ -79,11 +72,26 @@ export default class ConfigurePrimaryScreen extends React.Component {
                             return <Arrow height={iconSize} width={iconSize} />;
                         }}
                     />
+                    
+                     {/* ZipCode Input */}
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                        <View style={{flex: 1}}>
+                        <TextInput 
+                            style={styles.textContainer}
+                            placeholder = "ZipCode"
+                            placeholderTextColor= {Colors.accent1}
+                            keyboardType = 'numeric'
+                            value={this.state.text}
+                            onChangeText={(text) => this.setState({text : text})}
+                            clearButtonMode='always'
+                        />
+                         </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => this.props.navigation.navigate('ConfigSecondary')}>
+                        onPress={() => this.props.navigation.navigate('ConfigPrimary')}>
                         <Text style={styles.title}>Confirm</Text>
                     </TouchableOpacity>
                 </View>
@@ -125,7 +133,35 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingVertical: 5,
         borderRadius: 25,
-    }
+    },
+    textContainer: {
+        fontFamily: 'RedHatDisplay-Bold',
+        fontSize: 16,
+        backgroundColor: Colors.faded,
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: Colors.faded,
+        borderRadius: 25,
+        color: Colors.accent1,
+        paddingRight: 30, // to ensure the text is never behind the icon
+        width: swidth * .9
+    },
+    iconPictures: {
+        marginLeft: 10,
+        width: 30,
+        height: 30
+      },
+      modal: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#00ff00',
+        padding: 100
+     },
+     text: {
+        color: '#3f2949',
+        marginTop: 10
+     }
 });
 
 const pickerSelectStyles = StyleSheet.create({
