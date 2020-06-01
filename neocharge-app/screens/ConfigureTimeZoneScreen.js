@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
         padding: 100
      },
      text: {
+        fontFamily: 'RedHatDisplay-Bold',
         color: '#3f2949',
         marginTop: 10
      }

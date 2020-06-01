@@ -12,6 +12,7 @@ import ConfigureSecondaryScreen from '../screens/ConfigureSecondaryScreen';
 import QRScreen from '../screens/QRScreen';
 import ConfigureTimeZoneScreen from '../screens/ConfigureTimeZoneScreen'
 import DeviceIdScreen from '../screens/DeviceIdScreen';
+import FirstTimeNotificationSelectionScreen from '../screens/FirstTimeNotificationSelectionScreen';
 
 // Disable all error popups for Demo
 console.disableYellowBox = true;
@@ -23,7 +24,8 @@ const SetupStack = createStackNavigator(
         DeviceId: DeviceIdScreen,
         ConfigTimeZone: ConfigureTimeZoneScreen,
         ConfigPrimary: ConfigurePrimaryScreen,
-        ConfigSecondary: ConfigureSecondaryScreen
+        ConfigSecondary: ConfigureSecondaryScreen,
+        PushNotification: FirstTimeNotificationSelectionScreen,
     }
 );
 
