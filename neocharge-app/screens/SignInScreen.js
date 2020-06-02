@@ -1,11 +1,14 @@
 import React from 'react';
-import { Dimensions, Image, View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import { ImageBackground, Dimensions, Image, View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
 import LockIcon from '../assets/lock-icon.svg';
+import UsernameIcon from '../assets/username-icon.svg';
+import PasswordIcon from '../assets/password-icon.svg';
 import MainLogo from '../assets/main-logo.svg';
+import { BlurView } from 'expo-blur';
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
@@ -25,33 +28,47 @@ class SignInScreen extends React.Component {
     render() {
         return (
             <View style={styles.screen}>
-                <View style={styles.contents}>
+                 <ImageBackground source={require('../assets/signin-background.png')} 
+                    style = {{
+                        width: swidth, 
+                        height: sheight*1.2, 
+                        flex: 1,
+                        resizeMode: "cover",
+                        justifyContent: "center",
+                        opacity: 0.8,
+                        blurRadius: 4
+                        }}>
+                </ImageBackground>
+                <BlurView 
+                    intensity={30} 
+                    style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}>
+                </BlurView>
 
+                <View style={styles.contents}>
                 <View >
                     <MainLogo /> 
-                    <MainLogo height={sheight*0.25} width={sheight*0.25} marginBottom={'10%'} />
+                    <MainLogo height={sheight*0.25} width={sheight*0.25} marginBottom={'25%'} marginTop={'10%'} />
 			    </View>
     
-                    {/* <Text style={styles.title}>Sign-In</Text> */}
                     <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
                     <View style={styles.backgroundBox}>
-                        <LockIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
+                        <UsernameIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
                         <TextInput
                             style={styles.inputContainer}
                             placeholder='Email'
-                            placeholderTextColor={Colors.lightFade}
+                            placeholderTextColor={Colors.primary}
                             onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
                             autoCapitalize='none'
                         />
                     </View>
 
                     <View style={{...styles.backgroundBox, marginTop: '15%'}}>
-                    <Image style = {styles.iconPictures}
-                            source={require('../assets/mail-icon.png')} />
+                    <PasswordIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
+
                         <TextInput
                             style={styles.inputContainer}
                             placeholder='Password'
-                            placeholderTextColor={Colors.lightFade}
+                            placeholderTextColor={Colors.primary}
                             onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
                             secureTextEntry={true}
                             autoCapitalize='none'
@@ -207,11 +224,11 @@ export default SignInScreen;
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        padding: 30,
         backgroundColor: Colors.primary,
+        flexDirection: 'column'
     },
     contents: {
-        top: '20%',
+        flex: 1,
         bottom: '20%',
         alignItems: 'center',
         flexDirection: 'column',
@@ -232,16 +249,18 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
     },
     ErrorText: {
+        fontFamily: 'RedHatDisplay-Bold',
+        justifyContent: 'center',
         color: '#ff0000', //red
         flexDirection: 'column',
-        marginBottom: '5%',
+        marginBottom: '10%',
     },
     inputContainer: {
         fontFamily: 'RedHatDisplay-Regular',
-        fontSize: 16,
+        fontSize: 18,
         height: 40,
-        width: '80%',
-        color: Colors.accent1,
+        width: '70%',
+        backgroundColor: Colors.secondary,
         borderColor: 'gray',
         paddingLeft: 10,
         borderWidth: 1,
@@ -250,18 +269,18 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     clickableText: {
-        fontFamily: 'RedHatDisplay-Regular',
+        fontFamily: 'RedHatDisplay-Bold',
         color: Colors.accent1,
         fontSize: 16,
         marginTop: '10%',
     },
     buttonContainer: {
-        marginTop: 40,
+        marginTop: 50,
         justifyContent: 'center',
         backgroundColor: Colors.accent1,
         borderRadius: 25,
-        width: '45%',
-        height: '8%'
+        width: '35%',
+        height: '9%'
     },
     button: {
         backgroundColor: Colors.accent1,

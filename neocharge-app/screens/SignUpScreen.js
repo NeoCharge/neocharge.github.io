@@ -5,7 +5,7 @@ import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
 
-class SignUpScreen extends React.Component {
+export default class SignUpScreen extends React.Component {
     constructor(props) {
         super(props)
         this.SignUp = this.SignUp.bind(this);
@@ -19,8 +19,15 @@ class SignUpScreen extends React.Component {
     }
 
     static navigationOptions = {
-        title: 'Please sign up',
-    };
+        headerStyle: {
+            backgroundColor: Colors.primary
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+            fontWeight: "bold",
+            fontFamily: 'RedHatDisplay-Regular'
+        },
+      }
 
 
     render() {
@@ -31,15 +38,15 @@ class SignUpScreen extends React.Component {
                     <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
                     <TextInput
                         style={styles.inputContainer}
-                        placeholder='Email'
-                        placeholderTextColor={Colors.lightFade}
+                        placeholder='Enter your Email'
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
                         autoCapitalize='none'
                     />
                     <TextInput
                         style={styles.inputContainer}
-                        placeholder='Password'
-                        placeholderTextColor={Colors.lightFade}
+                        placeholder='Enter a Password'
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
                         secureTextEntry={true}
                         autoCapitalize='none'
@@ -47,7 +54,7 @@ class SignUpScreen extends React.Component {
                     <TextInput
                         style={styles.inputContainer}
                         placeholder='Confirm Password'
-                        placeholderTextColor={Colors.lightFade}
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={ConfirmPasswordInputValue => this.setState({ ConfirmPasswordInputValue })}
                         secureTextEntry={true}
                         autoCapitalize='none'
@@ -63,7 +70,7 @@ class SignUpScreen extends React.Component {
             <Text 
                 style={styles.clickableText}
                 onPress={() => this.props.navigation.navigate('SignIn')}>
-                Already have an account? Click here to Sign-In.
+                Already have an account? {"\n    "} Click here to sign-in.
             </Text> 
                 </View> 
             </View>
@@ -152,23 +159,21 @@ class SignUpScreen extends React.Component {
     setSecureStore = async (key, value) => {
         await SecureStore.setItemAsync(key, value);
     }
-
 }
-export default SignUpScreen;
-
 
 const styles = StyleSheet.create({
     screen: {
         padding: 30,
         backgroundColor: Colors.primary, //dark gray
         flex: 1,
+        justifyContent: 'flex-start',
     },
     contents: {
         top: '20%',
         bottom: '20%',
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     title: {
         fontFamily: 'RedHatDisplay-Bold',
@@ -186,20 +191,19 @@ const styles = StyleSheet.create({
         fontFamily: 'RedHatDisplay-Regular',
         fontSize: 16,
         height: 40,
-        width: '80%',
+        width: '100%',
         color: Colors.accent1,
         borderColor: 'gray',
         paddingLeft: 10,
-        borderWidth: 1,
         marginBottom: '5%',
         borderRadius: 25,
         marginTop: 10,
+        backgroundColor: Colors.faded
     },
     clickableText: {
         fontFamily: 'RedHatDisplay-Regular',
-        color: Colors.accent2,
-        textDecorationLine: 'underline',
-        marginTop: '5%'
+        color: Colors.accent1,
+        marginTop: '5%',
     },
     buttonContainer: {
         marginTop: '10%',
