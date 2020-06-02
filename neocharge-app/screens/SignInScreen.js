@@ -5,7 +5,7 @@ import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
 import LockIcon from '../assets/lock-icon.svg';
-import MailIcon from '../assets/mail-icon.png';
+import MainLogo from '../assets/main-logo.svg';
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
@@ -26,7 +26,13 @@ class SignInScreen extends React.Component {
         return (
             <View style={styles.screen}>
                 <View style={styles.contents}>
-                    <Text style={styles.title}>Sign-In</Text>
+
+                <View >
+                    <MainLogo /> 
+                    <MainLogo height={sheight*0.25} width={sheight*0.25} marginBottom={'10%'} />
+			    </View>
+    
+                    {/* <Text style={styles.title}>Sign-In</Text> */}
                     <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
                     <View style={styles.backgroundBox}>
                         <LockIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
@@ -39,7 +45,7 @@ class SignInScreen extends React.Component {
                         />
                     </View>
 
-                    <View style={{...styles.backgroundBox, marginTop: '10%'}}>
+                    <View style={{...styles.backgroundBox, marginTop: '15%'}}>
                     <Image style = {styles.iconPictures}
                             source={require('../assets/mail-icon.png')} />
                         <TextInput
@@ -59,12 +65,17 @@ class SignInScreen extends React.Component {
                             color= {Colors.secondary}
                             onPress={() => this.SignIn()} />
                     </View>
+                    
+                    {/* TODO:  Create a way for user to retrieve username and password*/}
+                    <Text style={styles.clickableText}>
+                        Forgot username or password?
+                    </Text>
 
                     <Text
-                        style={styles.ClickableText}
+                        style={{...styles.clickableText, marginTop: '4%'}}
                         onPress={() => this.props.navigation.navigate('SignUp')}>
-                        Don't have an account? Click here to Sign-Up.
-                </Text>
+                        Create an account
+                    </Text>
                 </View>
             </View>
         );
@@ -238,24 +249,22 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginTop: 20,
     },
-    ClickableText: {
+    clickableText: {
         fontFamily: 'RedHatDisplay-Regular',
-        color: Colors.accent2,
-        textDecorationLine: 'underline',
+        color: Colors.accent1,
+        fontSize: 16,
         marginTop: '10%',
     },
     buttonContainer: {
-        marginTop: 50,
+        marginTop: 40,
         justifyContent: 'center',
         backgroundColor: Colors.accent1,
         borderRadius: 25,
-        width: '50%',
-        height: '15%'
+        width: '45%',
+        height: '8%'
     },
     button: {
         backgroundColor: Colors.accent1,
-        paddingHorizontal: 25,
-        paddingVertical: 5,
         borderRadius: 25,
     },
     iconPictures: {
