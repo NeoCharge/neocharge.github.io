@@ -23,17 +23,29 @@ If you run into any issues while installing, please [contact](contact.md) us!
 ## Application Walkthrough 
 ### First Time Users
 
-<img src="images/signup.png" title="SignUp Screen">
+<img src="images/SignUp.png" title="SignUp Screen">
 
-Upon opening the app, you will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
+You will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
-<img src="images/verification.png" title="Verification Screen">
+<img src="images/QRScreen.png" title="QR Screen">
 
-Next, you will be taken to the the account verification screen which requires the code that was sent to your specified email address. 
+Next, you will be taken to the QR Code scanner in order to scan the QR Code found on your neocharge device. If you are unable to scan the code, you also have the option enter the device id manually.
 
-<img src="images/deviceId.png" title="Device Id Screen">
+<img src="images/deviceID.png" title="Device Id Screen">
+For alpha testers, please enter 'mydevice' as the sample device id. 
 
-Upon successful verification, you will be prompted to enter the device id which can be found on the back of your NeoCharge device. You will also be able to specify the time zone as well as configure your primary and secondary devices here.
+
+<img src="images/locale.png" title="Configure Locale">
+Upon successful verification, you will be prompted to specify time zone as well as your servie provider and zipcode.
+
+
+<img src="images/primaryConfig.png" title="Primary Config">
+Here you can specify the primary device configuration. 
+
+
+<img src="images/secondaryConfig.png" title="Secondary Config">
+Here you can specify the secondary device configuration, where you can input the make and model of your vehicle as well as a charge rate. 
+
 
 <strong>Important Note for Alpha Testers:</strong> If you do not own a physical NeoCharge device, enter "mydevice" for the device id field. 
 
