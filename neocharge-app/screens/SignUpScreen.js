@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import { Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
 
-class SignUpScreen extends React.Component {
+export default class SignUpScreen extends React.Component {
     constructor(props) {
         super(props)
         this.SignUp = this.SignUp.bind(this);
@@ -18,8 +19,15 @@ class SignUpScreen extends React.Component {
     }
 
     static navigationOptions = {
-        title: 'Please sign up',
-    };
+        headerStyle: {
+            backgroundColor: Colors.primary
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+            fontWeight: "bold",
+            fontFamily: 'RedHatDisplay-Regular'
+        },
+      }
 
 
     render() {
@@ -30,15 +38,15 @@ class SignUpScreen extends React.Component {
                     <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
                     <TextInput
                         style={styles.inputContainer}
-                        placeholder='Email'
-                        placeholderTextColor={Colors.faded}
+                        placeholder='Enter your Email'
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
                         autoCapitalize='none'
                     />
                     <TextInput
                         style={styles.inputContainer}
-                        placeholder='Password'
-                        placeholderTextColor={Colors.faded}
+                        placeholder='Enter a Password'
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
                         secureTextEntry={true}
                         autoCapitalize='none'
@@ -46,19 +54,25 @@ class SignUpScreen extends React.Component {
                     <TextInput
                         style={styles.inputContainer}
                         placeholder='Confirm Password'
-                        placeholderTextColor={Colors.faded}
+                        placeholderTextColor={Colors.accent1}
                         onChangeText={ConfirmPasswordInputValue => this.setState({ ConfirmPasswordInputValue })}
                         secureTextEntry={true}
                         autoCapitalize='none'
                     />
-                    <Button title="Sign up"
-                        onPress={this.SignUp} />
-                    <Text
-                        style={styles.ClickableText}
-                        onPress={() => this.props.navigation.navigate('SignIn')}>
-                        Already have an account? Click here to Sign-In.
-                </Text>
-                </View>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button}
+                    onPress={this.SignUp} >
+                    <Text style={styles.title}>Confirm</Text>
+                </TouchableOpacity>
+            </View>
+
+            <Text 
+                style={styles.clickableText}
+                onPress={() => this.props.navigation.navigate('SignIn')}>
+                Already have an account? {"\n    "} Click here to sign-in.
+            </Text> 
+                </View> 
             </View>
         );
     }
@@ -145,48 +159,61 @@ class SignUpScreen extends React.Component {
     setSecureStore = async (key, value) => {
         await SecureStore.setItemAsync(key, value);
     }
-
 }
-export default SignUpScreen;
-
 
 const styles = StyleSheet.create({
     screen: {
         padding: 30,
-        backgroundColor: "#242424", //dark gray
+        backgroundColor: Colors.primary, //dark gray
         flex: 1,
-
+        justifyContent: 'flex-start',
     },
     contents: {
         top: '20%',
         bottom: '20%',
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     title: {
-        color: '#fff', //white
-        fontSize: 20,
+        fontFamily: 'RedHatDisplay-Bold',
+        color: Colors.secondary, //white
+        fontSize: 24,
         marginBottom: '5%',
     },
     ErrorText: {
+        fontFamily: 'RedHatDisplay-Regular',
         color: '#ff0000', //red
         flexDirection: 'column',
         marginBottom: '5%',
     },
     inputContainer: {
+        fontFamily: 'RedHatDisplay-Regular',
+        fontSize: 16,
         height: 40,
-        width: '80%',
-        color: 'white',
+        width: '100%',
+        color: Colors.accent1,
         borderColor: 'gray',
         paddingLeft: 10,
-        borderWidth: 1,
-        marginBottom: '5%'
+        marginBottom: '5%',
+        borderRadius: 25,
+        marginTop: 10,
+        backgroundColor: Colors.faded
     },
-    ClickableText: {
-        color: '#E88227', //orange
-        textDecorationLine: 'underline',
+    clickableText: {
+        fontFamily: 'RedHatDisplay-Regular',
+        color: Colors.accent1,
+        marginTop: '5%',
+    },
+    buttonContainer: {
         marginTop: '10%',
+        justifyContent: 'center'
+    },
+    button: {
+        backgroundColor: Colors.accent1,
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 25,
     },
 });
 

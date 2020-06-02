@@ -1,8 +1,18 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import { ImageBackground, Dimensions, Image, View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
+import LockIcon from '../assets/lock-icon.svg';
+import UsernameIcon from '../assets/username-icon.svg';
+import PasswordIcon from '../assets/password-icon.svg';
+import MainLogo from '../assets/main-logo.svg';
+import { BlurView } from 'expo-blur';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
+const iconSize = sheight * 0.040;
 
 class SignInScreen extends React.Component {
     constructor(props) {
@@ -18,33 +28,71 @@ class SignInScreen extends React.Component {
     render() {
         return (
             <View style={styles.screen}>
-                <View style={styles.contents}>
-                    <Text style={styles.title}>Sign-In</Text>
-                    <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
-                    <TextInput
-                        style={styles.inputContainer}
-                        placeholder='Email'
-                        placeholderTextColor={Colors.faded}
-                        onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
-                        autoCapitalize='none'
-                    />
-                    <TextInput
-                        style={styles.inputContainer}
-                        placeholder='Password'
-                        placeholderTextColor={Colors.faded}
-                        onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
-                        secureTextEntry={true}
-                        autoCapitalize='none'
-                    />
+                 <ImageBackground source={require('../assets/signin-background.png')} 
+                    style = {{
+                        width: swidth, 
+                        height: sheight*1.2, 
+                        flex: 1,
+                        resizeMode: "cover",
+                        justifyContent: "center",
+                        opacity: 0.8,
+                        blurRadius: 4
+                        }}>
+                </ImageBackground>
+                <BlurView 
+                    intensity={30} 
+                    style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}>
+                </BlurView>
 
-                    <Button title="Sign in"
-                        onPress={() => this.SignIn()} />
+                <View style={styles.contents}>
+                <View >
+                    <MainLogo /> 
+                    <MainLogo height={sheight*0.25} width={sheight*0.25} marginBottom={'25%'} marginTop={'10%'} />
+			    </View>
+    
+                    <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
+                    <View style={styles.backgroundBox}>
+                        <UsernameIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
+                        <TextInput
+                            style={styles.inputContainer}
+                            placeholder='Email'
+                            placeholderTextColor={Colors.primary}
+                            onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
+                            autoCapitalize='none'
+                        />
+                    </View>
+
+                    <View style={{...styles.backgroundBox, marginTop: '15%'}}>
+                    <PasswordIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
+
+                        <TextInput
+                            style={styles.inputContainer}
+                            placeholder='Password'
+                            placeholderTextColor={Colors.primary}
+                            onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
+                            secureTextEntry={true}
+                            autoCapitalize='none'
+                        />
+                    </View>
+
+
+                    <View style={styles.buttonContainer}>
+                        <Button 
+                            title = "Sign in"
+                            color= {Colors.secondary}
+                            onPress={() => this.SignIn()} />
+                    </View>
+                    
+                    {/* TODO:  Create a way for user to retrieve username and password*/}
+                    <Text style={styles.clickableText}>
+                        Forgot username or password?
+                    </Text>
 
                     <Text
-                        style={styles.ClickableText}
+                        style={{...styles.clickableText, marginTop: '4%'}}
                         onPress={() => this.props.navigation.navigate('SignUp')}>
-                        Don't have an account? Click here to Sign-Up.
-                </Text>
+                        Create an account
+                    </Text>
                 </View>
             </View>
         );
@@ -175,40 +223,75 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 30,
-        backgroundColor: "#242424", //dark gray
         flex: 1,
+        backgroundColor: Colors.primary,
+        flexDirection: 'column'
     },
     contents: {
-        top: '20%',
+        flex: 1,
         bottom: '20%',
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'center',
     },
+    backgroundBox: {
+        flex: 1,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        maxHeight: 60,
+        alignItems: 'center',
+      },
     title: {
-        color: '#fff', //white
-        fontSize: 20,
+        fontFamily: 'RedHatDisplay-Bold',
+        color: Colors.secondary, //white
+        fontSize: 24,
         marginBottom: '5%',
     },
     ErrorText: {
+        fontFamily: 'RedHatDisplay-Bold',
+        justifyContent: 'center',
         color: '#ff0000', //red
         flexDirection: 'column',
-        marginBottom: '5%',
+        marginBottom: '10%',
     },
     inputContainer: {
+        fontFamily: 'RedHatDisplay-Regular',
+        fontSize: 18,
         height: 40,
-        width: '80%',
-        color: 'white',
+        width: '70%',
+        backgroundColor: Colors.secondary,
         borderColor: 'gray',
         paddingLeft: 10,
         borderWidth: 1,
         marginBottom: '5%',
+        borderRadius: 25,
+        marginTop: 20,
     },
-    ClickableText: {
-        color: '#E88227', //oragne
-        textDecorationLine: 'underline',
+    clickableText: {
+        fontFamily: 'RedHatDisplay-Bold',
+        color: Colors.accent1,
+        fontSize: 16,
         marginTop: '10%',
+    },
+    buttonContainer: {
+        marginTop: 50,
+        justifyContent: 'center',
+        backgroundColor: Colors.accent1,
+        borderRadius: 25,
+        width: '35%',
+        height: '9%'
+    },
+    button: {
+        backgroundColor: Colors.accent1,
+        borderRadius: 25,
+    },
+    iconPictures: {
+        justifyContent: 'center',
+        width: 30,
+        height: 30,
+        marginRight: 10
+        
     },
 });
 

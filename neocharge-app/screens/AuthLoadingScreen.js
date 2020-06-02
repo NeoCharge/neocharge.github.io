@@ -37,7 +37,7 @@ class AuthLoadingScreen extends React.Component {
           }
           else {
             console.log("AuthLoading error on authentication: " + error.code);
-            this.props.navigation.navigate('SignUp'); //TODO add return after this line and merge if(signInSuccess && setupComplete)
+            this.props.navigation.navigate('SignIn'); //TODO add return after this line and merge if(signInSuccess && setupComplete)
           }
         });
       if (signInSuccess) {
@@ -77,7 +77,7 @@ class AuthLoadingScreen extends React.Component {
     }
     catch (error) {
       console.log("AuthLoading error on authentication: " + error);
-      this.props.navigation.navigate('SignUp');
+      this.props.navigation.navigate('SignIn');
     }
   };
 
