@@ -5,29 +5,79 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest",
+    "postinstall": "./post_install"
   },
   "dependencies": {
     "@aws-amplify/api": "^1.2.4",
     "@aws-amplify/pubsub": "^1.2.4",
-    "aws-amplify": "^1.2.4",
+    "@aws-amplify/pushnotification": "^2.1.5",
+    "@ptomasroos/react-native-multi-slider": "^2.2.0",
+    "@react-native-community/datetimepicker": "2.2.2",
+    "@react-native-community/netinfo": "5.5.1",
+    "aws-amplify": "^2.2.2",
     "aws-amplify-react": "^2.5.4",
-    "expo": "^35.0.0",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
-    "react-native-svg": "9.9.5",
-    "victory-native": "^33.0.0",
-    "react-native-gesture-handler": "~1.3.0",
-    "react-native-reanimated": "~1.2.0",
+    "aws-amplify-react-native": "^3.2.2",
+    "expo": "37.0.8",
+    "expo-barcode-scanner": "^8.1.0",
+    "expo-secure-store": "~8.1.0",
+    "jscodeshift": "^0.7.0",
+    "prop-types": "^15.7.2",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-dropdown-menu": "^2.0.0",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-global-font": "^1.0.2",
+    "react-native-list-popover": "^1.1.1",
+    "react-native-modal-datetime-picker": "^8.1.1",
+    "react-native-modal-dropdown": "^0.7.0",
+    "react-native-multi-slider": "^0.3.6",
+    "react-native-picker-select": "^7.0.0",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-renderer": "^15.5.3",
+    "react-native-screens": "~2.2.0",
+    "react-native-slider": "^0.11.0",
+    "react-native-svg": "11.0.1",
+    "react-native-svg-charts": "^5.4.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.11.7",
-    "react-navigation": "^4.0.10",
+    "react-navigation": "^4.3.9",
     "react-navigation-stack": "^1.10.3",
-    "react-navigation-tabs": "^2.6.0"
+    "react-navigation-tabs": "^2.6.0",
+    "react-test-renderer": "^16.8.3",
+    "victory-native": "^33.0.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.1.0"
+    "babel-preset-expo": "^8.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "exp": "^57.2.1",
+    "react-native-cli": "^2.0.1"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "react-native",
+    "collectCoverage": true,
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "setupFiles": [
+      "<rootDir>/jest/setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|victory-.*)"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/jest"
+    ]
+  }
 }
