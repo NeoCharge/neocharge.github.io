@@ -1,8 +1,15 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import { Dimensions, Image, View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
+import LockIcon from '../assets/lock-icon.svg';
+import MailIcon from '../assets/mail-icon.png';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
+const iconSize = sheight * 0.040;
 
 class SignInScreen extends React.Component {
     constructor(props) {
@@ -21,24 +28,37 @@ class SignInScreen extends React.Component {
                 <View style={styles.contents}>
                     <Text style={styles.title}>Sign-In</Text>
                     <Text style={styles.ErrorText}>{this.state.ErrorMessage}</Text>
-                    <TextInput
-                        style={styles.inputContainer}
-                        placeholder='Email'
-                        placeholderTextColor={Colors.faded}
-                        onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
-                        autoCapitalize='none'
-                    />
-                    <TextInput
-                        style={styles.inputContainer}
-                        placeholder='Password'
-                        placeholderTextColor={Colors.faded}
-                        onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
-                        secureTextEntry={true}
-                        autoCapitalize='none'
-                    />
+                    <View style={styles.backgroundBox}>
+                        <LockIcon width = {iconSize} height = {iconSize} marginRight= {10}/>
+                        <TextInput
+                            style={styles.inputContainer}
+                            placeholder='Email'
+                            placeholderTextColor={Colors.lightFade}
+                            onChangeText={EmailInputValue => this.setState({ EmailInputValue })}
+                            autoCapitalize='none'
+                        />
+                    </View>
 
-                    <Button title="Sign in"
-                        onPress={() => this.SignIn()} />
+                    <View style={{...styles.backgroundBox, marginTop: '10%'}}>
+                    <Image style = {styles.iconPictures}
+                            source={require('../assets/mail-icon.png')} />
+                        <TextInput
+                            style={styles.inputContainer}
+                            placeholder='Password'
+                            placeholderTextColor={Colors.lightFade}
+                            onChangeText={PasswordInputValue => this.setState({ PasswordInputValue })}
+                            secureTextEntry={true}
+                            autoCapitalize='none'
+                        />
+                    </View>
+
+
+                    <View style={styles.buttonContainer}>
+                        <Button 
+                            title = "Sign in"
+                            color= {Colors.secondary}
+                            onPress={() => this.SignIn()} />
+                    </View>
 
                     <Text
                         style={styles.ClickableText}
@@ -175,9 +195,9 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 30,
-        backgroundColor: "#242424", //dark gray
         flex: 1,
+        padding: 30,
+        backgroundColor: Colors.primary,
     },
     contents: {
         top: '20%',
@@ -186,9 +206,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
     },
+    backgroundBox: {
+        flex: 1,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        maxHeight: 60,
+        alignItems: 'center',
+      },
     title: {
-        color: '#fff', //white
-        fontSize: 20,
+        fontFamily: 'RedHatDisplay-Bold',
+        color: Colors.secondary, //white
+        fontSize: 24,
         marginBottom: '5%',
     },
     ErrorText: {
@@ -197,18 +226,44 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
     },
     inputContainer: {
+        fontFamily: 'RedHatDisplay-Regular',
+        fontSize: 16,
         height: 40,
         width: '80%',
-        color: 'white',
+        color: Colors.accent1,
         borderColor: 'gray',
         paddingLeft: 10,
         borderWidth: 1,
         marginBottom: '5%',
+        borderRadius: 25,
+        marginTop: 20,
     },
     ClickableText: {
-        color: '#E88227', //oragne
+        fontFamily: 'RedHatDisplay-Regular',
+        color: Colors.accent2,
         textDecorationLine: 'underline',
         marginTop: '10%',
+    },
+    buttonContainer: {
+        marginTop: 50,
+        justifyContent: 'center',
+        backgroundColor: Colors.accent1,
+        borderRadius: 25,
+        width: '50%',
+        height: '15%'
+    },
+    button: {
+        backgroundColor: Colors.accent1,
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 25,
+    },
+    iconPictures: {
+        justifyContent: 'center',
+        width: 30,
+        height: 30,
+        marginRight: 10
+        
     },
 });
 
