@@ -19,7 +19,7 @@ class SettingsScreen extends React.Component {
     }
   }
   async componentDidMount() {
-    this.setState({ userEmail: await SecureStore.getItemAsync("secure_email")});
+    this.setState({ userEmail: await SecureStore.getItemAsync("secure_email") });
   }
 
   render() {
@@ -64,23 +64,23 @@ class SettingsScreen extends React.Component {
           <DeviceSelection />
         </View>
 
-      {/* Time Zone Selection */}
-    <View style={styles.containerTimeZone}>
-      <View style={styles.buttonTimeZone}>
-          <RNPickerSelect
+        {/* Time Zone Selection */}
+        <View style={styles.containerTimeZone}>
+          <View style={styles.buttonTimeZone}>
+            <RNPickerSelect
               onValueChange={(value) => console.log(value)}
-              placeholder = {{label: 'Select a time', value: null}}
+              placeholder={{ label: 'Select a time', value: null }}
               items={[
-                  { label: 'Pacific Standard Time', value: 'Pacific Standard Time' },
-                  { label: 'Central Standard Time', value: 'Central Standard Time' },
-                  { label: 'Mountain Standard Time', value: 'Mountain Standard Time' },
-                  { label: 'Eastern Standard Time', value: 'Eastern Standard Time' },
-                  { label: 'Alaska Standard Time', value: 'Alaska Standard Time' },
-                  { label: 'Atlantic Standard Time', value: 'Atlantic Standard Time' },
-                  { label: 'Hawaii-Aleutian Standard Time', value: 'Hawaii-Aleutian Standard Time' },
+                { label: 'Pacific Standard Time', value: 'Pacific Standard Time' },
+                { label: 'Central Standard Time', value: 'Central Standard Time' },
+                { label: 'Mountain Standard Time', value: 'Mountain Standard Time' },
+                { label: 'Eastern Standard Time', value: 'Eastern Standard Time' },
+                { label: 'Alaska Standard Time', value: 'Alaska Standard Time' },
+                { label: 'Atlantic Standard Time', value: 'Atlantic Standard Time' },
+                { label: 'Hawaii-Aleutian Standard Time', value: 'Hawaii-Aleutian Standard Time' },
               ]}
-          />
-          <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
+            />
+            <Image style={styles.timeIcon} source={require('../assets/timezone-icon.png')} />
           </View>
         </View>
 
@@ -184,17 +184,18 @@ class SettingsScreen extends React.Component {
     let path = "/user"
     let jsonObj = {
       "queryStringParameters": {
-          "userEmail": this.state.userEmail
-      }};
+        "userEmail": this.state.userEmail
+      }
+    };
     await API.del("LambdaProxy", path, jsonObj)
-    .then(response => {
+      .then(response => {
         console.log(response)
         this.SignOut()
-    })
-    .catch(error => { 
-      console.log("Something went wrong while deleting user...")
-      console.log(error.response) 
-    });
+      })
+      .catch(error => {
+        console.log("Something went wrong while deleting user...")
+        console.log(error.response)
+      });
   }
 
 }
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 15,
-    textAlign : 'right'
+    textAlign: 'right'
   },
   userProfileText: {
     fontSize: 20,
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.appleBlue,
     position: 'absolute',
     justifyContent: 'center',
-    height: 10,
+    height: 40,
     borderColor: '#51a0d5',
     borderWidth: 1,
     bottom: '50%',
