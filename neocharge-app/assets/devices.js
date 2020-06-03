@@ -10,7 +10,7 @@ const kHeight = Dimensions.get('screen').height * .2
 
 export default {
     images: {
-        "Vehicle": <Car width={kWidth} height={kHeight} />,
+        "EV": <Car width={kWidth} height={kHeight} />,
         "Appliance": <Appliance width={kWidth} height={kHeight} />,
         "Dual": <DualCar width={kWidth} height={kHeight} />,
         "None": <NoOutputRing width={kWidth} height={kHeight} />,

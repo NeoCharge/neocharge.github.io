@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Colors from '../assets/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -11,17 +11,19 @@ const sheight = Dimensions.get('screen').height
 const iconSize = sheight * 0.025;
 
 export default class ConfigureTimeZoneScreen extends React.Component {
-    // TODO: Set up state to hold values
+
     constructor(props) {
         super(props);
-        this.state = { 
-            text: '',
+        this.state = {
+            timeZone: '',
+            utility: '', // TODO: Put this value somewhere in the database
+            zipCode: '' // TODO: Put this value somewhere in the database
         };
-      }
-    
+    }
+
 
     static navigationOptions = {
-        headerRight: <QuestionMark/>,
+        headerRight: <QuestionMark />,
         headerStyle: {
             backgroundColor: Colors.primary
         },
@@ -31,7 +33,18 @@ export default class ConfigureTimeZoneScreen extends React.Component {
             fontFamily: 'RedHatDisplay-Regular'
         },
     }
-    
+
+    navigateTo() {
+        if (this.state.timeZone == '' || this.state.utility == '' || this.state.zipCode == '') {
+            alert('All fields must be filled out.')
+        } else {
+            this.props.navigation.navigate('ConfigPrimary', {
+                deviceID: this.props.navigation.state.params.deviceID,
+                timeZone: this.state.timeZone
+            })
+        }
+
+    }
 
     render() {
         return (
@@ -42,14 +55,14 @@ export default class ConfigureTimeZoneScreen extends React.Component {
 
                 <View style={styles.pickers}>
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={(value) => this.setState({ timeZone: value })}
                         placeholder={{ label: 'Time Zone', value: null, color: 'grey' }}
                         items={[
-                            { label: 'Pacific Standard Time (UTC-8)', value: 'Pacific Standard Time (UTC-8)' },
-                            { label: 'Mountain Standard Time (UTC-7)', value: 'Mountain Standard Time (UTC-7)' },
-                            { label: 'Central Standard Time (UTC-6)', value: 'Mountain Standard Time (UTC-6)' },
-                            { label: 'Eastern Standard Time (UTC-5)', value: 'Eastern Standard Time (UTC-5)' },
-                            { label: 'Atlantic Standard Time (UTC-4)', value: 'Atlantic Standard Time (UTC-4)' },
+                            { label: 'Pacific Standard Time (UTC-8)', value: 'PST' },
+                            { label: 'Mountain Standard Time (UTC-7)', value: 'MST' },
+                            { label: 'Central Standard Time (UTC-6)', value: 'CST' },
+                            { label: 'Eastern Standard Time (UTC-5)', value: 'EST' },
+                            { label: 'Atlantic Standard Time (UTC-4)', value: 'AST' },
                         ]}
                         style={pickerSelectStyles}
                         useNativeAndroidPickerStyle={false}
@@ -59,9 +72,9 @@ export default class ConfigureTimeZoneScreen extends React.Component {
                     />
 
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={(value) => this.setState({ utility: value })}
                         placeholder={{ label: 'Utility Provider', value: null, color: 'grey' }}
-                        items={[
+                        items={[  // TODO: Make values abbreviations of the companies?
                             { label: 'Pacific Gas and Electric Company (PG&E)', value: 'Pacific Gas and Electric Company (PG&E)' },
                             { label: 'SoCalGas', value: 'SoCalGas' },
                             { label: 'Southern California Gas Company', value: 'Southern California Gas Company' },
@@ -72,26 +85,26 @@ export default class ConfigureTimeZoneScreen extends React.Component {
                             return <Arrow height={iconSize} width={iconSize} />;
                         }}
                     />
-                    
-                     {/* ZipCode Input */}
+
+                    {/* ZipCode Input */}
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                        <View style={{flex: 1}}>
-                        <TextInput 
-                            style={styles.textContainer}
-                            placeholder = "ZipCode"
-                            placeholderTextColor= {Colors.accent1}
-                            keyboardType = 'numeric'
-                            value={this.state.text}
-                            onChangeText={(text) => this.setState({text : text})}
-                            clearButtonMode='always'
-                        />
-                         </View>
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                style={styles.textContainer}
+                                placeholder="ZipCode"
+                                placeholderTextColor={Colors.accent1}
+                                keyboardType='numeric'
+                                value={this.state.zipCode}
+                                onChangeText={(value) => this.setState({ zipCode: value })}
+                                clearButtonMode='always'
+                            />
+                        </View>
                     </TouchableWithoutFeedback>
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => this.props.navigation.navigate('ConfigPrimary')}>
+                        onPress={() => this.navigateTo()}>
                         <Text style={styles.title}>Confirm</Text>
                     </TouchableOpacity>
                 </View>
@@ -151,18 +164,18 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: 30,
         height: 30
-      },
-      modal: {
+    },
+    modal: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#00ff00',
         padding: 100
-     },
-     text: {
+    },
+    text: {
         fontFamily: 'RedHatDisplay-Bold',
         color: '#3f2949',
         marginTop: 10
-     }
+    }
 });
 
 const pickerSelectStyles = StyleSheet.create({

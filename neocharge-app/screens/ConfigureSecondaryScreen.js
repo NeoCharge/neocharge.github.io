@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Colors from '../assets/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,7 +18,7 @@ const iconSize = sheight * 0.025;
 export default class ConfigureSecondaryScreen extends React.Component {
 
     static navigationOptions = {
-        headerRight: <QuestionMark/>,
+        headerRight: <QuestionMark />,
         headerStyle: {
             backgroundColor: Colors.primary
         },
@@ -33,8 +33,8 @@ export default class ConfigureSecondaryScreen extends React.Component {
     // TODO: Set up state to hold values
     constructor(props) {
         super(props);
-        this.state = { 
-            model: '', 
+        this.state = {
+            model: '',
             make: '',
             value: 0,
             minDistance: 0,
@@ -43,23 +43,77 @@ export default class ConfigureSecondaryScreen extends React.Component {
             userEmail: '',
             pushToken: '',
             hasLoggedData: false,
-            deviceID: ''
+            secondaryDevice: ''
         };
-      }
-    
+    }
+
     // push notification 
     async componentDidMount() {
-        this.setState({ userEmail: await SecureStore.getItemAsync("secure_email")})
-       
+        this.setState({ userEmail: await SecureStore.getItemAsync("secure_email") })
+
         registerForPushNotificationsAsync(this.state.userEmail).then(value => {
-          this.state.pushToken = value;
+            this.state.pushToken = value;
         });
         console.log(this.state.pushToken);
         console.log(typeof this.state.pushToken);
     }
 
+    async logOnboardingInfo() {
+
+        //check to see if the user has already clicked the continue button
+        //if they have, then don't enter, because it will create another user entry in the DB
+        if (!this.state.hasLoggedData) {
+            console.log("userEmail: " + this.state.userEmail);
+            console.log("timeZone: " + this.props.navigation.state.params.timeZone);
+            console.log("primaryDevice: " + this.props.navigation.state.params.primaryDevice);
+            console.log("secondaryDevice: " + this.state.secondaryDevice);
+            console.log("deviceID: " + this.props.navigation.state.params.deviceID);
+            console.log(this.state.pushToken);
+
+            // TODO is there a reason we should still leave this here for testing? -josh
+            //let devID = "XSD-934859734-TTYZ";
+
+            let requestBody = {
+                "userEmail": this.state.userEmail,
+                "timeZone": this.props.navigation.state.params.timeZone,
+                "primaryDevice": this.props.navigation.state.params.primaryDevice,
+                "secondaryDevice": this.state.secondaryDevice,
+                "deviceID": this.props.navigation.state.params.deviceID,
+                "pushToken": this.state.pushToken
+            };
+
+            let jsonObj = {
+                "body": requestBody
+            }
+
+            const path = "/user";
+            const apiResponse = await API.put("LambdaProxy", path, jsonObj) //replace the desired API name
+                .then(() => {
+                    console.log(apiResponse);
+                    this.state.hasLoggedData = true;
+                    // this.props.navigation.navigate('App');
+                })
+                .catch(error => {
+                    console.log(error.code);
+                    alert("Something went wrong while setting up your account.\n" +
+                        "Please send an email to thejuicerzcapstone@gmail.com if this problem persists.");
+                });
+        } else {
+            console.log("It didn't log info because hadLoggedData was true")
+        }
+    };
+
+    navigateTo() {
+        if (this.state.secondaryDevice == '' || this.state.make == '') {
+            alert('All fields must be filled out.')
+        } else {
+            this.logOnboardingInfo()
+            this.props.navigation.navigate('Home')
+        }
+    }
+
     render() {
-        const left = this.state.value * (swidth-60)/100 - 15;
+        const left = this.state.value * (swidth - 60) / 100 - 15;
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
@@ -68,11 +122,11 @@ export default class ConfigureSecondaryScreen extends React.Component {
 
                 <View style={styles.pickers}>
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={(value) => this.setState({ secondaryDevice: value })}
                         placeholder={{ label: 'Select', value: null, color: 'grey' }}
                         items={[
                             { label: 'Appliance', value: 'Appliance' },
-                            { label: 'Electric Vehicle', value: 'Electric Vehicle' },
+                            { label: 'Electric Vehicle', value: 'EV' },
                         ]}
                         style={pickerSelectStyles}
                         useNativeAndroidPickerStyle={false}
@@ -82,7 +136,7 @@ export default class ConfigureSecondaryScreen extends React.Component {
                     />
 
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={(value) => this.setState({ make: value })}
                         placeholder={{ label: 'Make', value: null, color: 'grey' }}
                         items={[
                             { label: 'BMW', value: 'BMW' },
@@ -103,65 +157,67 @@ export default class ConfigureSecondaryScreen extends React.Component {
 
                     {/* Car Model Input */}
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                        <View style={{flex: 6}}>
-                            <TextInput 
+                        <View style={{ flex: 6 }}>
+                            <TextInput
                                 style={styles.textContainer}
-                                placeholder = "Model"
-                                placeholderTextColor= {Colors.accent1}
+                                placeholder="Model"
+                                placeholderTextColor={Colors.accent1}
                                 value={this.state.model}
-                                onChangeText={(model) => this.setState({model : model})}
+                                onChangeText={(model) => this.setState({ model: model })}
                                 clearButtonMode='always'
                             />
 
-                            <TextInput 
+                            <TextInput
                                 style={styles.textContainer}
-                                placeholder = "Battery"
-                                placeholderTextColor= {Colors.accent1}
+                                placeholder="Battery"
+                                placeholderTextColor={Colors.accent1}
                                 value={this.state.battery}
-                                onChangeText={(battery) => this.setState({battery : battery})}
+                                onChangeText={(battery) => this.setState({ battery: battery })}
                                 clearButtonMode='always'
                             />
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-              
-              {/* Charge Rate Title */}
-               <View style = {styles.container1}> 
-                <Text style = {
-                    {fontFamily: 'RedHatDisplay-Bold', 
-                    fontSize: 20, 
-                    color: Colors.accent1,
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start'}}> Charge Rate</Text>
-            
-                {/* Charge Rate Value Display */}
-                <Text style={{width: 250, fontFamily: 'RedHatDisplay-Bold',textAlign:'left', left: left, marginTop: 10, color: Colors.lightFade } }>
-                    {Math.floor( this.state.value )} amps
+
+                {/* Charge Rate Title */}
+                <View style={styles.container1}>
+                    <Text style={
+                        {
+                            fontFamily: 'RedHatDisplay-Bold',
+                            fontSize: 20,
+                            color: Colors.accent1,
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start'
+                        }}> Charge Rate</Text>
+
+                    {/* Charge Rate Value Display */}
+                    <Text style={{ width: 250, fontFamily: 'RedHatDisplay-Bold', textAlign: 'left', left: left, marginTop: 10, color: Colors.lightFade }}>
+                        {Math.floor(this.state.value)} amps
                 </Text>
 
-            {/* Charge Rate Control */}
-                <Slider
-                    style={{ width: swidth * 0.9, justifyContent: 'center'}}
-                    step={1}
-                    minimumValue={this.state.minDistance}
-                    maximumValue={this.state.maxDistance}
-                    value={this.state.value}
-                    onValueChange={(value) => this.setState({value})} 
-                    thumbTintColor={Colors.accent1}
-                    maximumTrackTintColor= {Colors.secondary}
-                    minimumTrackTintColor={Colors.accent1}
-                />
-                <View style={styles.textCon}>
-                    <Text style={{color: Colors.lightFade, fontFamily: 'RedHatDisplay-Bold'}}>{this.state.minDistance} amps</Text>
-                    <Text style={{color: Colors.lightFade, paddingRight: swidth * 0.1, fontFamily: 'RedHatDisplay-Bold'}}>{this.state.maxDistance} amps</Text>
-                </View>
-           
+                    {/* Charge Rate Control */}
+                    <Slider
+                        style={{ width: swidth * 0.9, justifyContent: 'center' }}
+                        step={1}
+                        minimumValue={this.state.minDistance}
+                        maximumValue={this.state.maxDistance}
+                        value={this.state.value}
+                        onValueChange={(value) => this.setState({ value })}
+                        thumbTintColor={Colors.accent1}
+                        maximumTrackTintColor={Colors.secondary}
+                        minimumTrackTintColor={Colors.accent1}
+                    />
+                    <View style={styles.textCon}>
+                        <Text style={{ color: Colors.lightFade, fontFamily: 'RedHatDisplay-Bold' }}>{this.state.minDistance} amps</Text>
+                        <Text style={{ color: Colors.lightFade, paddingRight: swidth * 0.1, fontFamily: 'RedHatDisplay-Bold' }}>{this.state.maxDistance} amps</Text>
+                    </View>
 
-            </View>
+
+                </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => this.props.navigation.navigate('Home')}>
+                        onPress={() => this.navigateTo()}>
                         <Text style={styles.title}>Confirm</Text>
                     </TouchableOpacity>
                 </View>
@@ -177,25 +233,24 @@ async function registerForPushNotificationsAsync(userEmail) {
     // iOS won't necessarily prompt the user a second time.
     // On Android, permissions are granted on app installation, so
     // `askAsync` will never prompt the user
-  
+
     // Stop here if the user did not grant permissions
     if (status !== 'granted') {
-      alert('No notification permissions!');
-      return;
+        alert('No notification permissions!');
+        return;
     }
-  
+
     // Get the token that identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
     console.log("value is " + token);
     console.log("type is " + typeof token);
-  
+
     return token;
     //if (!userHasToken()) {
     //logPushNotifcationToken(token, userEmail);
     //}
-  
-  
-  };
+
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -255,7 +310,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         color: Colors.accent1,
         paddingRight: 30, // to ensure the text is never behind the icon
-        width: swidth * .9,       
+        width: swidth * .9,
         marginBottom: 60
     },
     container1: {

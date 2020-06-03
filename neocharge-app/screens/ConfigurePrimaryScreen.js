@@ -14,7 +14,7 @@ const iconSize = sheight * 0.025;
 export default class ConfigurePrimaryScreen extends React.Component {
 
     static navigationOptions = {
-        headerRight: <QuestionMark/>,
+        headerRight: <QuestionMark />,
         headerStyle: {
             backgroundColor: Colors.primary,
         },
@@ -30,12 +30,26 @@ export default class ConfigurePrimaryScreen extends React.Component {
         super(props)
         this.state = {
             primaryDevice: '',
-            make: ''
+            make: '' // TODO: Put this value into the database
         }
     }
 
-    async pushData() {
-        let userEmail = await SecureStore.getItemAsync("secure_email")
+    // async pushData() {
+    //     let userEmail = await SecureStore.getItemAsync("secure_email")
+    // }
+
+    navigateTo() {
+        if (this.state.primaryDevice == ''
+            // || this.state.make == ''
+        ) {
+            alert('All fields must be filled out.')
+        } else {
+            this.props.navigation.navigate('ConfigSecondary', {
+                deviceID: this.props.navigation.state.params.deviceID,
+                timeZone: this.props.navigation.state.params.timeZone,
+                primaryDevice: this.state.primaryDevice
+            })
+        }
     }
 
     render() {
@@ -51,7 +65,7 @@ export default class ConfigurePrimaryScreen extends React.Component {
                         placeholder={{ label: 'Select', value: null, color: 'grey' }}
                         items={[
                             { label: 'Appliance', value: 'Appliance' },
-                            { label: 'Electric Vehicle', value: 'Electric Vehicle' },
+                            // { label: 'Electric Vehicle', value: 'EV' },
                         ]}
                         style={pickerSelectStyles}
                         useNativeAndroidPickerStyle={false}
@@ -60,7 +74,9 @@ export default class ConfigurePrimaryScreen extends React.Component {
                         }}
                     />
 
-                    <RNPickerSelect
+
+                    {/* TODO: Uncomment to add Appliance makes or when dual car charging is configured */}
+                    {/* <RNPickerSelect
                         onValueChange={(value) => this.setState({ make: value })}
                         placeholder={{ label: 'Make', value: null, color: 'grey' }}
                         items={[
@@ -78,12 +94,12 @@ export default class ConfigurePrimaryScreen extends React.Component {
                         Icon={() => {
                             return <Arrow height={iconSize} width={iconSize} />;
                         }}
-                    />
+                    /> */}
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}
-                        onPress={() => this.props.navigation.navigate('ConfigSecondary')}>
+                        onPress={() => this.navigateTo()}>
                         <Text style={styles.title}>Confirm</Text>
                     </TouchableOpacity>
                 </View>
