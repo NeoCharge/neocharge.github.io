@@ -34,10 +34,6 @@ export default class ConfigurePrimaryScreen extends React.Component {
         }
     }
 
-    // async pushData() {
-    //     let userEmail = await SecureStore.getItemAsync("secure_email")
-    // }
-
     navigateTo() {
         if (this.state.primaryDevice == ''
             // || this.state.make == ''

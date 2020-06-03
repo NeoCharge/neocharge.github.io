@@ -30,7 +30,6 @@ export default class ConfigureSecondaryScreen extends React.Component {
         gesturesEnabled: false,
     }
 
-    // TODO: Set up state to hold values
     constructor(props) {
         super(props);
         this.state = {
@@ -91,7 +90,6 @@ export default class ConfigureSecondaryScreen extends React.Component {
                 .then(() => {
                     console.log(apiResponse);
                     this.state.hasLoggedData = true;
-                    // this.props.navigation.navigate('App');
                 })
                 .catch(error => {
                     console.log(error.code);

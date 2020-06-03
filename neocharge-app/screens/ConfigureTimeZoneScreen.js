@@ -21,7 +21,6 @@ export default class ConfigureTimeZoneScreen extends React.Component {
         };
     }
 
-
     static navigationOptions = {
         headerRight: <QuestionMark />,
         headerStyle: {

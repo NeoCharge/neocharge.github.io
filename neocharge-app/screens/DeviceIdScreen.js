@@ -3,7 +3,7 @@ import { Icon, Dimensions, View, StyleSheet, Text, Button, TextInput, Keyboard, 
 import Colors from '../assets/colors.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import QuestionMark from '../assets/question-mark.svg';
-import { API, Auth } from 'aws-amplify';
+import { API } from 'aws-amplify';
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
@@ -21,7 +21,6 @@ class DeviceIdScreen extends React.Component {
         },
     }
 
-    // TODO: Set up state to hold values
     constructor(props) {
         super(props);
         this.state = { deviceID: '' };
