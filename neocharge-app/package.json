@@ -21,6 +21,7 @@
     "aws-amplify-react-native": "^3.2.2",
     "expo": "37.0.8",
     "expo-barcode-scanner": "^8.1.0",
+    "expo-blur": "^8.1.0",
     "expo-secure-store": "~8.1.0",
     "jscodeshift": "^0.7.0",
     "prop-types": "^15.7.2",
