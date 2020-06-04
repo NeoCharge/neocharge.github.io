@@ -10,7 +10,7 @@ import ScheduleChargeIcon from '../assets/ScheduleCharge.svg';
 import SmartSettingsIcon from '../assets/SmartSettings.svg';
 import NotificationsIcon from '../assets/Notifications.svg';
 
-import { API, Auth } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
@@ -47,11 +47,13 @@ export default class HomeScreen extends React.Component {
     async componentDidMount() {
         this.setState({ userEmail: await SecureStore.getItemAsync("secure_email") });
 
-        registerForPushNotificationsAsync(this.state.userEmail).then(value => {
-            this.state.pushToken = value;
-        });
+        if (this.props.navigation.state.params != undefined) {
+            registerForPushNotificationsAsync(this.state.userEmail).then(value => {
+                this.state.pushToken = value;
+            });
 
-        this.logOnboardingInfo();
+            this.logOnboardingInfo();
+        }
     }
 
     async logOnboardingInfo() {
