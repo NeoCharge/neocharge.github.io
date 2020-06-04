@@ -5,8 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../assets/colors';
 import { API } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
-import Appliance from './Appliance.js'
-import Car from './Car.js'
+import Appliance from './Appliance.js';
+import Car from './Car.js';
 
 const DELAY = 5000;
 const NONE = 0;
