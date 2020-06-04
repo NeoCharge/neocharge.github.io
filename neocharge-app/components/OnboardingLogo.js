@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet} from 'react-native';
+import MainLogo from '../assets/main-logo.svg';
 
 const OnboardingLogo = props => {
 
   return (
     <View style={styles.imageContainer}>
-        <Image source={require('../assets/ColorLogo.png')}/>
+        < MainLogo />
     </View>
   );
 };
