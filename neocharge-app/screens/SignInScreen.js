@@ -1,14 +1,11 @@
 import React from 'react';
 import { ImageBackground, Dimensions, Image, View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
-import {TouchableOpacity } from 'react-native-gesture-handler';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
 import Colors from '../assets/colors';
-import LockIcon from '../assets/lock-icon.svg';
 import UsernameIcon from '../assets/username-icon.svg';
 import PasswordIcon from '../assets/password-icon.svg';
 import MainLogo from '../assets/main-logo.svg';
-import { BlurView } from 'expo-blur';
 
 const swidth = Dimensions.get('screen').width
 const sheight = Dimensions.get('screen').height
@@ -28,21 +25,15 @@ class SignInScreen extends React.Component {
     render() {
         return (
             <View style={styles.screen}>
-                 <ImageBackground source={require('../assets/signin-background.png')} 
+                 <ImageBackground source={require('../assets/house-gradient.png')} 
                     style = {{
                         width: swidth, 
                         height: sheight*1.2, 
                         flex: 1,
                         resizeMode: "cover",
                         justifyContent: "center",
-                        opacity: 0.8,
-                        blurRadius: 4
                         }}>
                 </ImageBackground>
-                <BlurView 
-                    intensity={30} 
-                    style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}>
-                </BlurView>
 
                 <View style={styles.contents}>
                 <View >
@@ -291,7 +282,6 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginRight: 10
-        
-    },
+    }
 });
 
