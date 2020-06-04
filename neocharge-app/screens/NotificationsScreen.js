@@ -1,10 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Switch, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, Switch, TouchableOpacity } from 'react-native';
 import Colors from '../assets/colors.js';
 import { API } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
+import QuestionMark from '../assets/question-mark.svg';
 
 class NotificationSelectionScreen extends React.Component {
+  static navigationOptions = {
+    headerRight: <QuestionMark/>,
+    headerStyle: {
+        backgroundColor: Colors.primary
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold",
+        fontFamily: 'RedHatDisplay-Regular'
+    },
+    gesturesEnabled: false,
+}
   constructor(props) {
     super(props)
     this.state = {
@@ -117,9 +130,10 @@ class NotificationSelectionScreen extends React.Component {
         {/* Primary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/electric-car-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: 147 }}>Primary Device</Text>
+          <Text style={{ ...styles.optionText, paddingRight: '30%'}}>Primary Device</Text>
           <Switch
             style={styles.switch}
+            trackColor={{true: Colors.accent1}}
             onValueChange={this.primaryDeviceToggle}
             value={this.state.primaryDeviceSwitch} />
         </View>
@@ -127,31 +141,31 @@ class NotificationSelectionScreen extends React.Component {
         {/* Secondary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/home-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: 120 }}>Secondary Device</Text>
+          <Text style={{ ...styles.optionText, paddingRight: '24%'}}>Secondary Device</Text>
           <Switch
             style={styles.switch}
+            trackColor={{true: Colors.accent1}}
             onValueChange={this.secondaryDeviceToggle}
             value={this.state.secondaryDeviceSwitch} />
         </View>
 
         {/* Interruptions Notification */}
-        <View style={styles.backgroundScheduleBox}>
+        <View style={{...styles.backgroundScheduleBox, marginBottom: 100}}>
           <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: 100 }}>Charge Interruptions</Text>
+          <Text style={{ ...styles.optionText, paddingRight: '18%' }}>Charge Interruptions</Text>
           <Switch
             style={styles.switch}
+            trackColor={{true: Colors.accent1}}
             onValueChange={this.chargeInterruptToggle}
             value={this.state.chargeInterruptSwitch} />
         </View >
 
-        <View style={styles.logoutContainer}>
-          <View style={styles.logoutButtonContainer}>
-            <Button onPress={this.onlogInfo}
-              title="Save"
-              color='white'
-            />
+        <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() => this.props.navigation.navigate('Home')}>
+                        <Text style={styles.title}>Confirm</Text>
+                    </TouchableOpacity>
           </View>
-        </View>
 
       </View>
     );
@@ -166,15 +180,32 @@ const styles = StyleSheet.create({
     minWidth: '100%'
   },
   optionText: {
+    fontFamily: 'RedHatDisplay-Bold',
     fontSize: 20,
-    color: Colors.secondary,
+    color: Colors.accent1,
     marginLeft: 30
   },
+  title: {
+    fontFamily: 'RedHatDisplay-Bold',
+    fontSize: 24,
+    color: Colors.secondary
+},
   headersText: {
+    fontFamily: 'RedHatDisplay-Bold',
     fontSize: 14,
-    color: 'grey',
-    fontWeight: 'bold',
+    color: Colors.lightFade,
     padding: 15
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  button: {
+    backgroundColor: Colors.accent1,
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+    borderRadius: 25,
   },
   iconPictures: {
     marginLeft: 10,
@@ -189,24 +220,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.appleBlue,
     alignItems: 'center',
     marginRight: 90,
-    marginTop: 15
+    marginTop: 15,
   },
-  logoutContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  logoutButtonContainer: {
-    backgroundColor: Colors.appleBlue,
-    position: 'absolute',
-    justifyContent: 'center',
-    height: 40,
-    borderColor: '#51a0d5',
-    borderWidth: 1,
-    bottom: '20%',
-    width: '90%',
-    borderRadius: 10
-  }
 });
+
 export default NotificationSelectionScreen;
