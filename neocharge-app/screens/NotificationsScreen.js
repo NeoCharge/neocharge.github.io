@@ -130,9 +130,10 @@ class NotificationSelectionScreen extends React.Component {
         {/* Primary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/electric-car-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: '30%'}}>Primary Device</Text>
+          <Text style={{ ...styles.optionText}}>Primary Device</Text>
+          
           <Switch
-            style={styles.switch}
+            style={{position: 'absolute', marginLeft: '80%'}}
             trackColor={{true: Colors.accent1}}
             onValueChange={this.primaryDeviceToggle}
             value={this.state.primaryDeviceSwitch} />
@@ -141,9 +142,9 @@ class NotificationSelectionScreen extends React.Component {
         {/* Secondary Device Notification */}
         <View style={styles.backgroundScheduleBox}>
           <Image style={styles.iconPictures} source={require('../assets/home-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: '24%'}}>Secondary Device</Text>
+          <Text style={{ ...styles.optionText}}>Secondary Device</Text>
           <Switch
-            style={styles.switch}
+            style={{position: 'absolute', marginLeft: '80%'}}
             trackColor={{true: Colors.accent1}}
             onValueChange={this.secondaryDeviceToggle}
             value={this.state.secondaryDeviceSwitch} />
@@ -152,9 +153,9 @@ class NotificationSelectionScreen extends React.Component {
         {/* Interruptions Notification */}
         <View style={{...styles.backgroundScheduleBox, marginBottom: 100}}>
           <Image style={styles.iconPictures} source={require('../assets/pause-icon.png')} />
-          <Text style={{ ...styles.optionText, paddingRight: '18%' }}>Charge Interruptions</Text>
+          <Text style={{ ...styles.optionText}}>Charge Interruptions</Text>
           <Switch
-            style={styles.switch}
+            style={{position: 'absolute', marginLeft: '80%'}}
             trackColor={{true: Colors.accent1}}
             onValueChange={this.chargeInterruptToggle}
             value={this.state.chargeInterruptSwitch} />
