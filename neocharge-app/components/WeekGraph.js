@@ -3,7 +3,7 @@ import React from 'react'
 import { BarChart, XAxis, Grid, YAxis } from 'react-native-svg-charts'
 import { View, Dimensions } from 'react-native'
 import * as scale from 'd3-scale'
-import { Svg, Rect, Line, G, Text, Defs, LinearGradient, Stop} from 'react-native-svg';
+import { Svg, Rect, Line, G, Text, Defs, LinearGradient, Stop } from 'react-native-svg';
 import Colors from '../assets/colors';
 
 export default class WeekGraph extends React.PureComponent {
@@ -133,13 +133,13 @@ export default class WeekGraph extends React.PureComponent {
                     // })
 
                     this.state.scale.map(
-                        function(value) {
+                        function (value) {
                             console.log("here are ticks");
                             console.log(ticks);
                             return (<Line key={value} x1={"0%"} x2={"100%"} y1={y(value)} y2={y(value)} stroke={"grey"} />);
                         }
                     )
-                    
+
                 }
 
 
@@ -170,15 +170,13 @@ export default class WeekGraph extends React.PureComponent {
         console.log(this.state.scale);
 
 
-
-
         const yAxis = this.state.scale.map((value) => ({ value }));
         const contentInset = { top: 30, bottom: 15 };
         const xAxisHeight = 30;
         const width = Dimensions.get('window').width
 
         return (
-            <View style={{ width: "100%", alignSelf: 'stretch'}}>
+            <View style={{ width: "100%", alignSelf: 'stretch' }}>
                 <View style={{ height: 250, width: "100%", flexDirection: "row", paddingRight: '5%', alignItems: "center", alignSelf: 'stretch' }}>
 
                     <BarChart
@@ -198,7 +196,7 @@ export default class WeekGraph extends React.PureComponent {
                     >
                         {/* <CustomBars bandwidth={10} /> */}
                         <CustomGrid belowChart={true} />
-                        <Gradient/>
+                        <Gradient />
                         <Gradient2 />
                     </BarChart>
                     <YAxis
@@ -214,7 +212,7 @@ export default class WeekGraph extends React.PureComponent {
                         yMax={this.state.max}
                     />
                 </View>
-                <View style={{ width: '100%', alignSelf: 'stretch', paddingRight:18}}>
+                <View style={{ width: '100%', alignSelf: 'stretch', paddingRight: 18 }}>
                     <XAxis
                         data={labeledPriData}
                         scale={scale.scaleBand}

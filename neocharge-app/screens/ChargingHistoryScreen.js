@@ -222,19 +222,19 @@ export default class ChargingHistoryScreen extends React.Component {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.tabs}>
-                    <TouchableOpacity onPress={this.weekHandler.bind(this)}>
+                    <TouchableOpacity style={{width:"22%", height: "80%"}} onPress={this.weekHandler.bind(this)}>
                         <View style={{ ...styles.tab, backgroundColor: this.state.weekHighlight }}>
                             <Text style={styles.tabText}>Week</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.monthHandler.bind(this)}>
+                    <TouchableOpacity style={{width:"22%", height: "80%"}} onPress={this.monthHandler.bind(this)}>
                         <View style={{ ...styles.tab, backgroundColor: this.state.monthHighlight }}>
                             <Text style={styles.tabText}>Month</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.yearHandler.bind(this)}>
+                    <TouchableOpacity style={{width:"22%", height: "80%"}} onPress={this.yearHandler.bind(this)}>
                         <View style={{ ...styles.tab, backgroundColor: this.state.yearHighlight }}>
                             <Text style={styles.tabText}>Year</Text>
                         </View>
@@ -283,10 +283,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         width: '100%',
         marginTop: 10,
+        height: 50
     },
     tab: {
-        padding: 15,
         borderRadius: 5,
+        width:"100%",
+        height: "80%",
+        justifyContent: "center",
+        alignItems: "center"
     },
     tabText: {
         fontSize: 13,
