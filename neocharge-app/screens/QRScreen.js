@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Colors from '../assets/colors.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { API } from 'aws-amplify';
 
 class QRScreen extends React.Component {
   static navigationOptions = {
@@ -22,7 +23,9 @@ class QRScreen extends React.Component {
     super(props);
     this.state = { 
       hasCameraPermission: null,
-      scanned: false, };
+      scanned: false,
+      deviceID: '' 
+    };
   };
 
   async componentDidMount() {
@@ -81,16 +84,58 @@ class QRScreen extends React.Component {
     //this.props.navigation.navigate('Auth');
   }
 
-  handleBarCodeScanned = ({ type, data}) => {
-    this.setState({ scanned: true });
-    alert( `Bar code type: ${type} \n Data: ${data}`,
-          [{
-            text: 'OK', 
-            onPress: () => {navigation.navigate('ConfigTimeZone')}
-          }],
-          {cancelable: false })
-    this.props.navigation.navigate('ConfigTimeZone')
+  handleBarCodeScanned = async ({data}) => {
+    this.setState({ 
+      scanned: true, 
+      deviceID: data 
+    });
+    
+    let id = data.toUpperCase()
+    let response = await validDeviceIDCheck(id);
+
+    if (response == true) {
+      this.props.navigation.navigate('ConfigTimeZone', { deviceID: id })
+    }
   };
+}
+
+// TODO NOTICE: I am using the 'patch' method as a way of avoiding making changes to
+// the production environment Alpha Testers are using. Before our next deployment, we
+// need to copy and paste the code of verifyDeviceID-JUIC207.py into verifyDeviceID.py
+// and delete the /deviceid patch resource and call API.get() instead.
+//
+// Returns true if the deviceID exists in our database and is available.
+// Returns false if the deviceID does not exist or is already
+// in use by another account.
+async function validDeviceIDCheck(deviceID) {
+  const path = "/deviceid"; // you can specify the path
+  console.log("path is " + path);
+  let result = await API.patch("LambdaProxy", path,
+      {
+          "queryStringParameters": {
+              "deviceID": deviceID
+          }
+      }).catch(error => {
+          console.log(error.response)
+          alert("Something went wrong while verifying device ID.")
+          return false;
+      });
+  console.log("response type: " + (typeof result));
+  console.log("api response: " + result);
+
+  if (Object.keys(result).length === 0) {
+      console.log("entered non valid id");
+      alert("Must enter a valid device ID.");
+      return false;
+  }
+  /* TODO NOTICE: uncomment this once we are done with Alpha Testers all using 'mydevice'!!
+  if (result.inUse == 1) {
+    console.log("entered deviceID is already in use");
+    alert("Entered device ID is already in use by another account.");
+    return false;
+  }
+  */
+  return true;
 }
 
 export default QRScreen;
