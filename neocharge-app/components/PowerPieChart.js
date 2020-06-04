@@ -76,7 +76,7 @@ export default class PowerPieChart extends React.PureComponent {
         return (
             <View style={{ height: 250, flexDirection: 'row', flex: 1 }}>
                 <View style={styles.leftImageContainer}>
-                    <View style={{ paddingBottom: 40 }}>
+                    <View style={{ alignItems: "flex-start", position: 'absolute', top: "50%", left: "15%", transform: [{'translate': [0,0, 1]}], width: 150 }}>
                         <Image
                             style={styles.leftImageStyle}
                             source={require('../assets/Appliance-Out-Of-Use.png')}
@@ -136,7 +136,7 @@ export default class PowerPieChart extends React.PureComponent {
                     <Gradient2/>
                 </PieChart>
                 <View style={styles.rightImageContainer}>
-                    <View style={{ paddingBottom: 40, alignItems: 'center' }}>
+                    <View style={{alignItems: "flex-end", position: 'absolute', top: "50%", right: "15%", transform: [{'translate': [0,0, 1]}], width: 150 }}>
                         <Image
                             style={styles.rightImageStyle}
                             source={require('../assets/Car-Green-Gradient.png')}
@@ -185,13 +185,13 @@ const styles = StyleSheet.create({
         paddingTop: 3,
     },
     imageTotalTextRight: {
-        fontSize: 20,
+        fontSize: 23,
         color: Colors.accent1,
         paddingTop: 3,
         fontWeight:'bold'
     },
     imageTotalTextLeft: {
-        fontSize: 20,
+        fontSize: 23,
         color: "white",
         paddingTop: 3,
         fontWeight:'bold'
