@@ -50,25 +50,25 @@ Here you can specify the secondary device configuration, where you can input the
 <strong>Important Note for Alpha Testers:</strong> If you do not own a physical NeoCharge device, enter "mydevice" for the device id field. 
 
 ### All Users
+<img src="images/SignIn.png" title="SignIn Screen">
+For returning users, sign in to the app using your login credentials.
+
 
 <img src="images/dashboardScreen.png" title="Dashboard Screen">
-
 The main screen allows you to view how far along the car has been charged. It also gives you the control of starting and stopping your charge, enable the smart charge feature, and also allows you to view how fast the car is being charged.
 
 
 <img src="images/chargeHistory.png" title="Charging History Screen">
-
 To charging history graph will allow you to see how much the car was charged for the day, week, month, and year. 
 
-<img src="images/graph.png" title="Schedule Screen">
 
+<img src="images/schedule.png" title="Schedule Screen">
 The schedule charge option will allow you to set a recurring charge for the car. Once the car is plugged in, the car will begin and end charging at the times specified here. 
 
 
 <img src="images/smartSettings.png" title="Settings Screen">
-
 The settings screen will provide you with information about your account. It will also allow you to change time zones if needed as well as configure your primary and secondary devices. You also have the option to sign out of your account here, which will bring you back to the main sign in page. 
 
-<img src="images/notificationSelection.png" title="Notifications Screen">
 
+<img src="images/notificationSelection.png" title="Notifications Screen">
 This screen will allow you to select the notifications you would like to recieve on your mobile device. 
