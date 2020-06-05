@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import HomeOption from '../components/HomeOption';
+import Dashboard from '../components/Dashboard';
 import SmartChargeButton from '../components/SmartChargeButton';
 import PauseButton from '../components/PauseButton';
-import Dashboard from '../components/Dashboard';
 import Colors from '../assets/colors';
 import ChargingHistoryIcon from '../assets/ChargingHistory.svg';
 import ScheduleChargeIcon from '../assets/ScheduleCharge.svg';
@@ -39,11 +39,10 @@ export default class HomeScreen extends React.Component {
         this.state = {
             userEmail: '',
             pushToken: '',
-            hasLoggedData: false
+            hasLoggedData: false,
         };
     }
 
-    // push notification 
     async componentDidMount() {
         this.setState({ userEmail: await SecureStore.getItemAsync("secure_email") });
 
@@ -53,6 +52,8 @@ export default class HomeScreen extends React.Component {
             });
 
             this.logOnboardingInfo();
+        } else { // set to true so smart charge and pause buttons can render
+            this.setState({ hasLoggedData: true })
         }
     }
 
@@ -88,7 +89,7 @@ export default class HomeScreen extends React.Component {
             const apiResponse = await API.put("LambdaProxy", path, jsonObj) //replace the desired API name
                 .then(() => {
                     console.log(apiResponse);
-                    this.state.hasLoggedData = true;
+                    this.setState({ hasLoggedData: true });
                 })
                 .catch(error => {
                     console.log(error.code);
@@ -106,11 +107,14 @@ export default class HomeScreen extends React.Component {
 
                 <Dashboard />
 
+
                 {/*TODO: Change what each button does based on which tab is showing */}
-                <View style={styles.buttons}>
-                    <SmartChargeButton />
-                    <PauseButton />
-                </View>
+                {this.state.hasLoggedData == true &&
+                    <View style={styles.buttons}>
+                        <SmartChargeButton />
+                        <PauseButton />
+                    </View>
+                }
 
                 <View style={styles.subcontainer}>
                     <HomeOption nav={this.props.navigation}
