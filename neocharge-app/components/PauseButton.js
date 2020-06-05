@@ -18,7 +18,7 @@ export default class Dashboard extends React.Component {
         this.state = {
             userEmail: '',
             pauseStyle: styles.on,
-            pauseText: kPauseText
+            pauseText: kChargeText
         }
     }
 
