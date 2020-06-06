@@ -23,7 +23,7 @@ If you run into any issues while installing, please [contact](contact.md) us!
 ## Application Walkthrough 
 ### First Time Users
 
-<img src="images/SignUp.png" title="SignUp Screen">
+<img src="images/SignUp.png" title="SignUp Screen" width="250">
 
 You will be prompted to create an account in order to register the NeoCharge device with a specific email address. 
 
