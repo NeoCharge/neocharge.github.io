@@ -32,18 +32,22 @@ You will be prompted to create an account in order to register the NeoCharge dev
 Next, you will be taken to the QR Code scanner in order to scan the QR Code found on your neocharge device. If you are unable to scan the code, you also have the option enter the device id manually.
 
 <img src="images/deviceID.png" title="Device Id Screen" width="350">
+
 For alpha testers, please enter 'mydevice' as the sample device id. 
 
 
 <img src="images/locale.png" title="Configure Locale" width="350">
+
 Upon successful verification, you will be prompted to specify time zone as well as your servie provider and zipcode.
 
 
 <img src="images/primaryConfig.png" title="Primary Config" width="350">
+
 Here you can specify the primary device configuration. 
 
 
 <img src="images/secondaryConfig.png" title="Secondary Config" width="350">
+
 Here you can specify the secondary device configuration, where you can input the make and model of your vehicle as well as a charge rate. 
 
 
@@ -51,24 +55,30 @@ Here you can specify the secondary device configuration, where you can input the
 
 ### All Users
 <img src="images/SignIn.png" title="SignIn Screen" width="350">
+
 For returning users, sign in to the app using your login credentials.
 
 
 <img src="images/dashboardScreen.png" title="Dashboard Screen" width="350">
+
 The main screen allows you to view how far along the car has been charged. It also gives you the control of starting and stopping your charge, enable the smart charge feature, and also allows you to view how fast the car is being charged.
 
 
 <img src="images/chargeHistory.png" title="Charging History Screen" width="350">
+
 To charging history graph will allow you to see how much the car was charged for the day, week, month, and year. 
 
 
 <img src="images/schedule.png" title="Schedule Screen" width="350">
+
 The schedule charge option will allow you to set a recurring charge for the car. Once the car is plugged in, the car will begin and end charging at the times specified here. 
 
 
 <img src="images/smartSettings.png" title="Settings Screen" width="350">
+
 The settings screen will provide you with information about your account. It will also allow you to change time zones if needed as well as configure your primary and secondary devices. You also have the option to sign out of your account here, which will bring you back to the main sign in page. 
 
 
 <img src="images/notificationSelection.png" title="Notifications Screen" width="350">
+
 This screen will allow you to select the notifications you would like to recieve on your mobile device. 
