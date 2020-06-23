@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if ! grep -Fq "var { ViewPropTypes } = require('react-native');" node_modules/react-native-multi-slider/mockProps.js
-then
-    echo "didn't find the line"
-else
-    echo "found the line"
-fi
