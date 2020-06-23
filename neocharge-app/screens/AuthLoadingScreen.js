@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-} from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Text, Dimensions} from 'react-native';
 import Colors from '../assets/colors';
 import { API, Auth } from 'aws-amplify';
 import * as SecureStore from 'expo-secure-store';
+import MainLogo from '../assets/main-logo.svg';
+
+const swidth = Dimensions.get('screen').width
+const sheight = Dimensions.get('screen').height
 
 class AuthLoadingScreen extends React.Component {
   componentDidMount() {
@@ -85,13 +83,17 @@ class AuthLoadingScreen extends React.Component {
   render() {
     return (
       <View style={styles.screen} >
-        <Image style={styles.imageStyle} source={require('../assets/neocharge.png')} />
+       
+        <View >
+          <MainLogo /> 
+          <MainLogo height={sheight*0.25} width={sheight*0.25} marginBottom={'25%'} marginTop={'10%'} />
+			  </View>
+       
         <Text style={styles.TextStyle}>Loading...</Text>
         <ActivityIndicator />
       </View>
     );
   }
-
 }
 export default AuthLoadingScreen;
 

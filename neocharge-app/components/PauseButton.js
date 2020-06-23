@@ -17,8 +17,8 @@ export default class Dashboard extends React.Component {
         super(props)
         this.state = {
             userEmail: '',
-            pauseStyle: styles.off,
-            pauseText: kPauseText
+            pauseStyle: styles.on,
+            pauseText: kChargeText
         }
     }
 
@@ -38,9 +38,9 @@ export default class Dashboard extends React.Component {
         let pauseIsSet = await API.get("LambdaProxy", "/pausecharge", query)
             .catch(error => { console.log(error.response) });
 
-        console.log("response: " + pauseIsSet);
+        console.log("pauseIsSet: " + pauseIsSet);
+        console.log("pauseStatus: " + pauseIsSet);
 
-        console.log("pause status: " + pauseIsSet);
         if (pauseIsSet) {
             this.setState({ pauseStyle: styles.on, pauseText: kChargeText })
         } else {
