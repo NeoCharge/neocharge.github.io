@@ -1,7 +1,10 @@
 theme: jekyll-theme-minimal
 title: Welcome to the NeoCharge App Homepage!
-description: <a href="installation.html">Installation</a><br><a href="licensing.html">Licensing</a><br><a href="contact.html">Contact</a>
+description: <a href="installation.html">Installation</a><br><a href="usage.html">Usage</a><br><a href="licensing.html">Licensing</a><br><a href="contact.html">Contact</a>
+
+github:
+  is_project_page: false
 
 exclude:
-  - neocharge-app
   - assets
+  - vendor

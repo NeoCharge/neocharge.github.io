@@ -1,6 +1,6 @@
 # Licensing
 
-## EULA
+<!-- ## EULA
 ### License 
 1.	Under this End User License Agreement (the "Agreement"), NeoCharge (the "Vendor") grants to the user (the "Licensee") a non-exclusive and non-transferable license (the "License") to use NeoCharge Mobile App (the "Software").
 2.	"Software" includes the executable computer programs and any related printed, electronic and online documentation and any other files that may accompany the product.
@@ -219,5 +219,5 @@ We may update this privacy policy from time to time. The updated version will be
 
 ### 13. HOW CAN YOU CONTACT US ABOUT THIS POLICY?
 
-If you have questions or comments about this policy, you may email us at thejuicerzcapstone@gmail.com. 
+If you have questions or comments about this policy, you may email us at thejuicerzcapstone@gmail.com.  -->
 
