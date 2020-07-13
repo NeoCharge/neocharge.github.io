@@ -54,7 +54,7 @@ Here you can specify the primary device configuration. If your primary device is
 
 <img style="float: right;" src="images/iPhone11ConfigPriApplianceOther.png" title="Primary Config" width="250">
 
-If your device is an appliance, specify what kind of appliance it is. If your device is not listed, choose 'Other' and type in the name of your device in the text box.
+If your device is an appliance, specify what kind of appliance it is. If your device is not listed, choose "Other" and type in the name of your device in the text box.
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
