@@ -17,4 +17,4 @@ Our goals for the major features that will be implemented into the NeoCharge app
 - Users will be able to set a schedule for when they would like to charge
 - Users will also have the option to start a charging session right away
 
-## [View our EULA](licensing.md)
+## [View our EULA](NeoCharge_EULA DRAFT 6.23.20.pdf)
