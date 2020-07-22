@@ -1,5 +1,7 @@
 # Licensing
 
+## [View our EULA](https://neocharge-app.github.io/docs/NeoCharge_EULA_DRAFT_6.23.20.pdf)
+
 <!-- ## EULA
 ### License 
 1.	Under this End User License Agreement (the "Agreement"), NeoCharge (the "Vendor") grants to the user (the "Licensee") a non-exclusive and non-transferable license (the "License") to use NeoCharge Mobile App (the "Software").
