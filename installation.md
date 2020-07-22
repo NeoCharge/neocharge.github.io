@@ -13,7 +13,7 @@ Coming soon...
 
 
 ## Android Users: 
-Download our beta release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-c55b58d7a6694f7fa104e3ecd171d6d7-signed.apk) (v 1.5).
+Download our beta release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-8d07f86b498648728c092d51806382d7-signed.apk) (v 1.0.1).
 
 If you are downloading on a computer, please transfer the file over to your phone. After doing so, navigate to the file within your phone's file system and tap it to begin installation.
 
