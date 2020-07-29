@@ -2,15 +2,9 @@
 
 ## iOS Users:
 
-Coming soon...
-
-<!-- Follow the steps below:
-1. Install the TestFlight iOS app from the App Store onto your mobile device. 
-1. Accept the invitation sent to you either in the TestFlight iOS app or with a redemption code found via a link in the beta invitation. 
-1. Once accepted you can install the prerelease build. The TestFlight app will notify you when new builds are available. To update to the latest build, simply tap Update. 
-
-<strong>Important Note for Alpha Testers:</strong> Please create an App Store Connect account [here](https://appstoreconnect.apple.com/login). Then send an email to appsupport@getneocharge.com, including your name and the email you signed up for App Store Connect with, and we will send you an invite to download our app on TestFlight. -->
-
+1. Install the TestFlight iOS app from the App Store onto your Apple device. 
+1. Then, to download the NeoCharge beta, tap this [link](https://testflight.apple.com/join/gBYgD8L1) (v 1.0.1).
+1. Once in TestFlight, you can install the app. If updates are available, the app can be updated from Testflight by tapping "Update".
 
 ## Android Users: 
 Download our beta release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-8d07f86b498648728c092d51806382d7-signed.apk) (v 1.0.1).
