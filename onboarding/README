@@ -1,4 +1,6 @@
 APIGatewayLayout.pdf - layout of the API Gateway w/ Lambda function descriptions
 AppSetup.pdf - command line arguments for setting up expo/amplify, so that the app can be ran
 RunApp.pdf - tutorial for running the app after the development environment is set-up
-SoftwareArchitecture_Capstone.pdf - A software architecture document created December, 2019. Some things are outdated. I'd recommend adding and updating this. Akhil has the most recent version of the Deployment Diagram and the md files of this document
+SoftwareArchitecture_Capstone.pdf - A software architecture document created December, 2019. 
+  Some things are outdated. I'd recommend adding to and updating this. Akhil has the most recent 
+  version of the Deployment Diagram and the md files of this document.
