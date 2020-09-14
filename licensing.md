@@ -1,6 +1,6 @@
 # Licensing
 
-## [View our EULA](https://neocharge-app.github.io/docs/NeoCharge_EULA_DRAFT_6.23.20.pdf)
+## [View our EULA](https://neocharge.github.io/docs/NeoCharge_EULA_DRAFT_6.23.20.pdf)
 
 <!-- ## EULA
 ### License 
