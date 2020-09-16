@@ -7,7 +7,7 @@
 1. Once in TestFlight, you can install the app. If updates are available, the app can be updated from Testflight by tapping "Update".
 
 ## Android Users: 
-Download our beta release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-404a165545564aa6b8d11b0d122d9bfd-signed.apk) (v 1.1.0).
+Download our beta release APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boej84/neocharge-app-78eb97bdb0d243619648702f86110c58-signed.apk) (v 1.1.0).
 
 If you are downloading on a computer, please transfer the file over to your phone. After doing so, navigate to the file within your phone's file system and tap it to begin installation.
 
