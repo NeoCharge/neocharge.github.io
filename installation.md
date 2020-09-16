@@ -3,7 +3,7 @@
 ## iOS Users:
 
 1. Install the TestFlight iOS app from the App Store onto your Apple device. 
-1. Then, to download the NeoCharge beta, tap this [link](https://testflight.apple.com/join/gBYgD8L1) (v 1.0.1).
+1. Then, to download the NeoCharge beta, tap this [link](https://testflight.apple.com/join/gBYgD8L1) (v 1.1.1).
 1. Once in TestFlight, you can install the app. If updates are available, the app can be updated from Testflight by tapping "Update".
 
 ## Android Users: 
