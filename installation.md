@@ -1,5 +1,10 @@
 # Installation
 
+## WiFi Setup:
+
+First, you will need to connect your NeoCharge Smart Splitter :tm: to the internet. 
+To do so, please follow the instructions [here](https://neocharge.s3-us-west-1.amazonaws.com/NeoCharge+WiFi+Setup+Instructions.pdf)
+
 ## iOS Users:
 
 1. Install the TestFlight iOS app from the App Store onto your Apple device. 
