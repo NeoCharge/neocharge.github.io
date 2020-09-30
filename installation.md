@@ -3,7 +3,7 @@
 ## WiFi Setup:
 
 First, you will need to connect your NeoCharge Smart Splitter :tm: to the internet. 
-To do so, please follow the instructions [here](https://neocharge.s3-us-west-1.amazonaws.com/NeoCharge+WiFi+Setup+Instructions.pdf)
+To do so, please follow the instructions [here](https://neocharge.github.io/NeoCharge%20WiFi%20Setup%20Instructions.pdf)
 
 ## iOS Users:
 
